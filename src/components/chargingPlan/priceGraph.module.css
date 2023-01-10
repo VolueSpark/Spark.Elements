@@ -1,0 +1,9 @@
+.axis__bottom {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.selection__disable {
+    user-select: none;
+    -webkit-user-select: none;
+}

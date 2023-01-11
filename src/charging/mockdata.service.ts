@@ -108,7 +108,9 @@ export function createMockChargingPlan(
     const chargingRate = 3.6
     const chargingWindowSize = 11
 
-    const prescriptions: ChargingPrescription[] = []
+    const prescriptions: ChargingPrescription[] = Array.from(new Array(7)).map(
+        (_, idx) => randomPrescription(idx)
+    )
 
     for (let i = 0; i < numberOfPrescriptions; i++) {}
 

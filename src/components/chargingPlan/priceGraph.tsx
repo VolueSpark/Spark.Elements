@@ -76,10 +76,16 @@ export default function PriceGraph({
         const point = localPoint(event)
         if (point) {
             const index = Math.floor((point?.x - horizontalMargin) / barWidth)
-            if (index < 0 || index > data.length - 1)
+            if (index < 0 || index > data.length - 1) {
                 setChargeWindowStartIndex(0)
-            if (isInDataRange(index)) setChargeWindowStartIndex(index)
-            else setChargeWindowStartIndex(data.length - windowSize)
+                return
+            }
+
+            if (isInDataRange(index)) {
+                setChargeWindowStartIndex(index)
+            } else {
+                setChargeWindowStartIndex(data.length - windowSize)
+            }
         }
     }
 

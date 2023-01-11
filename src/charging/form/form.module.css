@@ -57,7 +57,7 @@
     max-height: 100%;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: var(--MEDIUM-BREAKPOINT)) {
     .container {
         padding-top: 1rem;
         min-height: 300px;

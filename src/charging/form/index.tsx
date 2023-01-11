@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { ChargingPlanType } from '@/pages/api/chargingPlan'
 import useResize from '@/hooks/useResize'
 
 import style from './form.module.css'
-import useFetchChargingPlan from '../hooks/useFetchArea'
 import { PriceArea } from '../priceArea'
 import useLocalStorage from 'use-local-storage'
 import PriceGraph from '@/components/chargingPlan/priceGraph'
@@ -12,49 +10,53 @@ import Prescriptions from '@/components/chargingPlan/prescriptions'
 import { useTranslation } from '@/i18n'
 import { chargingPlanTexts } from '@/components/chargingPlan/texts'
 import InfoText from '@/components/infoText'
-import usePriceArea from '@/src/hooks/usePriceArea'
+import { ChargingPlanType } from '../charging.types'
 
 const MAX_CONTENT_WIDTH = 824
 
 type FormProps = {
-    area?: PriceArea
-    controls?: boolean
+    area: PriceArea
+    data: ChargingPlanType
+    isLoading: boolean
 }
 
-export default function ChargingPlan({ area }: FormProps) {
-    const submit = useFetchChargingPlan()
+export default function ChargingPlan({ area, data, isLoading }: FormProps) {
     const [region, setRegion] = useLocalStorage<string>('region', '')
-    const [isLoading, setIsLoading] = useState(false)
-    const [data, setData] = useState<ChargingPlanType>()
     const { width, height } = useResize()
 
-    const [price, setPrice] = useState(0)
-    const [windowSize, setWindowSize] = useState(11)
+    const [price, setPrice] = useState(10)
     const [windowStartTime, setWindowStartTime] = useState(14)
 
     const isInChargeWindow = (idx: number) => {
-        return idx >= windowStartTime && idx < windowStartTime + windowSize
+        return (
+            idx >= windowStartTime &&
+            idx < windowStartTime + data.chargingWindowSize
+        )
     }
 
     // TODO: temp fix to disable onclick events outside data range
     const isInDataRange = (idx: number) =>
-        idx + windowSize <= (data?.priceEntries.length || 0)
+        idx + data.chargingWindowSize <= (data?.priceEntries.length || 0)
 
     useEffect(() => {
-        let newPrice = 0
+        let newPrice = 1
+
+        if (!data) {
+            return
+        }
 
         for (
             let i = windowStartTime;
             // TODO: temp limit count outside of data range
             i <
             Math.min(
-                windowStartTime + windowSize,
+                windowStartTime + data.chargingWindowSize,
                 data?.priceEntries.length ?? 24
             );
             i++
         ) {
             newPrice +=
-                (data?.priceEntries[i].averagePrice ?? 0) *
+                (data.priceEntries[i].averagePrice ?? 0) *
                 (data?.chargingRate ?? 0)
         }
 
@@ -62,37 +64,8 @@ export default function ChargingPlan({ area }: FormProps) {
 
         // TODO: temp fix for displaying correct price when outside data range
         if (!isInDataRange(windowStartTime))
-            setPrice(data?.prescriptions[0]?.mean || 0)
-    }, [windowStartTime, data, windowSize])
-
-    const { getGeolocation, locationError } = usePriceArea(setRegion)
-    useEffect(() => {
-        if (!locationError) {
-            getGeolocation()
-        } else {
-            console.error(locationError)
-        }
-    }, [])
-
-    const handleSubmit = async () => {
-        const data = await submit(region)
-        setIsLoading(false)
-        setData(data)
-        setWindowSize(data.chargingWindowSize)
-        let startHour = new Date(data.prescriptions[0].from).getHours()
-        setWindowStartTime(startHour)
-    }
-
-    useEffect(() => {
-        if (area) setRegion(area)
-    }, [area])
-
-    useEffect(() => {
-        if (region) {
-            setIsLoading(true)
-            handleSubmit()
-        }
-    }, [region])
+            setPrice(data?.prescriptions[0]?.mean ?? 0)
+    }, [windowStartTime, data])
 
     const { t } = useTranslation()
 
@@ -102,7 +75,7 @@ export default function ChargingPlan({ area }: FormProps) {
                 region={region}
                 setRegion={setRegion}
                 price={price}
-                windowSize={windowSize}
+                windowSize={data.chargingWindowSize}
                 windowStartTime={windowStartTime}
                 setWindowStartTime={setWindowStartTime}
                 isInDataRange={isInDataRange}
@@ -120,7 +93,7 @@ export default function ChargingPlan({ area }: FormProps) {
                         setChargeWindowStartIndex={setWindowStartTime}
                         isInChargeWindow={isInChargeWindow}
                         isInDataRange={isInDataRange}
-                        windowSize={windowSize}
+                        windowSize={data.chargingWindowSize}
                     />
                 </>
             )}

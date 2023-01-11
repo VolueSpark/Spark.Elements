@@ -2,7 +2,7 @@ import { useTranslation } from '@/i18n'
 
 import style from './prescriptions.module.scss'
 import { chargingPlanTexts } from './texts'
-import { ChargingPrescription } from '@/pages/api/chargingPlan'
+import { ChargingPrescription } from '@/src/charging/charging.types'
 
 type PrescriptionsProps = {
     data?: ChargingPrescription[]

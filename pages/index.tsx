@@ -1,8 +1,29 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import ChargingPlan from '@/src/charging/form'
+import {
+    ChargingPlanType,
+    ChargingPrescription,
+    Price,
+} from '@/src/charging/charging.types'
+import { addHours, addDays } from 'date-fns'
+import { InferGetServerSidePropsType } from 'next'
+import { PriceArea } from '@/src/charging/priceArea'
+import { createMockChargingPlan } from '@/src/charging/mockdata.service'
 
-export default function Home() {
+export function getServerSideProps() {
+    return {
+        props: {
+            area: 'NO3' as PriceArea,
+            data: createMockChargingPlan(),
+            isLoading: false,
+        },
+    }
+}
+
+export default function Home(
+    props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
     return (
         <>
             <Head>
@@ -18,7 +39,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
-                <ChargingPlan />
+                <ChargingPlan {...props} />
             </main>
         </>
     )

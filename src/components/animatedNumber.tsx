@@ -25,7 +25,7 @@ export default function AnimatedNumber({
     }, [currency])
 
     useEffect(() => {
-        motionValue.set(value || 0)
+        motionValue.set(value)
     }, [motionValue, value])
 
     useEffect(

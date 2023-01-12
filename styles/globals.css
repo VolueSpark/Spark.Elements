@@ -11,10 +11,15 @@
     --footer: #31524f;
     --shadow: #c3c3c3;
     --teal: #62a39e;
-
     --dark-green: #31524f;
     --MOBILE-BREAKPOINT: 584px;
     --MEDIUM-BREAKPOPINT: 1200px;
+
+    /* New properties that need to be overriden by custom theme in app */
+    --axis-seperator: #d4e7e0;
+    --axis-bottom-font-size: 0.8rem;
+    --bar-color: #E7E7E7;
+    --bar-color-active: #62A39E;
 }
 
 html,

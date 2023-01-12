@@ -35,8 +35,8 @@ const Template: StoryFn<typeof PriceGraph> = (args) => {
 
 export const Primary = Template.bind({})
 Primary.args = {
-    width: 756,
-    height: 756,
+    width: 1024,
+    height: 1024,
     data: data.priceEntries.slice(0, 24),
     windowSize: 8,
 }

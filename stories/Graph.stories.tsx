@@ -9,6 +9,8 @@ export default {
     component: PriceGraph,
 } as Meta<typeof PriceGraph>
 
+const data = createMockChargingPlan()
+
 const Template: StoryFn<typeof PriceGraph> = (args) => {
     const [chargeWindowStartIndex, setChargeWindowStartIndex] = useState(0)
     const [chargeWindow, setChargeWindow] = useState(8)
@@ -30,12 +32,11 @@ const Template: StoryFn<typeof PriceGraph> = (args) => {
         />
     )
 }
-const data = createMockChargingPlan()
 
 export const Primary = Template.bind({})
 Primary.args = {
     width: 756,
     height: 756,
     data: data.priceEntries.slice(0, 24),
-    windowSize: 1,
+    windowSize: 8,
 }

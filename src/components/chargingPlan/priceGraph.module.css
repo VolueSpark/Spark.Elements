@@ -12,6 +12,10 @@
     stroke: var(--axis-seperator);
 }
 
+.axis__text {
+    font-style: inherit;
+}
+
 .axis__bottom {
     user-select: none;
     -webkit-user-select: none;

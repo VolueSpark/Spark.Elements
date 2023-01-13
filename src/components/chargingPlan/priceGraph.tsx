@@ -38,7 +38,7 @@ export default function PriceGraph({
     labels = true,
 }: PriceGraphProps) {
     const xMax = width - horizontalMargin
-    const yMax = height - verticalMargin
+    const yMax = height - verticalMargin - PADDING
     // Rougly the area given to each bar in the graph (including padding)
     const barWidth = xMax / data.length
 
@@ -95,7 +95,7 @@ export default function PriceGraph({
             onMouseDown={(event: React.MouseEvent) => onClick(event)}
         >
             <rect width={width} height={height} opacity={0} />
-            <Group left={horizontalMargin} top={verticalMargin / 2 - PADDING}>
+            <Group left={horizontalMargin} top={verticalMargin / 2}>
                 {data.map((d, idx) => {
                     const barWidth = xScale.bandwidth()
                     const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
@@ -127,7 +127,7 @@ export default function PriceGraph({
             </Group>
             <Group
                 left={horizontalMargin / 2 + PADDING}
-                top={verticalMargin / 2 - PADDING}
+                top={verticalMargin / 2}
             >
                 {labels && (
                     <>
@@ -142,9 +142,10 @@ export default function PriceGraph({
                                 .filter((_t, i) => i > 0 && i % 2 === 0)}
                         />
                         <Text
+                            dy={-PADDING}
                             dx={-PADDING}
                             fontSize={10}
-                            className={style.text__axis}
+                            className={style.axis__text}
                         >
                             øre/kWh
                         </Text>
@@ -154,11 +155,14 @@ export default function PriceGraph({
                     <Line
                         from={{ x: 0, y: PADDING }}
                         to={{ x: 0, y: yMax }}
-                        className={style.axis__left__line}
+                        className={style.axis__line}
                     />
                 )}
             </Group>
-            <Group left={horizontalMargin} top={yMax + verticalMargin / 2}>
+            <Group
+                left={horizontalMargin}
+                top={yMax + verticalMargin / 2 + PADDING}
+            >
                 {labels && (
                     <AxisBottom
                         hideAxisLine
@@ -170,6 +174,7 @@ export default function PriceGraph({
                         }}
                         tickTransform={'translate(-9,8)'}
                         axisClassName={style.axis__bottom}
+                        tickClassName={style.axis__text}
                     />
                 )}
                 {seperators && (

@@ -6,9 +6,13 @@ import { ChargingPrescription } from '@/src/charging/charging.types'
 
 type PrescriptionsProps = {
     data?: ChargingPrescription[]
+    numberOfRows?: number
 }
 
-export default function Prescriptions({ data }: PrescriptionsProps) {
+export default function Prescriptions({
+    data,
+    numberOfRows = 7,
+}: PrescriptionsProps) {
     const { t } = useTranslation()
 
     function formatDate(date: string) {
@@ -54,16 +58,35 @@ export default function Prescriptions({ data }: PrescriptionsProps) {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.map((p, idx) => (
-                        <tr key={idx}>
-                            <td>{formatDate(p.from)}</td>
-                            <td>
-                                {formatTime(p.from)} - {formatTime(p.to)}
-                            </td>
-                            <td>{currencyFormatter.format(p.mean)} kr</td>
-                            <td>+/- {currencyFormatter.format(p.stdDev)} kr</td>
+                    {data?.length ? (
+                        data?.map((p, idx) => {
+                            if (idx < numberOfRows)
+                                return (
+                                    <tr key={idx}>
+                                        <td>{formatDate(p.from)}</td>
+                                        <td>
+                                            {formatTime(p.from)} -{' '}
+                                            {formatTime(p.to)}
+                                        </td>
+                                        <td>
+                                            {currencyFormatter.format(p.mean)}
+                                        </td>
+                                        <td>
+                                            +/-{' '}
+                                            {currencyFormatter.format(p.stdDev)}{' '}
+                                        </td>
+                                    </tr>
+                                )
+                            else return
+                        })
+                    ) : (
+                        <tr>
+                            <td>Missing data to populate table</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>

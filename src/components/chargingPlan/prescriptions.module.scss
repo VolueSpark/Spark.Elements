@@ -4,6 +4,7 @@
     > h3 {
         text-align: center;
         margin-bottom: 2rem;
+        font-style: inherit;
     }
 
     > table {
@@ -13,6 +14,7 @@
 
         thead {
             font-size: 0.9rem;
+            font-family: inherit;
         }
 
         tbody {
@@ -26,9 +28,11 @@
                 }
 
                 border: solid;
-                border-color: var(--background-secondary);
+                border-color: #d4e7e0;
+                border-color: var(--prescription-border-color);
                 border-width: 1px 0;
                 border-spacing: 2rem;
+                font-family: inherit;
 
                 :first-child {
                     border-top: none;

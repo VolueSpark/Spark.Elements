@@ -71,10 +71,8 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
 
     for (let i = 0; i < numberOfPriceEntries; i++) {
         const currentTime = addHours(startingDate, i)
-        const hours = getHours(currentTime)
 
         const isCurrentDayTime = isDayTime(currentTime)
-        console.log(hours, isCurrentDayTime, wasDayTime)
 
         if (wasDayTime != isCurrentDayTime) {
             targetPrice = createNewTargetPrice(currentPrice, isCurrentDayTime)

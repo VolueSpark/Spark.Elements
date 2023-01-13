@@ -2,12 +2,11 @@ import React, { useMemo } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
-import { Price } from '@/pages/api/chargingPlan'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
 import { localPoint } from '@visx/event'
 import { Line } from '@visx/shape'
-import COLORS from '@/styles/colors'
+import { Price } from '@/src/charging/charging.types'
 
 import style from './priceGraph.module.css'
 
@@ -15,7 +14,7 @@ const verticalMargin = 60
 const horizontalMargin = 60
 const PADDING = 16
 
-export type BarsProps = {
+export type PriceGraphProps = {
     width: number
     height: number
     data: Price[]
@@ -23,6 +22,8 @@ export type BarsProps = {
     isInChargeWindow: (arg0: number) => boolean
     isInDataRange: (arg0: number) => boolean
     windowSize: number
+    seperators?: boolean
+    labels?: boolean
 }
 
 export default function PriceGraph({
@@ -33,16 +34,13 @@ export default function PriceGraph({
     isInChargeWindow,
     isInDataRange,
     windowSize,
-}: BarsProps) {
+    seperators = true,
+    labels = true,
+}: PriceGraphProps) {
     const xMax = width - horizontalMargin
-    const yMax = height - verticalMargin
+    const yMax = height - verticalMargin - PADDING
     // Rougly the area given to each bar in the graph (including padding)
     const barWidth = xMax / data.length
-
-    const colors = {
-        gray: '#E7E7E7',
-        green: '#62A39E',
-    }
 
     const xScale = useMemo(
         () =>
@@ -97,7 +95,7 @@ export default function PriceGraph({
             onMouseDown={(event: React.MouseEvent) => onClick(event)}
         >
             <rect width={width} height={height} opacity={0} />
-            <Group left={horizontalMargin} top={verticalMargin / 2 - PADDING}>
+            <Group left={horizontalMargin} top={verticalMargin / 2}>
                 {data.map((d, idx) => {
                     const barWidth = xScale.bandwidth()
                     const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
@@ -111,11 +109,9 @@ export default function PriceGraph({
                             y={barY}
                             width={barWidth}
                             height={barHeight}
-                            fill={
-                                isInChargeWindow(idx)
-                                    ? colors.green
-                                    : colors.gray
-                            }
+                            className={`${style.bar} ${
+                                isInChargeWindow(idx) && style.bar__active
+                            }`}
                             // TODO: temp disable onclick if outside of data range
                             onClick={() => {
                                 if (isInDataRange(idx))
@@ -131,48 +127,63 @@ export default function PriceGraph({
             </Group>
             <Group
                 left={horizontalMargin / 2 + PADDING}
-                top={verticalMargin / 2 - PADDING}
+                top={verticalMargin / 2}
             >
-                <AxisLeft
-                    hideAxisLine
-                    hideTicks
-                    scale={yScale}
-                    tickFormat={(v) => formatPrice(v.valueOf())}
-                    numTicks={5}
-                    tickValues={yScale
-                        .ticks()
-                        .filter((_t, i) => i > 0 && i % 2 === 0)}
-                />
-                <Text
-                    dx={-PADDING * 2}
-                    fontSize={10}
-                    className={style.text__axis}
-                >
-                    øre/kWh
-                </Text>
-                <Line
-                    from={{ x: 0, y: 0 }}
-                    to={{ x: 0, y: yMax }}
-                    stroke={COLORS.lightestGreen}
-                />
+                {labels && (
+                    <>
+                        <AxisLeft
+                            hideAxisLine
+                            hideTicks
+                            scale={yScale}
+                            tickFormat={(v) => formatPrice(v.valueOf())}
+                            numTicks={5}
+                            tickValues={yScale
+                                .ticks()
+                                .filter((_t, i) => i > 0 && i % 2 === 0)}
+                        />
+                        <Text
+                            dy={-PADDING}
+                            dx={-PADDING}
+                            fontSize={10}
+                            className={style.axis__text}
+                        >
+                            øre/kWh
+                        </Text>
+                    </>
+                )}
+                {seperators && (
+                    <Line
+                        from={{ x: 0, y: PADDING }}
+                        to={{ x: 0, y: yMax }}
+                        className={style.axis__line}
+                    />
+                )}
             </Group>
-            <Group left={horizontalMargin} top={yMax + verticalMargin / 2}>
-                <AxisBottom
-                    hideAxisLine
-                    hideTicks
-                    scale={xScale}
-                    tickFormat={formatDate}
-                    tickLabelProps={() => {
-                        return {}
-                    }}
-                    tickTransform={'translate(-9,8)'}
-                    axisClassName={style.axis__bottom}
-                />
-                <Line
-                    from={{ x: 0, y: 0 }}
-                    to={{ x: width, y: 0 }}
-                    stroke={COLORS.lightestGreen}
-                />
+            <Group
+                left={horizontalMargin}
+                top={yMax + verticalMargin / 2 + PADDING}
+            >
+                {labels && (
+                    <AxisBottom
+                        hideAxisLine
+                        hideTicks
+                        scale={xScale}
+                        tickFormat={formatDate}
+                        tickLabelProps={() => {
+                            return {}
+                        }}
+                        tickTransform={'translate(-9,8)'}
+                        axisClassName={style.axis__bottom}
+                        tickClassName={style.axis__text}
+                    />
+                )}
+                {seperators && (
+                    <Line
+                        from={{ x: 0, y: 0 }}
+                        to={{ x: width, y: 0 }}
+                        className={style.axis__line}
+                    />
+                )}
             </Group>
         </svg>
     )

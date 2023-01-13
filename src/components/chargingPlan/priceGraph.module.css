@@ -1,6 +1,26 @@
+.bar {
+    fill: #E7E7E7;
+    fill: var(--bar-color);
+}
+
+.bar__active {
+    fill: var(--bar-color-active);
+}
+
+.axis__line {
+    stroke: #d4e7e0;
+    stroke: var(--axis-seperator);
+}
+
+.axis__text {
+    font-style: inherit;
+}
+
 .axis__bottom {
     user-select: none;
     -webkit-user-select: none;
+    font-size: 0.8rem;
+    font-size: var(--axis-bottom-font-size);
 }
 
 .selection__disable {

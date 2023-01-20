@@ -1,8 +1,8 @@
+import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
-
-import ChargingPlan from '@/src/charging/form'
-import { PriceArea } from '@/src/charging/priceArea'
-import { createMockChargingPlan } from '@/src/charging/mockdata.service'
+import ChargingPlan from '../src/charging/form'
+import { PriceArea } from '../src/charging/priceArea'
+import { createMockChargingPlan } from '../src/charging/mockdata.service'
 
 export default {
     title: 'Examples/ChargingPlan',

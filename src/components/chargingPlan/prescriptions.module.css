@@ -1,0 +1,55 @@
+.prescriptions__container {
+    margin-top: 2rem;
+}
+
+.prescriptions__title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-style: inherit;
+}
+
+.prescriptions__table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.prescriptions__table__head {
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.prescriptions__table__body tr {
+        border: solid;
+        border-color: #d4e7e0;
+        border-color: var(--prescription-border-color);
+        border-width: 1px 0;
+        border-spacing: 2rem;
+        font-family: inherit;
+}
+
+.prescriptions__table__body tr:first-child {
+    border-top: none;
+}
+
+.prescriptions__table__body tr:last-child {
+    border-bottom: none;
+}
+
+.prescriptions__table__body tr td {
+    padding: 1rem;
+}
+
+.prescriptions__table__body tr td:first-child {
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 1200px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .prescriptions__table__body tr td {
+        padding: 1rem 0;
+    }
+}

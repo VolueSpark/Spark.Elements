@@ -6,7 +6,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
 import { localPoint } from '@visx/event'
 import { Line } from '@visx/shape'
-import { Price } from '@/src/charging/charging.types'
+import { Price } from '../../charging/charging.types'
 
 import style from './priceGraph.module.css'
 

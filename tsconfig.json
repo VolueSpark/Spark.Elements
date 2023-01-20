@@ -12,7 +12,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "incremental": true,
     "noUnusedLocals": true,
     "baseUrl": ".",
@@ -23,8 +23,10 @@
         "@/hooks/*": ["src/hooks/*"],
         "@/styles/*": ["styles/*"],
         "@/*": ["*"]
-    }
+    },
+    "outDir": "./dist",
+    "plugins": [{"name": "typescript-plugin-css-modules"}]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "build", "storybook-static", "stories"]
 }

@@ -21,8 +21,7 @@
 
 .prescriptions__table__body tr {
         border: solid;
-        border-color: #d4e7e0;
-        border-color: var(--prescription-border-color);
+        border-color: var(--prescription-border-color, #d4e7e0);
         border-width: 1px 0;
         border-spacing: 2rem;
         font-family: inherit;

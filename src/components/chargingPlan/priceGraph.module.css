@@ -1,15 +1,13 @@
 .bar {
-    fill: #E7E7E7;
-    fill: var(--bar-color);
+    fill: var(--bar-color, #E7E7E7);
 }
 
 .bar__active {
-    fill: var(--bar-color-active);
+    fill: var(--bar-color-active, #62a39e);
 }
 
 .axis__line {
-    stroke: #d4e7e0;
-    stroke: var(--axis-seperator);
+    stroke: var(--axis-seperator, #d4e7e0);
 }
 
 .axis__text {
@@ -19,8 +17,7 @@
 .axis__bottom {
     user-select: none;
     -webkit-user-select: none;
-    font-size: 0.8rem;
-    font-size: var(--axis-bottom-font-size);
+    font-size: var(--axis-bottom-font-size, 0.8rem);
 }
 
 .selection__disable {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from '../../../i18n'
+import { useTranslation } from '../../i18n'
 import AnimatedNumber from '../animatedNumber'
 import Dropdown from '../dropdown'
 import style from './priceInfoSelector.module.css'

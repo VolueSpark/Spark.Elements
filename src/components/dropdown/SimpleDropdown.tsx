@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTranslation } from '../../../i18n'
+import { useTranslation } from '../../i18n'
 import style from './simpleDropdown.module.css'
 import SVGWrapper from '../svgWrapper'
 

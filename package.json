@@ -1,11 +1,15 @@
 {
-  "name": "spark.elements",
-  "version": "0.1.0",
+  "name": "@voluespark/spark.elements",
+  "version": "0.0.1",
   "main": "build/index.js",
   "module": "build/index.esm.js",
   "files": [
     "build"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": "git@github.com:VolueSpark/Spark.Elements.git",
   "types": "build/index.d.ts",
   "author": "Jon-Inge Heggstad <jon-inge.heggstad@volue.com>",
   "scripts": {
@@ -52,9 +56,12 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-postcss-modules": "^2.1.1",
     "rollup-plugin-typescript2": "^0.34.1",
     "storybook": "^7.0.0-beta.24",
-    "typescript": "4.9.4"
+    "storybook-css-modules": "^1.0.8",
+    "typescript": "4.9.4",
+    "typescript-plugin-css-modules": "^4.1.1"
   },
   "peerDependencies": {
     "@types/react": "18.0.26",

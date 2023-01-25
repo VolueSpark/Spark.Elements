@@ -5,7 +5,7 @@ import { ChargingPrescription } from '../../charging/charging.types'
 
 import style from './prescriptions.module.css'
 
-type PrescriptionsProps = {
+export type PrescriptionsProps = {
     data?: ChargingPrescription[]
     numberOfRows?: number
 }
@@ -45,7 +45,10 @@ export default function Prescriptions({
     )
 
     return (
-        <div className={style.prescriptions__container}>
+        <div
+            data-testId="test-component__prescriptions__container"
+            className={style.prescriptions__container}
+        >
             <h3 className={style.prescriptions__title}>
                 {t(chargingPlanTexts.prescriptions.header)}
             </h3>
@@ -60,7 +63,10 @@ export default function Prescriptions({
                         </th>
                     </tr>
                 </thead>
-                <tbody className={style.prescriptions__table__body}>
+                <tbody
+                    className={style.prescriptions__table__body}
+                    data-testId="test-component__prescriptions__table"
+                >
                     {data?.length ? (
                         data?.map((p, idx) => {
                             if (idx < numberOfRows)

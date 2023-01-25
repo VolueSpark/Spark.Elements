@@ -105,7 +105,11 @@ export default function InteractPriceGraph({
                 onMouseDown={(event: React.MouseEvent) => onClick(event)}
             >
                 <rect opacity={0} />
-                <Group left={horizontalMargin} top={verticalMargin / 2}>
+                <Group
+                    left={horizontalMargin}
+                    top={verticalMargin / 2}
+                    data-testid="spark-elements__test-component_price-graph-bars"
+                >
                     {data.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
                         const barHeight = yMax - (yScale(d.averagePrice) ?? 0)

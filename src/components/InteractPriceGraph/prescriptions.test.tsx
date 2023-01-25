@@ -1,6 +1,6 @@
 import React from 'react'
-import { render } from '@testing-library/react'
-
+import { render, within } from '@testing-library/react'
+import { formatDate, formatTime } from '../../utils/dateFormatters'
 import Prescriptions, { PrescriptionsProps } from './prescriptions'
 
 describe('Prescriptions', () => {
@@ -30,9 +30,18 @@ describe('Prescriptions', () => {
             'test-component__prescriptions__table'
         )
 
-        expect(testComponent).not.toHaveTextContent(
-            'Missing data to populate table'
-        )
+        const rows = within(testComponent).getAllByRole('row')
+        expect(rows).toHaveLength(numberOfRows)
+        rows.forEach((row, idx) => {
+            const [from, to, mean, stdDev] = within(row).getAllByRole('cell')
+
+            expect(from).toHaveTextContent(formatDate(data![idx].from))
+            expect(to).toHaveTextContent(
+                `${formatTime(data![idx].from)} - ${formatTime(data![idx].to)}`
+            )
+            expect(mean).toHaveTextContent(data![idx].mean.toString())
+            expect(stdDev).toHaveTextContent(data![idx].stdDev.toString())
+        })
     })
 })
 

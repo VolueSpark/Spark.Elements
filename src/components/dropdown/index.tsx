@@ -13,6 +13,7 @@ type DropdownProps = {
         label: string
     }[]
     disabled?: boolean
+    dataTestId?: string
 }
 
 export default function Dropdown({
@@ -23,6 +24,7 @@ export default function Dropdown({
     label,
     options,
     disabled,
+    dataTestId,
 }: DropdownProps) {
     return (
         <div className={style.wrapper}>
@@ -35,6 +37,7 @@ export default function Dropdown({
                     value={value}
                     onChange={(event) => onChange(event.target.value)}
                     disabled={disabled}
+                    data-testid={dataTestId}
                 >
                     <option disabled value="">
                         Velg fra listen

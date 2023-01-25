@@ -93,9 +93,14 @@ export default function PriceGraph({
             height={height}
             style={{ marginTop: '2rem' }}
             onMouseDown={(event: React.MouseEvent) => onClick(event)}
+            data-testid="test-component__price-graph"
         >
             <rect width={width} height={height} opacity={0} />
-            <Group left={horizontalMargin} top={verticalMargin / 2}>
+            <Group
+                left={horizontalMargin}
+                top={verticalMargin / 2}
+                data-testid="test-component__price-graph-bars"
+            >
                 {data.map((d, idx) => {
                     const barWidth = xScale.bandwidth()
                     const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
@@ -103,6 +108,7 @@ export default function PriceGraph({
                     const barY = yMax - barHeight
                     return (
                         <Bar
+                            data-testid="test-component__price-graph-bar"
                             key={`bar-${idx}`}
                             rx={4}
                             x={barX}

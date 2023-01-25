@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from '../../i18n'
 import { chargingPlanTexts } from './texts'
 import { ChargingPrescription } from '../../charging/charging.types'
+import { formatDate, formatTime } from '../../utils/dateFormatters'
 
 import style from './prescriptions.module.css'
 
@@ -16,29 +17,6 @@ export default function Prescriptions({
 }: PrescriptionsProps) {
     const { t } = useTranslation()
 
-    function formatDate(date: string) {
-        const dateString = new Date(date).toLocaleDateString(
-            t(chargingPlanTexts.locale),
-            {
-                weekday: 'long',
-                day: '2-digit',
-                month: '2-digit',
-            }
-        )
-
-        return (
-            dateString.charAt(0).toUpperCase() + // Capitalise weekday
-            dateString.slice(1, dateString.length - 1) // Remove trailing dot "."
-        )
-    }
-
-    function formatTime(date: string) {
-        return new Date(date).toLocaleTimeString(t(chargingPlanTexts.locale), {
-            hour: '2-digit',
-            minute: '2-digit',
-        })
-    }
-
     const currencyFormatter = new Intl.NumberFormat(
         t(chargingPlanTexts.locale),
         { style: 'currency', currency: 'NOK' }
@@ -46,7 +24,7 @@ export default function Prescriptions({
 
     return (
         <div
-            data-testId="test-component__prescriptions__container"
+            data-testid="test-component__prescriptions__container"
             className={style.prescriptions__container}
         >
             <h3 className={style.prescriptions__title}>
@@ -65,7 +43,7 @@ export default function Prescriptions({
                 </thead>
                 <tbody
                     className={style.prescriptions__table__body}
-                    data-testId="test-component__prescriptions__table"
+                    data-testid="test-component__prescriptions__table"
                 >
                     {data?.length ? (
                         data?.map((p, idx) => {

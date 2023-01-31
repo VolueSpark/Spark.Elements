@@ -1,9 +1,11 @@
 .wrapper {
-    display: flex;
     height: fit-content;
 }
 
 .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     border-bottom: 2px solid var(--teal, #62a39e);
 }
 

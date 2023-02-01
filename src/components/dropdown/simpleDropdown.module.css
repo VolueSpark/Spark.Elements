@@ -22,7 +22,7 @@
     -webkit-appearance: none;
 }
 
-/* TODO: why do we need this? */
+/* This lets pointer events through the img so they can interact with the select below it  */
 .container img {
     pointer-events: none;
 }

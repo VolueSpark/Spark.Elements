@@ -22,7 +22,6 @@
     -webkit-appearance: none;
 }
 
-/* TODO: remove this? */
 .container img {
     pointer-events: none;
 }

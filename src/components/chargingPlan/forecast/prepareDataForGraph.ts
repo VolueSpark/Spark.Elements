@@ -1,5 +1,5 @@
 import { add, getDate, startOfDay } from 'date-fns'
-import { Forecast } from './forecast'
+import { Forecast } from '.'
 
 export function prepareDataForGraph(data: Forecast[]): Forecast[] {
     const result: Forecast[] = []

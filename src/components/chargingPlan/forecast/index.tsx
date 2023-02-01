@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
-import { differenceInHours, startOfDay } from 'date-fns'
-import { AxisBottom, AxisLeft } from '@visx/axis'
+import { differenceInHours, format, startOfDay } from 'date-fns'
+import { AxisLeft, AxisTop } from '@visx/axis'
 
 const verticalMargin = 120
 
@@ -51,25 +51,23 @@ export default function Forecast({
             scaleLinear<number>({
                 range: [yMax, 0],
                 round: true,
-                domain: [0, 23],
+                domain: [0, 24],
             }),
         [yMax]
     )
 
     return width < 10 ? null : (
         <svg width={width} height={height}>
-            <Group top={verticalMargin / 2}>
+            <Group top={verticalMargin / 2} left={verticalMargin / 2}>
                 {data.map((d) => {
                     const date = getDate(d)
                     const barWidth = xMax / 10
-                    // TODO: this seems to be wrong
                     const barHeight =
                         (yMax / 24) *
                         differenceInHours(new Date(d.to), new Date(d.from))
                     const barX = xScale(date)
-                    // TODO: this might also be the cause of the error
                     const barY = yScale(
-                        23 -
+                        24 -
                             differenceInHours(
                                 new Date(d.from),
                                 startOfDay(new Date(d.from))
@@ -94,13 +92,14 @@ export default function Forecast({
                         />
                     )
                 })}
-                <AxisBottom
-                    // TODO: this should technically be the bottom
-                    top={(yMax / 24) * 24}
+                <AxisTop
                     scale={xScale}
+                    tickFormat={(date) => {
+                        return format(new Date(date), 'dd.MM')
+                    }}
                     numTicks={width > 520 ? 10 : 5}
                 />
-                <AxisLeft scale={yScale} />
+                <AxisLeft scale={yScale} tickFormat={yAxisFormat} />
             </Group>
         </svg>
     )
@@ -120,3 +119,8 @@ const fillColor = (rating: Forecast['rating']): string => {
             return RED
     }
 }
+
+const yAxisFormat = (v: number | { valueOf(): number }) =>
+    typeof v === 'number'
+        ? Math.abs(v - 24).toString()
+        : Math.abs(v.valueOf() - 24).toString()

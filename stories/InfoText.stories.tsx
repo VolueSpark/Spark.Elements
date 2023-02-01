@@ -1,5 +1,6 @@
-import InfoText from '@/components/infoText'
+import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
+import InfoText from '../src/components/infoText'
 
 export default {
     title: 'Examples/InfoText',

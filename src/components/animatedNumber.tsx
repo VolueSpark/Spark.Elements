@@ -1,3 +1,4 @@
+import React from 'react'
 import { useMotionValue, useSpring } from 'framer-motion'
 import { useEffect, useMemo, useRef } from 'react'
 

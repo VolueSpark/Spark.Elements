@@ -1,30 +1,23 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
+    "declaration": true,
+    "declarationDir": "build",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "incremental": true,
     "noUnusedLocals": true,
-    "baseUrl": ".",
-    "paths": {
-        "@/components/*": ["src/components/*"],
-        "@/pages/*": ["pages/*"],
-        "@/src/*": ["src/*"],
-        "@/hooks/*": ["src/hooks/*"],
-        "@/styles/*": ["styles/*"],
-        "@/*": ["*"]
-    }
+    "plugins": [{"name": "typescript-plugin-css-modules"}]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build", "storybook-static", "stories"]
 }

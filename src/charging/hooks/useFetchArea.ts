@@ -1,5 +1,5 @@
-import { ChargingPlanType } from '@/pages/api/chargingPlan'
 import { useCallback } from 'react'
+import { ChargingPlanType } from '../charging.types'
 
 export default function useFetchChargingPlan() {
     return useCallback(async function useFetchChargingPlan(

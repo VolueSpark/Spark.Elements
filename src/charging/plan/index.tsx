@@ -1,3 +1,4 @@
+import React from 'react'
 import { daysLabelsMapper, getDays } from '../utils'
 
 import style from './plan.module.css'

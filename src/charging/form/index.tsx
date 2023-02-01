@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import useResize from '@/hooks/useResize'
+import useResize from '../../hooks/useResize'
 
 import style from './form.module.css'
 import { PriceArea } from '../priceArea'
 import useLocalStorage from 'use-local-storage'
-import PriceGraph from '@/components/chargingPlan/priceGraph'
-import PriceInfoSelector from '@/components/chargingPlan/priceInfoSelector'
-import Prescriptions from '@/components/chargingPlan/prescriptions'
-import { useTranslation } from '@/i18n'
-import { chargingPlanTexts } from '@/components/chargingPlan/texts'
-import InfoText from '@/components/infoText'
+import PriceGraph from '../../components/chargingPlan/priceGraph'
+import PriceInfoSelector from '../../components/chargingPlan/priceInfoSelector'
+import Prescriptions from '../../components/chargingPlan/prescriptions'
+import { useTranslation } from '../../i18n'
+import { chargingPlanTexts } from '../../components/chargingPlan/texts'
+import InfoText from '../../components/infoText'
 import { ChargingPlanType } from '../charging.types'
 
 const MAX_CONTENT_WIDTH = 824

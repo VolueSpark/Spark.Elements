@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    height: fit-content;
+}
+
+.container {
+    border-bottom: 2px solid var(--teal, #62a39e);
+}
+
+.select {
+    max-width: 7rem;
+    font-size: 1rem;
+    width: min-content;
+    border: none;
+    color: var(--blue-primary, #353f3b);
+    background-color: transparent;
+    cursor: pointer;
+
+    /* Safari specific rules */
+    border-radius: 0;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.container img {
+    pointer-events: none;
+}

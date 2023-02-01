@@ -1,30 +1,28 @@
-import Image from 'next/image'
+import React from 'react'
 
-type IconProps = {
-    iconName: string
-    imageAlt?: string
+type SVGWrapperProps = {
+    children: React.ReactNode
     width?: number
     height?: number
     flip?: boolean
     className?: string
 }
 
-export default function Icon({
-    iconName,
-    imageAlt,
+export default function SVGWrapper({
+    children,
     width = 24,
     height = 24,
     flip = false,
     className,
-}: IconProps) {
+}: SVGWrapperProps) {
     return (
-        <Image
-            src={`/icons/${iconName}.svg`}
-            alt={imageAlt || `${iconName} icon`}
+        <svg
             width={width}
             height={height}
             style={flip ? { transform: 'rotate(180deg)' } : undefined}
             className={className}
-        />
+        >
+            {children}
+        </svg>
     )
 }

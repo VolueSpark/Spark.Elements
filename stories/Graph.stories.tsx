@@ -1,8 +1,8 @@
+import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
-
-import PriceGraph from '@/components/chargingPlan/priceGraph'
-import { createMockChargingPlan } from '@/src/charging/mockdata.service'
 import { useState } from 'react'
+import PriceGraph from '../src/components/chargingPlan/priceGraph'
+import { createMockChargingPlan } from '../src/charging/mockdata.service'
 
 export default {
     title: 'Examples/PriceGraph',

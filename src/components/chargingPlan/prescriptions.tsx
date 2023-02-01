@@ -1,8 +1,9 @@
-import { useTranslation } from '@/i18n'
-
-import style from './prescriptions.module.scss'
+import React from 'react'
+import { useTranslation } from '../../i18n'
 import { chargingPlanTexts } from './texts'
-import { ChargingPrescription } from '@/src/charging/charging.types'
+import { ChargingPrescription } from '../../charging/charging.types'
+
+import style from './prescriptions.module.css'
 
 type PrescriptionsProps = {
     data?: ChargingPrescription[]
@@ -44,10 +45,12 @@ export default function Prescriptions({
     )
 
     return (
-        <div className={style.container}>
-            <h3>{t(chargingPlanTexts.prescriptions.header)}</h3>
-            <table>
-                <thead>
+        <div className={style.prescriptions__container}>
+            <h3 className={style.prescriptions__title}>
+                {t(chargingPlanTexts.prescriptions.header)}
+            </h3>
+            <table className={style.prescriptions__table}>
+                <thead className={style.prescriptions__table__head}>
                     <tr>
                         <th></th>
                         <th>{t(chargingPlanTexts.prescriptions.table.time)}</th>
@@ -57,7 +60,7 @@ export default function Prescriptions({
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className={style.prescriptions__table__body}>
                     {data?.length ? (
                         data?.map((p, idx) => {
                             if (idx < numberOfRows)

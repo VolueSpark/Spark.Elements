@@ -54,7 +54,7 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
             difference = -MAX_CURRENT_PRICE_DELTA
         }
 
-        let delta = randomNumber(0, difference)
+        const delta = randomNumber(0, difference)
 
         const wiggle = randomNumber(-MAX_PRICE_WIGGLE, MAX_PRICE_WIGGLE)
 
@@ -100,7 +100,6 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
 }
 
 export function createMockChargingPlan(
-    numberOfPrescriptions = 7,
     numberOfPriceEntries = 168
 ): ChargingPlanType {
     const chargingRate = 3.6
@@ -109,8 +108,6 @@ export function createMockChargingPlan(
     const prescriptions: ChargingPrescription[] = Array.from(new Array(7)).map(
         (_, idx) => randomPrescription(idx)
     )
-
-    for (let i = 0; i < numberOfPrescriptions; i++) {}
 
     const priceEntries = generateRandomPriceEntries(numberOfPriceEntries)
 

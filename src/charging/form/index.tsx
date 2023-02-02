@@ -20,7 +20,7 @@ type FormProps = {
     isLoading: boolean
 }
 
-export default function ChargingPlan({ area, data, isLoading }: FormProps) {
+export default function ChargingPlan({ data, isLoading }: FormProps) {
     const [region, setRegion] = useLocalStorage<string>('region', '')
     const { width, height } = useResize()
 

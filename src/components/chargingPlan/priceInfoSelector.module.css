@@ -28,7 +28,7 @@
     gap: 0.5rem;
 }
 
-.section img {
+.section svg {
     margin: 0 2rem 0 1rem;
 }
 
@@ -40,7 +40,7 @@
     align-items: center;
 }
 
-.priceAreaSection img {
+.priceAreaSection svg {
     margin: 0 2rem 0 1rem;
 }
 
@@ -60,6 +60,11 @@
 
 .priceSection span {
     font-size: 1.25rem;
+}
+
+.time_input__container {
+    flex-direction: row !important;
+    align-items: center;
 }
 
 .timeInput {

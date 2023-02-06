@@ -129,7 +129,7 @@ export default function PriceInfoSelector({
                     </SVGWrapper>
                     <div>
                         <h4>{t(chargingPlanTexts.priceInfoSelector.window)}</h4>
-                        <div>
+                        <div className={style.time_input__container}>
                             <input
                                 className={style.timeInput}
                                 type="time"

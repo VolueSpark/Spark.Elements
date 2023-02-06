@@ -5,6 +5,7 @@
 
 .container {
     border-bottom: 2px solid var(--teal, #62a39e);
+    flex-direction: row !important;
 }
 
 .select {
@@ -22,6 +23,7 @@
     -webkit-appearance: none;
 }
 
-.container img {
+.container svg {
     pointer-events: none;
+    margin: 0 !important;
 }

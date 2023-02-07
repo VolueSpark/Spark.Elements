@@ -27,10 +27,13 @@ function createMockData() {
     for (let i = 0; i < 7; i++) {
         for (let j = 0; j < 4; j++) {
             data.push({
-                from: add(baseDate, { days: i, hours: 6 * j }).toString(),
-                to: add(baseDate, {
+                from: add(new Date(baseDate), {
                     days: i,
-                    hours: 6 + 6 * j,
+                    hours: 6 * j - 1,
+                }).toString(),
+                to: add(new Date(baseDate), {
+                    days: i,
+                    hours: 6 + 6 * j - 1,
                 }).toString(),
                 rating: ratings[j % 3] as 'ok' | 'good' | 'bad',
             })

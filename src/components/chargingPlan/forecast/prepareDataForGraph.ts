@@ -3,10 +3,10 @@ import { Forecast } from '.'
 
 export function prepareDataForGraph(data: Forecast[]): Forecast[] {
     const result: Forecast[] = []
-    data.forEach((d) => {
+    data.forEach((d, idx) => {
         const to = new Date(d.to)
         const from = new Date(d.from)
-        if (getDate(from) !== getDate(to)) {
+        if (getDate(from) !== getDate(to) && idx !== data.length - 1) {
             result.push({
                 from: from.toString(),
                 to: add(from, {

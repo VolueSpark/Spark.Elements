@@ -5,10 +5,14 @@ import { scaleBand, scaleLinear } from '@visx/scale'
 import { differenceInHours, format, startOfDay } from 'date-fns'
 import { AxisLeft, AxisTop } from '@visx/axis'
 
-const verticalMargin = 120
+const margin = 120
 
 // accessors
-const getDate = (d: Forecast) => startOfDay(new Date(d.from)).toString()
+const getDate = (d: Forecast) => {
+    const date = startOfDay(new Date(d.from)).toString()
+    console.log(d.from)
+    return date
+}
 const getRating = (d: Forecast) => d.rating
 
 export type Forecast = {
@@ -31,8 +35,8 @@ export default function Forecast({
     events = false,
 }: ForecastProps) {
     // bounds
-    const xMax = width
-    const yMax = height - verticalMargin
+    const xMax = width - margin
+    const yMax = height - margin
 
     // scales, memoize for performance
     const xScale = useMemo(
@@ -46,6 +50,7 @@ export default function Forecast({
             }),
         [xMax]
     )
+
     const yScale = useMemo(
         () =>
             scaleLinear<number>({
@@ -58,7 +63,7 @@ export default function Forecast({
 
     return width < 10 ? null : (
         <svg width={width} height={height}>
-            <Group top={verticalMargin / 2} left={verticalMargin / 2}>
+            <Group top={margin / 2} left={margin / 2}>
                 {data.map((d) => {
                     const date = getDate(d)
                     const barWidth = xMax / 10

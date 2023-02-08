@@ -88,103 +88,105 @@ export default function PriceGraph({
     }
 
     return width < 10 ? null : (
-        <svg
-            width={width}
-            height={height}
-            style={{ marginTop: '2rem' }}
-            onMouseDown={(event: React.MouseEvent) => onClick(event)}
-        >
-            <rect width={width} height={height} opacity={0} />
-            <Group left={horizontalMargin} top={verticalMargin / 2}>
-                {data.map((d, idx) => {
-                    const barWidth = xScale.bandwidth()
-                    const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
-                    const barX = xScale(d.time)
-                    const barY = yMax - barHeight
-                    return (
-                        <Bar
-                            key={`bar-${idx}`}
-                            rx={4}
-                            x={barX}
-                            y={barY}
-                            width={barWidth}
-                            height={barHeight}
-                            className={`${style.bar} ${
-                                isInChargeWindow(idx) && style.bar__active
-                            }`}
-                            // TODO: temp disable onclick if outside of data range
-                            onClick={() => {
-                                if (isInDataRange(idx))
-                                    setChargeWindowStartIndex(idx)
-                                else
-                                    setChargeWindowStartIndex(
-                                        data.length - windowSize
-                                    )
-                            }}
-                        />
-                    )
-                })}
-            </Group>
-            <Group
-                left={horizontalMargin / 2 + PADDING}
-                top={verticalMargin / 2}
+        <div className={style.container}>
+            <svg
+                width={width}
+                height={height}
+                style={{ marginTop: '2rem' }}
+                onMouseDown={(event: React.MouseEvent) => onClick(event)}
             >
-                {labels && (
-                    <>
-                        <AxisLeft
+                <rect width={width} height={height} opacity={0} />
+                <Group left={horizontalMargin} top={verticalMargin / 2}>
+                    {data.map((d, idx) => {
+                        const barWidth = xScale.bandwidth()
+                        const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
+                        const barX = xScale(d.time)
+                        const barY = yMax - barHeight
+                        return (
+                            <Bar
+                                key={`bar-${idx}`}
+                                rx={4}
+                                x={barX}
+                                y={barY}
+                                width={barWidth}
+                                height={barHeight}
+                                className={`${style.bar} ${
+                                    isInChargeWindow(idx) && style.bar__active
+                                }`}
+                                // TODO: temp disable onclick if outside of data range
+                                onClick={() => {
+                                    if (isInDataRange(idx))
+                                        setChargeWindowStartIndex(idx)
+                                    else
+                                        setChargeWindowStartIndex(
+                                            data.length - windowSize
+                                        )
+                                }}
+                            />
+                        )
+                    })}
+                </Group>
+                <Group
+                    left={horizontalMargin / 2 + PADDING}
+                    top={verticalMargin / 2}
+                >
+                    {labels && (
+                        <>
+                            <AxisLeft
+                                hideAxisLine
+                                hideTicks
+                                scale={yScale}
+                                tickFormat={(v) => formatPrice(v.valueOf())}
+                                numTicks={5}
+                                tickValues={yScale
+                                    .ticks()
+                                    .filter((_t, i) => i > 0 && i % 2 === 0)}
+                            />
+                            <Text
+                                dy={-PADDING}
+                                dx={-PADDING}
+                                fontSize={10}
+                                className={style.axis__text}
+                            >
+                                øre/kWh
+                            </Text>
+                        </>
+                    )}
+                    {seperators && (
+                        <Line
+                            from={{ x: 0, y: PADDING }}
+                            to={{ x: 0, y: yMax }}
+                            className={style.axis__line}
+                        />
+                    )}
+                </Group>
+                <Group
+                    left={horizontalMargin}
+                    top={yMax + verticalMargin / 2 + PADDING}
+                >
+                    {labels && (
+                        <AxisBottom
                             hideAxisLine
                             hideTicks
-                            scale={yScale}
-                            tickFormat={(v) => formatPrice(v.valueOf())}
-                            numTicks={5}
-                            tickValues={yScale
-                                .ticks()
-                                .filter((_t, i) => i > 0 && i % 2 === 0)}
+                            scale={xScale}
+                            tickFormat={formatDate}
+                            tickLabelProps={() => {
+                                return {}
+                            }}
+                            tickTransform={'translate(-9,8)'}
+                            axisClassName={style.axis__bottom}
+                            tickClassName={style.axis__text}
                         />
-                        <Text
-                            dy={-PADDING}
-                            dx={-PADDING}
-                            fontSize={10}
-                            className={style.axis__text}
-                        >
-                            øre/kWh
-                        </Text>
-                    </>
-                )}
-                {seperators && (
-                    <Line
-                        from={{ x: 0, y: PADDING }}
-                        to={{ x: 0, y: yMax }}
-                        className={style.axis__line}
-                    />
-                )}
-            </Group>
-            <Group
-                left={horizontalMargin}
-                top={yMax + verticalMargin / 2 + PADDING}
-            >
-                {labels && (
-                    <AxisBottom
-                        hideAxisLine
-                        hideTicks
-                        scale={xScale}
-                        tickFormat={formatDate}
-                        tickLabelProps={() => {
-                            return {}
-                        }}
-                        tickTransform={'translate(-9,8)'}
-                        axisClassName={style.axis__bottom}
-                        tickClassName={style.axis__text}
-                    />
-                )}
-                {seperators && (
-                    <Line
-                        from={{ x: 0, y: 0 }}
-                        to={{ x: width, y: 0 }}
-                        className={style.axis__line}
-                    />
-                )}
-            </Group>
-        </svg>
+                    )}
+                    {seperators && (
+                        <Line
+                            from={{ x: 0, y: 0 }}
+                            to={{ x: width, y: 0 }}
+                            className={style.axis__line}
+                        />
+                    )}
+                </Group>
+            </svg>
+        </div>
     )
 }

@@ -17,7 +17,9 @@
     "build:watch": "rollup -c -w",
     "storybook": "storybook dev -p 6006",
     "storybook:export": "storybook build",
-    "prepublishOnly": "npm run build"
+    "lint": "eslint . --cache --report-unused-disable-directives --ext .js,.ts,.tsx --max-warnings 0",
+    "lint:ci": "eslint . --report-unused-disable-directives --ext .js,.ts,.tsx --max-warnings 0",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@leile/lobo-t": "^1.0.5",
@@ -27,7 +29,6 @@
     "@visx/text": "2.12.2",
     "@visx/visx": "^2.18.0",
     "date-fns": "^2.29.3",
-    "eslint": "8.31.0",
     "framer-motion": "^8.4.0",
     "use-local-storage": "^2.3.6",
     "zod": "^3.20.2"
@@ -44,9 +45,13 @@
     "@storybook/react": "^7.0.0-beta.24",
     "@storybook/react-webpack5": "^7.0.0-beta.24",
     "@storybook/testing-library": "^0.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^9.1.2",
     "babel-preset-react-app": "^10.0.1",
+    "eslint": "^8.33.0",
+    "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.10",
     "postcss": "^8.4.21",
     "prettier": "^2.8.2",

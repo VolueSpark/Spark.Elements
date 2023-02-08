@@ -13,7 +13,7 @@ const data = createMockChargingPlan()
 
 const Template: StoryFn<typeof PriceGraph> = (args) => {
     const [chargeWindowStartIndex, setChargeWindowStartIndex] = useState(0)
-    const [chargeWindow, setChargeWindow] = useState(8)
+    const chargeWindow = 8
 
     const isInChargeWindow = (value: number) =>
         value >= chargeWindowStartIndex &&

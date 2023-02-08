@@ -5,11 +5,13 @@ import { useEffect, useMemo, useRef } from 'react'
 type AnimatedNumberProps = {
     value: number
     currency: boolean
+    testId?: string
 }
 
 export default function AnimatedNumber({
     value,
     currency,
+    testId,
 }: AnimatedNumberProps) {
     const ref = useRef<HTMLSpanElement>(null)
     const motionValue = useMotionValue(0)
@@ -39,5 +41,5 @@ export default function AnimatedNumber({
         [springValue, formatter]
     )
 
-    return <span ref={ref} />
+    return <span ref={ref} data-testid={testId} />
 }

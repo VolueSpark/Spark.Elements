@@ -79,6 +79,7 @@ export default function PriceInfoSelector({
                         </h4>
                         <Dropdown
                             id="region"
+                            testId={'spark-elements__price-region-dropdown'}
                             label={`${t(chargingPlanTexts.dropdown.label)}`}
                             value={region}
                             onChange={setRegion}
@@ -131,6 +132,7 @@ export default function PriceInfoSelector({
                         <h4>{t(chargingPlanTexts.priceInfoSelector.window)}</h4>
                         <div className={style.time_input__container}>
                             <input
+                                data-testid="spark-elements__time-input"
                                 className={style.timeInput}
                                 type="time"
                                 value={formatTime(windowStartTime)}
@@ -152,7 +154,11 @@ export default function PriceInfoSelector({
                     </SVGWrapper>
                     <div>
                         <h4>{t(chargingPlanTexts.priceInfoSelector.cost)}</h4>
-                        <AnimatedNumber value={price} currency />
+                        <AnimatedNumber
+                            value={price}
+                            currency
+                            testId="spark-elements__estimated-cost"
+                        />
                     </div>
                 </div>
             </div>

@@ -104,6 +104,7 @@ export default function PriceGraph({
                         const barY = yMax - barHeight
                         return (
                             <Bar
+                                data-testid={`spark-elements__chart-bar-${idx}`}
                                 key={`bar-${idx}`}
                                 rx={4}
                                 x={barX}

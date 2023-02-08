@@ -3,7 +3,8 @@ import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { differenceInHours, format, startOfDay } from 'date-fns'
-import { AxisLeft, AxisTop } from '@visx/axis'
+import VerticalLabel from './VerticalLabel'
+import HorizontalLabel from './HorizontalLabel'
 
 const margin = 120
 
@@ -26,13 +27,27 @@ export type ForecastProps = {
     width: number
     height: number
     events?: boolean
+    verticalLabel?: React.ReactNode
+    horizontalLabel?: React.ReactNode
+    hideLabels?: boolean
 }
 
+// TODO: needs actual documentation
+/**
+ * @param   data: Forecast[]
+ * @param   width: number
+ * @param   height: number
+ * @param   height: number
+ * @returns React.ReactNode
+ */
 export default function Forecast({
     data,
     width,
     height,
     events = false,
+    verticalLabel,
+    horizontalLabel,
+    hideLabels,
 }: ForecastProps) {
     // bounds
     const xMax = width - margin
@@ -97,14 +112,25 @@ export default function Forecast({
                         />
                     )
                 })}
-                <AxisTop
-                    scale={xScale}
-                    tickFormat={(date) => {
-                        return format(new Date(date), 'dd.MM')
-                    }}
-                    numTicks={width > 520 ? 10 : 5}
-                />
-                <AxisLeft scale={yScale} tickFormat={yAxisFormat} />
+                {!hideLabels && (
+                    <>
+                        {!horizontalLabel && (
+                            <HorizontalLabel
+                                scale={xScale}
+                                tickFormat={(date: string) => {
+                                    return format(new Date(date), 'dd.MM')
+                                }}
+                                numTicks={width > 520 ? 10 : 5}
+                            />
+                        )}
+                        {!verticalLabel && (
+                            <VerticalLabel
+                                scale={yScale}
+                                tickFormat={yAxisFormat}
+                            />
+                        )}
+                    </>
+                )}
             </Group>
         </svg>
     )

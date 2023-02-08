@@ -4,6 +4,7 @@ import style from './dropdown.module.css'
 
 type DropdownProps = {
     id: string
+    testId?: string
     name?: string
     value: string
     onChange: (value: string) => void
@@ -17,6 +18,7 @@ type DropdownProps = {
 
 export default function Dropdown({
     id,
+    testId,
     name,
     value,
     onChange,
@@ -28,6 +30,7 @@ export default function Dropdown({
         <div className={style.wrapper}>
             <div className={style.container}>
                 <select
+                    data-testid={testId}
                     aria-label={label}
                     name={name ?? id}
                     id={id}

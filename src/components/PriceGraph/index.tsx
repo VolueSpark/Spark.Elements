@@ -6,10 +6,10 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
 import { localPoint } from '@visx/event'
 import { Line } from '@visx/shape'
-import { Price } from '../../charging/charging.types'
 
-import style from './priceGraph.module.css'
+import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
+import { Price } from '../types'
 
 const verticalMargin = 60
 const horizontalMargin = 60

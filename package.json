@@ -22,17 +22,12 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@leile/lobo-t": "^1.0.5",
     "@react-hook/size": "^2.1.2",
-    "@turf/boolean-point-in-polygon": "^6.5.0",
     "@types/node": "18.11.18",
     "@visx/axis": "2.14.0",
     "@visx/text": "2.12.2",
     "@visx/visx": "^2.18.0",
-    "date-fns": "^2.29.3",
-    "framer-motion": "^8.4.0",
-    "use-local-storage": "^2.3.6",
-    "zod": "^3.20.2"
+    "date-fns": "^2.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

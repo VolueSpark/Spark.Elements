@@ -1,5 +1,9 @@
 import { addHours, addDays, getHours } from 'date-fns'
-import { Price, ChargingPrescription, ChargingPlanType } from './charging.types'
+import {
+    Price,
+    ChargingPrescription,
+    ChargingPlanType,
+} from '../src/components/types'
 
 function randomNumber(min: number, max: number) {
     return Math.random() * (max - min) + min

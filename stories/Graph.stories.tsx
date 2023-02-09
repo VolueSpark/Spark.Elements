@@ -1,7 +1,9 @@
 import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import PriceGraph from '../src/components/chargingPlan/priceGraph'
+import PriceGraph, {
+    PriceGraphProps,
+} from '../src/components/chargingPlan/priceGraph'
 import { createMockChargingPlan } from '../src/charging/mockdata.service'
 
 export default {
@@ -11,7 +13,7 @@ export default {
 
 const data = createMockChargingPlan()
 
-const Template: StoryFn<typeof PriceGraph> = (args) => {
+const Template: StoryFn<PriceGraphProps> = (args) => {
     const [chargeWindowStartIndex, setChargeWindowStartIndex] = useState(0)
     const chargeWindow = 8
 
@@ -22,21 +24,25 @@ const Template: StoryFn<typeof PriceGraph> = (args) => {
         value + chargeWindow < args.data.length
 
     return (
-        <PriceGraph
-            {...{
-                ...args,
-                setChargeWindowStartIndex,
-                isInChargeWindow,
-                isInDataRange,
-            }}
-        />
+        <div style={{ flex: 1, height: 400 }}>
+            <PriceGraph
+                {...{
+                    ...args,
+                    setChargeWindowStartIndex,
+                    isInChargeWindow,
+                    isInDataRange,
+                }}
+            />
+        </div>
     )
 }
 
-export const Primary = Template.bind({})
-Primary.args = {
-    width: 1024,
-    height: 1024,
+const args: Partial<PriceGraphProps> = {
     data: data.priceEntries.slice(0, 24),
     windowSize: 8,
+    priceUnit: 'øre',
+    energyUnit: 'kWh',
 }
+
+export const Primary = Template.bind({})
+Primary.args = args

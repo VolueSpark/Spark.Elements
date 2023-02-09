@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
@@ -9,15 +9,18 @@ import { Line } from '@visx/shape'
 import { Price } from '../../charging/charging.types'
 
 import style from './priceGraph.module.css'
+import useSize from '@react-hook/size'
 
 const verticalMargin = 60
 const horizontalMargin = 60
 const PADDING = 16
 
 export type PriceGraphProps = {
-    width: number
-    height: number
+    initialWidth?: number
+    initialHeight?: number
     data: Price[]
+    priceUnit: string
+    energyUnit: string
     setChargeWindowStartIndex: (arg0: number) => void
     isInChargeWindow: (arg0: number) => boolean
     isInDataRange: (arg0: number) => boolean
@@ -27,9 +30,11 @@ export type PriceGraphProps = {
 }
 
 export default function PriceGraph({
-    width,
-    height,
+    initialWidth = 500,
+    initialHeight = 400,
     data,
+    priceUnit,
+    energyUnit,
     setChargeWindowStartIndex,
     isInChargeWindow,
     isInDataRange,
@@ -37,6 +42,11 @@ export default function PriceGraph({
     seperators = true,
     labels = true,
 }: PriceGraphProps) {
+    const containerRef = useRef(null)
+    const [width, height] = useSize(containerRef, {
+        initialWidth,
+        initialHeight,
+    })
     const xMax = width - horizontalMargin
     const yMax = height - verticalMargin - PADDING
     // Rougly the area given to each bar in the graph (including padding)
@@ -87,15 +97,14 @@ export default function PriceGraph({
         }
     }
 
-    return width < 10 ? null : (
-        <div className={style.container}>
+    return (
+        <div ref={containerRef} className={style.container}>
             <svg
-                width={width}
-                height={height}
-                style={{ marginTop: '2rem' }}
+                width="100%"
+                height="100%"
                 onMouseDown={(event: React.MouseEvent) => onClick(event)}
             >
-                <rect width={width} height={height} opacity={0} />
+                <rect opacity={0} />
                 <Group left={horizontalMargin} top={verticalMargin / 2}>
                     {data.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
@@ -149,7 +158,7 @@ export default function PriceGraph({
                                 fontSize={10}
                                 className={style.axis__text}
                             >
-                                øre/kWh
+                                {`${priceUnit}/${energyUnit}`}
                             </Text>
                         </>
                     )}

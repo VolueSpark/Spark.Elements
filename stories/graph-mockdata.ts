@@ -107,7 +107,7 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
 function generateAdvice(
     priceEntries: Price[],
     chargingWindowSize: number,
-    chargingRate: number
+    _chargingRate: number
 ): PriceTimeRangeAdvice[] {
     const maxPrice = Math.max(...priceEntries.map((p) => p.averagePrice))
     const maxPriceIndex = priceEntries.findIndex(

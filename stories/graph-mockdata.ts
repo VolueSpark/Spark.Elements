@@ -107,6 +107,7 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
 function generateAdvice(
     priceEntries: Price[],
     chargingWindowSize: number,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _chargingRate: number
 ): PriceTimeRangeAdvice[] {
     const maxPrice = Math.max(...priceEntries.map((p) => p.averagePrice))

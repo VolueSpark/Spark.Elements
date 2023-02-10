@@ -29,7 +29,7 @@ export type PriceGraphProps = {
     labels?: boolean
 }
 
-export default function PriceGraph({
+export default function InteractPriceGraph({
     initialWidth = 500,
     initialHeight = 400,
     data,

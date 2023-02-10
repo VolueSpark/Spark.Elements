@@ -130,7 +130,7 @@ function generateAdvice(
                 priceEntries[
                     Math.min(
                         maxPriceIndex + chargingWindowSize,
-                        priceEntries.length
+                        priceEntries.length - 1
                     )
                 ].isoDate,
             totalPrice: 0,

@@ -4,7 +4,6 @@ import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
-import { Line } from '@visx/shape'
 
 import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
@@ -23,8 +22,6 @@ export type PriceGraphProps = {
     advice: PriceTimeRangeAdvice[]
     priceUnit: string
     energyUnit: string
-    windowSize: number
-    seperators?: boolean
     labels?: boolean
     timeFormat?: string
 }
@@ -36,7 +33,6 @@ export default function PriceGraph({
     advice,
     priceUnit,
     energyUnit,
-    seperators = true,
     labels = true,
     timeFormat = 'hh',
 }: PriceGraphProps) {
@@ -161,13 +157,6 @@ export default function PriceGraph({
                             </Text>
                         </>
                     )}
-                    {seperators && (
-                        <Line
-                            from={{ x: 0, y: PADDING }}
-                            to={{ x: 0, y: yMax }}
-                            className={style.axis__line}
-                        />
-                    )}
                 </Group>
                 <Group
                     left={horizontalMargin}
@@ -185,13 +174,6 @@ export default function PriceGraph({
                             tickTransform={'translate(-9,8)'}
                             axisClassName={style.axis__bottom}
                             tickClassName={style.axis__text}
-                        />
-                    )}
-                    {seperators && (
-                        <Line
-                            from={{ x: 0, y: 0 }}
-                            to={{ x: width, y: 0 }}
-                            className={style.axis__line}
                         />
                     )}
                 </Group>

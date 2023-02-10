@@ -13,7 +13,7 @@ const data = createMockChargingPlan()
 
 const Template: StoryFn<PriceGraphProps> = (args) => {
     const [chargeWindowStartIndex, setChargeWindowStartIndex] = useState(0)
-    const chargeWindow = 8
+    const chargeWindow = 4
 
     const isInChargeWindow = (value: number) =>
         value >= chargeWindowStartIndex &&
@@ -36,11 +36,10 @@ const Template: StoryFn<PriceGraphProps> = (args) => {
 }
 
 const args: Partial<PriceGraphProps> = {
-    data: data.priceEntries,
-    advice: data.advice,
-    windowSize: 8,
     priceUnit: 'øre',
     energyUnit: 'kWh',
+    advice: data.advice,
+    data: data.priceEntries,
 }
 
 export const Primary = Template.bind({})

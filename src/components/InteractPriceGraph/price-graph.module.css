@@ -7,30 +7,15 @@
     fill: var(--bar-color, #E7E7E7);
 }
 
-.bar__now {
-    fill: var(--bar-color-active, rgba(74, 58, 255, 0.48));
-}
-
-.bar__optimal {
-    fill: var(--bar-color-active, #62A39E);
-}
-
-.bar__avoid {
-    fill: var(--bar-color-active, #E9B280);
+.bar__active {
+    fill: var(--bar-color-active, #62a39e);
 }
 
 .axis__line {
     stroke: var(--axis-seperator, #d4e7e0);
 }
 
-.axis__left {
-    user-select: none;
-    -webkit-user-select: none;	
-}
-
 .axis__text {
-	user-select: none;
-	-webkit-user-select: none;
     font-style: inherit;
 }
 

@@ -36,7 +36,8 @@ const Template: StoryFn<PriceGraphProps> = (args) => {
 }
 
 const args: Partial<PriceGraphProps> = {
-    data: data.priceEntries.slice(0, 24),
+    data: data.priceEntries,
+    advice: data.advice,
     windowSize: 8,
     priceUnit: 'øre',
     energyUnit: 'kWh',

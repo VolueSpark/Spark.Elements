@@ -1,8 +1,9 @@
-import { addHours, addDays, getHours } from 'date-fns'
+import { addHours, addDays, getHours, formatISO } from 'date-fns'
 import {
     Price,
     ChargingPrescription,
     ChargingPlanType,
+    PriceTimeRangeAdvice,
 } from '../src/components/types'
 
 function randomNumber(min: number, max: number) {
@@ -94,7 +95,7 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
         currentPrice = calculateNewCurrentPrice(currentPrice, targetPrice)
 
         priceEntries.push({
-            time: currentTime.toString(),
+            isoDate: formatISO(currentTime),
             averagePrice: currentPrice,
             standardDeviation: i < 24 ? 0 : randomNumber(1, i),
         })
@@ -103,22 +104,66 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
     return priceEntries
 }
 
+function generateAdvice(
+    priceEntries: Price[],
+    chargingWindowSize: number,
+    chargingRate: number
+): PriceTimeRangeAdvice[] {
+    const maxPrice = Math.max(...priceEntries.map((p) => p.averagePrice))
+    const maxPriceIndex = priceEntries.findIndex(
+        (p) => p.averagePrice === maxPrice
+    )
+
+    return [
+        {
+            isoDateFrom: priceEntries[0].isoDate,
+            isoDateTill: priceEntries[chargingWindowSize - 1].isoDate,
+            totalPrice: 0,
+            type: 'now',
+        },
+        {
+            isoDateFrom:
+                priceEntries[Math.max(maxPriceIndex - chargingWindowSize, 0)]
+                    .isoDate,
+            isoDateTill:
+                priceEntries[
+                    Math.min(
+                        maxPriceIndex + chargingWindowSize,
+                        priceEntries.length
+                    )
+                ].isoDate,
+            totalPrice: 0,
+            type: 'avoid',
+        },
+    ]
+}
+
 export function createMockChargingPlan(
     numberOfPriceEntries = 168
 ): ChargingPlanType {
     const chargingRate = 3.6
-    const chargingWindowSize = 11
+    const chargingWindowSize = 4
 
     const prescriptions: ChargingPrescription[] = Array.from(new Array(7)).map(
         (_, idx) => randomPrescription(idx)
     )
 
-    const priceEntries = generateRandomPriceEntries(numberOfPriceEntries)
+    const priceEntries = generateRandomPriceEntries(numberOfPriceEntries).slice(
+        0,
+        24
+    )
+
+    const advice = generateAdvice(
+        priceEntries,
+        chargingWindowSize,
+        chargingRate
+    )
 
     return {
         chargingRate,
         chargingWindowSize,
         prescriptions,
         priceEntries,
+        advice,
     }
 }

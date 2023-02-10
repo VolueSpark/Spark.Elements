@@ -4,13 +4,12 @@ import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
+import { localPoint } from '@visx/event'
 import { Line } from '@visx/shape'
 
 import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
-import { Price, PriceTimeRangeAdvice, PriceTimeRangeAdviceType } from '../types'
-import { parseISO } from 'date-fns/esm'
-import { format, isWithinInterval } from 'date-fns'
+import { Price } from '../types'
 
 const verticalMargin = 60
 const horizontalMargin = 60
@@ -20,25 +19,28 @@ export type PriceGraphProps = {
     initialWidth?: number
     initialHeight?: number
     data: Price[]
-    advice: PriceTimeRangeAdvice[]
     priceUnit: string
     energyUnit: string
+    setChargeWindowStartIndex: (arg0: number) => void
+    isInChargeWindow: (arg0: number) => boolean
+    isInDataRange: (arg0: number) => boolean
     windowSize: number
     seperators?: boolean
     labels?: boolean
-    timeFormat?: string
 }
 
 export default function PriceGraph({
     initialWidth = 500,
     initialHeight = 400,
     data,
-    advice,
     priceUnit,
     energyUnit,
+    setChargeWindowStartIndex,
+    isInChargeWindow,
+    isInDataRange,
+    windowSize,
     seperators = true,
     labels = true,
-    timeFormat = 'hh',
 }: PriceGraphProps) {
     const containerRef = useRef(null)
     const [width, height] = useSize(containerRef, {
@@ -47,6 +49,8 @@ export default function PriceGraph({
     })
     const xMax = width - horizontalMargin
     const yMax = height - verticalMargin - PADDING
+    // Rougly the area given to each bar in the graph (including padding)
+    const barWidth = xMax / data.length
 
     const xScale = useMemo(
         () =>
@@ -69,52 +73,40 @@ export default function PriceGraph({
     )
 
     const formatDate = (d: string) => {
-        return format(parseISO(d), timeFormat?.length ? timeFormat : 'hh')
+        return new Date(d).getHours().toString().padStart(2, '0')
     }
 
     const formatPrice = (value: number) => {
         return (value * 100).toString()
     }
 
-    const adviceIntervals = useMemo(() => {
-        return advice?.map((a) => ({
-            interval: {
-                start: parseISO(a.isoDateFrom),
-                end: parseISO(a.isoDateTill),
-            },
-            totalPrice: a.totalPrice,
-            adviceType: a.type,
-        }))
-    }, [advice])
+    const onClick = (event: React.MouseEvent) => {
+        const point = localPoint(event)
+        if (point) {
+            const index = Math.floor((point?.x - horizontalMargin) / barWidth)
+            if (index < 0 || index > data.length - 1) {
+                setChargeWindowStartIndex(0)
+                return
+            }
 
-    const priceData = useMemo(() => {
-        return data.map((p) => ({
-            ...p,
-            adviceType: adviceIntervals?.find((ai) =>
-                isWithinInterval(parseISO(p.isoDate), ai.interval)
-            )?.adviceType,
-        }))
-    }, [data, advice])
-
-    function getBarStyle(adviceType?: PriceTimeRangeAdviceType) {
-        switch (adviceType) {
-            case 'now':
-                return style.bar__now
-            case 'optimal':
-                return style.bar__optimal
-            case 'avoid':
-                return style.bar__avoid
-            default:
-                return style.bar
+            if (isInDataRange(index)) {
+                setChargeWindowStartIndex(index)
+            } else {
+                setChargeWindowStartIndex(data.length - windowSize)
+            }
         }
     }
 
     return (
         <div ref={containerRef} className={style.container}>
-            <svg width="100%" height="100%">
+            <svg
+                width="100%"
+                height="100%"
+                onMouseDown={(event: React.MouseEvent) => onClick(event)}
+            >
                 <rect opacity={0} />
                 <Group left={horizontalMargin} top={verticalMargin / 2}>
-                    {priceData.map((d, idx) => {
+                    {data.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
                         const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
                         const barX = xScale(d.isoDate)
@@ -128,7 +120,18 @@ export default function PriceGraph({
                                 y={barY}
                                 width={barWidth}
                                 height={barHeight}
-                                className={getBarStyle(d.adviceType)}
+                                className={`${style.bar} ${
+                                    isInChargeWindow(idx) && style.bar__active
+                                }`}
+                                // TODO: temp disable onclick if outside of data range
+                                onClick={() => {
+                                    if (isInDataRange(idx))
+                                        setChargeWindowStartIndex(idx)
+                                    else
+                                        setChargeWindowStartIndex(
+                                            data.length - windowSize
+                                        )
+                                }}
                             />
                         )
                     })}
@@ -148,8 +151,6 @@ export default function PriceGraph({
                                 tickValues={yScale
                                     .ticks()
                                     .filter((_t, i) => i > 0 && i % 2 === 0)}
-                                axisClassName={style.axis__left}
-                                tickClassName={style.axis__text}
                             />
                             <Text
                                 dy={-PADDING}

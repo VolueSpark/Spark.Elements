@@ -1,9 +1,10 @@
 import React, { useMemo, useRef } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
-import { scaleBand, scaleLinear } from '@visx/scale'
+import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
+import { Legend, LegendItem, LegendLabel } from '@visx/legend'
 
 import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
@@ -24,6 +25,7 @@ export type PriceGraphProps = {
     energyUnit: string
     labels?: boolean
     timeFormat?: string
+    legendGlyphSize?: number
 }
 
 export default function PriceGraph({
@@ -35,6 +37,7 @@ export default function PriceGraph({
     energyUnit,
     labels = true,
     timeFormat = 'hh',
+    legendGlyphSize = 12,
 }: PriceGraphProps) {
     const containerRef = useRef(null)
     const [width, height] = useSize(containerRef, {
@@ -83,6 +86,11 @@ export default function PriceGraph({
         }))
     }, [advice])
 
+    const legend = useMemo(
+        () => Array.from(new Set(advice.map((a) => a.type))),
+        [advice]
+    )
+
     const priceData = useMemo(() => {
         return data.map((p) => ({
             ...p,
@@ -91,19 +99,6 @@ export default function PriceGraph({
             )?.adviceType,
         }))
     }, [data, advice])
-
-    function getBarStyle(adviceType?: PriceTimeRangeAdviceType) {
-        switch (adviceType) {
-            case 'now':
-                return style.bar__now
-            case 'optimal':
-                return style.bar__optimal
-            case 'avoid':
-                return style.bar__avoid
-            default:
-                return style.bar
-        }
-    }
 
     return (
         <div ref={containerRef} className={style.container}>
@@ -178,6 +173,40 @@ export default function PriceGraph({
                     )}
                 </Group>
             </svg>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                {legend.map((le, i) => (
+                    <LegendItem key={`legend-quantile-${i}`} margin="0 5px">
+                        <svg
+                            width={legendGlyphSize}
+                            height={legendGlyphSize}
+                            style={{ margin: '2px 0' }}
+                        >
+                            <circle
+                                className={getBarStyle(le)}
+                                r={legendGlyphSize / 2}
+                                cx={legendGlyphSize / 2}
+                                cy={legendGlyphSize / 2}
+                            />
+                        </svg>
+                        <LegendLabel align="left" margin="0 0 0 4px">
+                            {le}
+                        </LegendLabel>
+                    </LegendItem>
+                ))}
+            </div>
         </div>
     )
+}
+
+function getBarStyle(adviceType?: PriceTimeRangeAdviceType) {
+    switch (adviceType) {
+        case 'now':
+            return style.bar__now
+        case 'optimal':
+            return style.bar__optimal
+        case 'avoid':
+            return style.bar__avoid
+        default:
+            return style.bar
+    }
 }

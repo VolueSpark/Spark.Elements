@@ -31,7 +31,8 @@ function createMockData() {
                 }).toString(),
                 to: add(new Date(baseDate), {
                     days: i,
-                    hours: 6 * j - 1,
+                    // TODO: check, if this is correct
+                    hours: 6 * (j + 1) - 1,
                 }).toString(),
                 rating: ratings[j % 3] as 'ok' | 'good' | 'bad',
             })

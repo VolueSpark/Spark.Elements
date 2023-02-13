@@ -1,11 +1,11 @@
-import { add, getDate, startOfDay } from 'date-fns'
+import { add, getDate, parseISO, startOfDay } from 'date-fns'
 import { Forecast } from './index'
 
 export function prepareDataForGraph(data: Forecast[]): Forecast[] {
     const result: Forecast[] = []
     data.forEach((d, idx) => {
-        const to = new Date(d.to)
-        const from = new Date(d.from)
+        const to = parseISO(d.to)
+        const from = parseISO(d.from)
         if (getDate(from) !== getDate(to) && idx !== data.length - 1) {
             result.push({
                 from: from.toString(),

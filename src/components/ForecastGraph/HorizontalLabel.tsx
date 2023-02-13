@@ -1,12 +1,17 @@
 import { AxisTop } from '@visx/axis'
 import React from 'react'
 
+// TODO: explicit type
 export type HorizontalLabelProps = {
     scale: any
     tickFormat: any
     numTicks: number
 }
 
+/**
+ * The default label for the x-axis made explicitly for the Forecast component
+ * @returns {JSX.Element} - A horizontal label for the x-axis
+ */
 export default function HorizontalLabel({
     scale,
     tickFormat,

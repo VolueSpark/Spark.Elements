@@ -2,14 +2,15 @@ import React, { useMemo } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
-import { differenceInHours, format, startOfDay } from 'date-fns'
+import { differenceInHours, format, parseISO, startOfDay } from 'date-fns'
 import VerticalLabel from './VerticalLabel'
 import HorizontalLabel from './HorizontalLabel'
 
 const margin = 120
 
 // accessors
-const getDate = (d: Forecast) => startOfDay(new Date(d.from)).toString()
+// TODO: can't we just return the string here? seems uneccessary to make new date and turn back into string
+const getDate = (d: Forecast) => startOfDay(parseISO(d.from)).toString()
 const getRating = (d: Forecast) => d.rating
 
 export type Forecast = {
@@ -80,14 +81,14 @@ export default function Forecast({
                     // TODO: this seems to be wrong
                     const barHeight =
                         (yMax / 24) *
-                        differenceInHours(new Date(d.to), new Date(d.from))
+                        differenceInHours(parseISO(d.to), parseISO(d.from))
                     const barX = xScale(date)
                     // TODO: this might also be the cause of the error
                     const barY = yScale(
                         24 -
                             differenceInHours(
-                                new Date(d.from),
-                                startOfDay(new Date(d.from))
+                                parseISO(d.from),
+                                startOfDay(parseISO(d.from))
                             )
                     )
                     return (
@@ -115,7 +116,7 @@ export default function Forecast({
                             <HorizontalLabel
                                 scale={xScale}
                                 tickFormat={(date: string) => {
-                                    return format(new Date(date), 'dd.MM')
+                                    return format(parseISO(date), 'dd.MM')
                                 }}
                                 numTicks={width > 520 ? 10 : 5}
                             />

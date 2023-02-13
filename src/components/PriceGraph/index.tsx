@@ -1,10 +1,10 @@
 import React, { useMemo, useRef } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
-import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
+import { scaleBand, scaleLinear } from '@visx/scale'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
-import { Legend, LegendItem, LegendLabel } from '@visx/legend'
+import { LegendItem, LegendLabel } from '@visx/legend'
 
 import style from './price-graph.module.css'
 import useSize from '@react-hook/size'

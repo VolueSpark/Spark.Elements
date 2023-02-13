@@ -9,8 +9,7 @@ import { LegendItem, LegendLabel } from '@visx/legend'
 import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
 import { Price, PriceTimeRangeAdvice, PriceTimeRangeAdviceType } from '../types'
-import { parseISO } from 'date-fns/esm'
-import { format, isWithinInterval } from 'date-fns'
+import { format, isWithinInterval, parseISO } from 'date-fns'
 
 const verticalMargin = 60
 const horizontalMargin = 60

@@ -8,7 +8,12 @@ import { LegendItem, LegendLabel } from '@visx/legend'
 
 import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
-import { Price, PriceTimeRangeAdvice, PriceTimeRangeAdviceType } from '../types'
+import {
+    LegendTranslation,
+    Price,
+    PriceTimeRangeAdvice,
+    PriceTimeRangeAdviceType,
+} from '../types'
 import { format, isWithinInterval, parseISO } from 'date-fns'
 
 const verticalMargin = 60
@@ -24,6 +29,7 @@ export type PriceGraphProps = {
     energyUnit: string
     labels?: boolean
     timeFormat?: string
+    legend?: LegendTranslation
     legendGlyphSize?: number
 }
 
@@ -36,6 +42,7 @@ export default function PriceGraph({
     energyUnit,
     labels = true,
     timeFormat = 'hh',
+    legend,
     legendGlyphSize = 12,
 }: PriceGraphProps) {
     const containerRef = useRef(null)
@@ -85,7 +92,7 @@ export default function PriceGraph({
         }))
     }, [advice])
 
-    const legend = useMemo(
+    const adviceSet = useMemo(
         () => Array.from(new Set(advice.map((a) => a.type))),
         [advice]
     )
@@ -172,8 +179,15 @@ export default function PriceGraph({
                     )}
                 </Group>
             </svg>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                {legend.map((le, i) => (
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    // Align with graph
+                    marginLeft: horizontalMargin,
+                }}
+            >
+                {adviceSet.map((le, i) => (
                     <LegendItem key={`legend-quantile-${i}`} margin="0 5px">
                         <svg
                             width={legendGlyphSize}
@@ -188,7 +202,7 @@ export default function PriceGraph({
                             />
                         </svg>
                         <LegendLabel align="left" margin="0 0 0 4px">
-                            {le}
+                            {legend ? legend[le] : le}
                         </LegendLabel>
                     </LegendItem>
                 ))}

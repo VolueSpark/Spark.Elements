@@ -40,6 +40,11 @@ const args: Partial<PriceGraphProps> = {
     energyUnit: 'kWh',
     advice: data.advice,
     data: data.priceEntries,
+    legend: {
+        now: 'Nå',
+        optimal: 'Beste tidspunkt',
+        avoid: 'Bør unngås',
+    },
 }
 
 export const Primary = Template.bind({})

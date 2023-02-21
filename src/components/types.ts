@@ -29,3 +29,9 @@ export type ChargingPrescription = {
     q1: number
     q3: number
 }
+
+export type LegendTranslation = {
+    now: string
+    optimal: string
+    avoid: string
+}

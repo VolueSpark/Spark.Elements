@@ -5,7 +5,6 @@ import PriceGraph, { PriceGraphProps } from '../src/components/PriceGraph'
 import {
     addDays,
     format,
-    formatISO,
     parse,
     parseISO,
     setHours,

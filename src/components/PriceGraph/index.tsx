@@ -58,19 +58,20 @@ export default function PriceGraph({
             scaleBand<string>({
                 range: [0, xMax],
                 round: true,
-                domain: data.map((x) => x.isoDate),
+                domain: data.map((x) => x.time),
                 paddingInner: 0.4,
             }),
-        [xMax]
+        [xMax, data]
     )
+
     const yScale = useMemo(
         () =>
             scaleLinear<number>({
                 range: [yMax, 0],
                 round: true,
-                domain: [0, Math.max(...data.map((x) => x.averagePrice)) + 0.5],
+                domain: [0, Math.max(...data.map((x) => x.price)) + 0.5],
             }),
-        [yMax]
+        [yMax, data]
     )
 
     const formatDate = (d: string) => {
@@ -84,10 +85,10 @@ export default function PriceGraph({
     const adviceIntervals = useMemo(() => {
         return advice?.map((a) => ({
             interval: {
-                start: parseISO(a.isoDateFrom),
-                end: parseISO(a.isoDateTill),
+                start: parseISO(a.from),
+                end: parseISO(a.to),
             },
-            totalPrice: a.totalPrice,
+            cost: a.cost,
             adviceType: a.type,
         }))
     }, [advice])
@@ -101,7 +102,7 @@ export default function PriceGraph({
         return data.map((p) => ({
             ...p,
             adviceType: adviceIntervals?.find((ai) =>
-                isWithinInterval(parseISO(p.isoDate), ai.interval)
+                isWithinInterval(parseISO(p.time), ai.interval)
             )?.adviceType,
         }))
     }, [data, advice])
@@ -113,8 +114,9 @@ export default function PriceGraph({
                 <Group left={horizontalMargin} top={verticalMargin / 2}>
                     {priceData.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
-                        const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
-                        const barX = xScale(d.isoDate)
+                        const barHeight = yMax - (yScale(d.price) ?? 0)
+                        const barX = xScale(d.time)
+
                         const barY = yMax - barHeight
                         return (
                             <Bar
@@ -212,13 +214,15 @@ export default function PriceGraph({
 }
 
 function getBarStyle(adviceType?: PriceTimeRangeAdviceType) {
-    switch (adviceType) {
+    switch (adviceType?.toLowerCase()) {
         case 'now':
             return style.bar__now
-        case 'optimal':
+        case 'best':
             return style.bar__optimal
         case 'avoid':
             return style.bar__avoid
+        case 'worst':
+            return style.bar__worst
         default:
             return style.bar
     }

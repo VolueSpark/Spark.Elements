@@ -57,7 +57,7 @@ export default function InteractPriceGraph({
             scaleBand<string>({
                 range: [0, xMax],
                 round: true,
-                domain: data.map((x) => x.isoDate),
+                domain: data.map((x) => x.time),
                 paddingInner: 0.4,
             }),
         [xMax]
@@ -67,7 +67,7 @@ export default function InteractPriceGraph({
             scaleLinear<number>({
                 range: [yMax, 0],
                 round: true,
-                domain: [0, Math.max(...data.map((x) => x.averagePrice)) + 0.5],
+                domain: [0, Math.max(...data.map((x) => x.price)) + 0.5],
             }),
         [yMax]
     )
@@ -108,8 +108,8 @@ export default function InteractPriceGraph({
                 <Group left={horizontalMargin} top={verticalMargin / 2}>
                     {data.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
-                        const barHeight = yMax - (yScale(d.averagePrice) ?? 0)
-                        const barX = xScale(d.isoDate)
+                        const barHeight = yMax - (yScale(d.price) ?? 0)
+                        const barX = xScale(d.time)
                         const barY = yMax - barHeight
                         return (
                             <Bar

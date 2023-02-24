@@ -41,7 +41,7 @@ export default function PriceGraph({
     priceUnit,
     energyUnit,
     labels = true,
-    timeFormat = 'hh',
+    timeFormat = 'HH',
     legend,
     legendGlyphSize = 12,
 }: PriceGraphProps) {
@@ -75,7 +75,7 @@ export default function PriceGraph({
     )
 
     const formatDate = (d: string) => {
-        return format(parseISO(d), timeFormat?.length ? timeFormat : 'hh')
+        return format(parseISO(d), timeFormat?.length ? timeFormat : 'HH')
     }
 
     const formatPrice = (value: number) => {

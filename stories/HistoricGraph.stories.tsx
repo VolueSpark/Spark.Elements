@@ -82,8 +82,8 @@ async function fetchSpotPricesAdvice(
     chargingRate: number,
     chargingLength: number
 ) {
+    // TODO: Move this URL into a .env file
     const azureUrl = 'https://sandbox-spark-smartcharging.azurewebsites.net'
-    const localUrl = 'http://localhost:5062'
     const response = await fetch(
         `${azureUrl}/api/spot-prices/${priceArea}/advice/historic?PreferredCurrency=${preferredCurrency}&energyPriceUnit=kWh&vatrate=1.25&chargingRate=${chargingRate}&chargingLength=${chargingLength}&startFrom=${formatISO(
             time,

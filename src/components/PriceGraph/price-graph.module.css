@@ -1,10 +1,10 @@
 .container {
     width: 100%;
-	height: 100%;
+    height: 100%;
 }
 
 .bar {
-    fill: var(--bar-color, #E7E7E7);
+    fill: var(--bar-color, #e7e7e7);
 }
 
 .bar__now {
@@ -12,11 +12,15 @@
 }
 
 .bar__optimal {
-    fill: var(--bar-color-active, #62A39E);
+    fill: var(--bar-color-active, #62a39e);
 }
 
 .bar__avoid {
-    fill: var(--bar-color-active, #E9B280);
+    fill: var(--bar-color-active, #e9b280);
+}
+
+.bar__worst {
+    fill: var(--bar-color-active, #f87060);
 }
 
 .axis__line {
@@ -25,12 +29,12 @@
 
 .axis__left {
     user-select: none;
-    -webkit-user-select: none;	
+    -webkit-user-select: none;
 }
 
 .axis__text {
-	user-select: none;
-	-webkit-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
     font-style: inherit;
 }
 

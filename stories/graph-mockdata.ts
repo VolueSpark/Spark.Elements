@@ -95,9 +95,8 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
         currentPrice = calculateNewCurrentPrice(currentPrice, targetPrice)
 
         priceEntries.push({
-            isoDate: formatISO(currentTime),
-            averagePrice: currentPrice,
-            standardDeviation: i < 24 ? 0 : randomNumber(1, i),
+            time: formatISO(currentTime),
+            price: currentPrice,
         })
     }
 
@@ -110,30 +109,26 @@ function generateAdvice(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _chargingRate: number
 ): PriceTimeRangeAdvice[] {
-    const maxPrice = Math.max(...priceEntries.map((p) => p.averagePrice))
-    const maxPriceIndex = priceEntries.findIndex(
-        (p) => p.averagePrice === maxPrice
-    )
+    const maxPrice = Math.max(...priceEntries.map((p) => p.price))
+    const maxPriceIndex = priceEntries.findIndex((p) => p.price === maxPrice)
 
     return [
         {
-            isoDateFrom: priceEntries[0].isoDate,
-            isoDateTill: priceEntries[chargingWindowSize - 1].isoDate,
-            totalPrice: 0,
+            from: priceEntries[0].time,
+            to: priceEntries[chargingWindowSize - 1].time,
+            cost: 0,
             type: 'now',
         },
         {
-            isoDateFrom:
-                priceEntries[Math.max(maxPriceIndex - chargingWindowSize, 0)]
-                    .isoDate,
-            isoDateTill:
-                priceEntries[
-                    Math.min(
-                        maxPriceIndex + chargingWindowSize,
-                        priceEntries.length - 1
-                    )
-                ].isoDate,
-            totalPrice: 0,
+            from: priceEntries[Math.max(maxPriceIndex - chargingWindowSize, 0)]
+                .time,
+            to: priceEntries[
+                Math.min(
+                    maxPriceIndex + chargingWindowSize,
+                    priceEntries.length - 1
+                )
+            ].time,
+            cost: 0,
             type: 'avoid',
         },
     ]

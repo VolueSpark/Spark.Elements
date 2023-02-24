@@ -7,18 +7,17 @@ export type ChargingPlanType = {
 }
 
 export type Price = {
-    isoDate: string
-    averagePrice: number
-    standardDeviation: number
+    time: string
+    price: number
 }
 
 export type PriceTimeRangeAdviceType = 'now' | 'optimal' | 'avoid'
 
 export type PriceTimeRangeAdvice = {
-    isoDateFrom: string
-    isoDateTill: string
+    from: string
+    to: string
     type: PriceTimeRangeAdviceType
-    totalPrice: number
+    cost: number
 }
 
 export type ChargingPrescription = {

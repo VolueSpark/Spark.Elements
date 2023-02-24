@@ -16,10 +16,10 @@ const PrimaryArgs: PriceCoinProps = {
     price: 24,
     priceUnit: 'kr',
     advice: {
-        isoDateFrom: formatISO(new Date()),
-        isoDateTill: formatISO(add(new Date(), { hours: 4 })),
+        from: formatISO(new Date()),
+        to: formatISO(add(new Date(), { hours: 4 })),
         type: 'now',
-        totalPrice: 24,
+        cost: 24,
     },
     details: 'inkl. MVA',
 }

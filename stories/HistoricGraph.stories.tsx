@@ -82,8 +82,10 @@ async function fetchSpotPricesAdvice(
     chargingRate: number,
     chargingLength: number
 ) {
+    const azureUrl = 'https://sandbox-spark-smartcharging.azurewebsites.net'
+    const localUrl = 'http://localhost:5062'
     const response = await fetch(
-        `https://sandbox-spark-smartcharging.azurewebsites.net/api/spot-prices/${priceArea}/advice/historic?PreferredCurrency=${preferredCurrency}&energyPriceUnit=kWh&vatrate=1.25&chargingRate=${chargingRate}&chargingLength=${chargingLength}&startFrom=${formatISO(
+        `${localUrl}/api/spot-prices/${priceArea}/advice/historic?PreferredCurrency=${preferredCurrency}&energyPriceUnit=kWh&vatrate=1.25&chargingRate=${chargingRate}&chargingLength=${chargingLength}&startFrom=${formatISO(
             time,
             { representation: 'date' }
         )}`,
@@ -92,6 +94,5 @@ async function fetchSpotPricesAdvice(
         }
     )
 
-    console.log(response)
     return await response.json()
 }

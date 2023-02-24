@@ -37,8 +37,8 @@ export default function PriceCoin({
                     {price.toString()} {priceUnit}
                 </h3>
                 <p className={style.time}>
-                    {format(parseISO(advice.isoDateFrom), 'HH:mm')} -{' '}
-                    {format(parseISO(advice.isoDateTill), 'HH:mm')}
+                    {format(parseISO(advice.from), 'HH:mm')} -{' '}
+                    {format(parseISO(advice.to), 'HH:mm')}
                 </p>
                 <p className={style.details}>{details}</p>
             </div>

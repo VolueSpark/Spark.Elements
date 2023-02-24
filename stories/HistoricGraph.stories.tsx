@@ -95,8 +95,8 @@ const args: Partial<PriceGraphProps & HistoricDataArgs> = {
     chargingLength: 4,
     legend: {
         now: 'Nå',
-        best: 'Beste tidspunkt',
-        worst: 'Verste tidspunkt',
+        best: 'Beste ladeøkt',
+        worst: 'Verste ladeøkt',
         avoid: 'Bør unngås',
     },
 }

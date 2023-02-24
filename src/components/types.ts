@@ -11,7 +11,7 @@ export type Price = {
     price: number
 }
 
-export type PriceTimeRangeAdviceType = 'now' | 'optimal' | 'avoid'
+export type PriceTimeRangeAdviceType = 'now' | 'best' | 'worst' | 'avoid'
 
 export type PriceTimeRangeAdvice = {
     from: string
@@ -29,8 +29,4 @@ export type ChargingPrescription = {
     q3: number
 }
 
-export type LegendTranslation = {
-    now: string
-    optimal: string
-    avoid: string
-}
+export type LegendTranslation = { [key in PriceTimeRangeAdviceType]: string }

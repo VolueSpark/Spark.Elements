@@ -1,15 +1,17 @@
 import { format, parseISO } from 'date-fns'
 import React from 'react'
-import { PriceTimeRangeAdvice } from '../types'
+import { PriceTimeRangeAdvice, PriceTimeRangeAdviceType } from '../types'
 
 import style from './price-coin.module.css'
 
-function getColorFromAdvice(advice?: 'now' | 'optimal' | 'avoid') {
+function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
     switch (advice) {
         case 'now':
             return style.now
-        case 'optimal':
+        case 'best':
             return style.optimal
+        case 'worst':
+            return style.avoid
         case 'avoid':
             return style.avoid
         default:

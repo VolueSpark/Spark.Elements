@@ -42,7 +42,8 @@ const args: Partial<PriceGraphProps> = {
     data: data.priceEntries,
     legend: {
         now: 'Nå',
-        optimal: 'Beste tidspunkt',
+        best: 'Beste tidspunkt',
+        worst: 'Verste tidspunkt',
         avoid: 'Bør unngås',
     },
 }

@@ -24,3 +24,16 @@
    -o-transform: rotate(45deg); 
    z-index: -1;
 }
+
+.axis__text {
+    user-select: none;
+    -webkit-user-select: none;
+    font-style: inherit;
+    font-weight: 700;
+}
+
+.axis__bottom {
+    user-select: none;
+    -webkit-user-select: none;
+    font-size: var(--axis-bottom-font-size, 0.8rem);
+}

@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react'
 import { Price } from '../types'
 import { scaleTime, scaleLinear } from '@visx/scale'
-import { add, getHours, parseISO } from 'date-fns'
+import { add, endOfDay, getHours, parseISO, startOfDay } from 'date-fns'
 import { Area } from '@visx/shape'
 import { GridRows, GridColumns } from '@visx/grid'
 import { curveMonotoneX } from '@visx/curve'
 import { Group } from '@visx/group'
 import { TooltipWithBounds } from '@visx/tooltip'
 import { Threshold } from '@visx/threshold'
-import { AxisTop } from '@visx/axis'
+import { AxisBottom } from '@visx/axis'
 
 import style from './daily-prices.module.css'
+import { isWithinInterval } from 'date-fns/esm'
 
 const getTime = (d: Price) => parseISO(d.time)
 const getPrice = (d: Price) => d.price
@@ -22,7 +23,6 @@ export type DailyPricesProps = {
     width: number
     height: number
     // Reflects the resolution to be rendered in a 24h period, i.e. 4 means 4 x 6 hour intervals
-    numberOfIntervals: number
     hideLabel: string
 }
 
@@ -30,10 +30,11 @@ export default function DailyPrices({
     data,
     width,
     height,
-    numberOfIntervals = 0,
     hideLabel,
 }: DailyPricesProps) {
+    const today = new Date()
     if (width < 10) return null
+    if (!validateData(data, today)) return null
 
     const xMax = width
     const yMax = height - margin
@@ -41,7 +42,7 @@ export default function DailyPrices({
     const xScale = useMemo(() => {
         return scaleTime({
             range: [0, xMax],
-            domain: [getTime(data[0]), getTime(data[data.length - 1])],
+            domain: [startOfDay(today), endOfDay(today)],
         })
     }, [xMax])
 
@@ -55,25 +56,7 @@ export default function DailyPrices({
         [yMax]
     )
 
-    const intervalSize = useMemo(
-        () => Math.floor(data.length / numberOfIntervals),
-        [data, numberOfIntervals]
-    )
-
-    const toolTipData = useMemo(
-        () => prepareTooltipData(data, numberOfIntervals, intervalSize),
-        [data, numberOfIntervals]
-    )
-
-    const tickPosition = useMemo(
-        () => parseTickPosition(data, intervalSize, numberOfIntervals),
-        [data, numberOfIntervals]
-    )
-
-    const tickValues = useMemo(
-        () => parseTickValues(data, intervalSize),
-        [data, numberOfIntervals]
-    )
+    const toolTipData = useMemo(() => prepareTooltipData(data), [data])
 
     return (
         <div>
@@ -94,8 +77,8 @@ export default function DailyPrices({
                         stroke={'#000'}
                         strokeOpacity={0.2}
                         pointerEvents="none"
-                        // TODO: tweak these, tickvalues needs to match up with circles
-                        tickValues={tickPosition.slice(0, -1)}
+                        numTicks={4}
+                        left={xMax / 4 / 2}
                     />
                     <Threshold<Price>
                         id="spark-elements-threshold"
@@ -136,16 +119,18 @@ export default function DailyPrices({
                 </Group>
                 {!hideLabel && (
                     <>
-                        <AxisTop
+                        <AxisBottom
                             hideAxisLine
                             hideTicks
                             scale={xScale}
-                            tickFormat={(d) =>
-                                xAxisFormat(d as Date, intervalSize)
-                            }
-                            tickValues={tickValues.slice(0, -1)}
-                            top={24}
-                            left={xMax / numberOfIntervals / 2}
+                            tickFormat={(d) => xAxisFormat(d as Date, 6)}
+                            top={yMax}
+                            // width divided by number of intervals (4) divided by the intervals center (6 / 2)
+                            left={xMax / 4 / (6 / 2)}
+                            numTicks={4}
+                            axisClassName={style.axis__bottom}
+                            tickClassName={style.axis__text}
+                            tickLabelProps={() => ({})}
                         />
                     </>
                 )}
@@ -157,7 +142,6 @@ export default function DailyPrices({
                         top={yScale(getPrice(entry.priceUsedToPosition))}
                         offsetTop={-40}
                         left={xScale(getTime(entry.priceUsedToPosition))}
-                        // TODO: this has to be dynamic based on the size of the tooltip
                         offsetLeft={-10}
                         className={style.tooltip}
                     >
@@ -180,21 +164,9 @@ type ToolTipData = {
     averageOfInterval: number
 }
 
-const prepareTooltipData = (
-    data: Price[],
-    numberOfIntervals: number,
-    intervalSize: number
-) => {
-    // Number of intervals can not be greater than amount of entries
-    if (data.length === 0 || numberOfIntervals > data.length) {
-        console.error(
-            'Number of intervals can not be greater than amount of entries in the DailyPrices component.'
-        )
-        return []
-    }
-
-    // Don't display interval unless specified
-    if (numberOfIntervals === 0) return []
+const prepareTooltipData = (data: Price[]) => {
+    const numberOfIntervals = 4
+    const intervalSize = 6
 
     const tooltipData: ToolTipData[] = []
 
@@ -217,25 +189,26 @@ const prepareTooltipData = (
     return tooltipData
 }
 
-function parseTickPosition(
-    data: Price[],
-    intervalSize: number,
-    numberOfIntervals: number
-) {
-    const result: Date[] = []
-    for (let i = 0; i < numberOfIntervals; i++) {
-        result.push(parseISO(data[i * intervalSize + intervalSize / 2].time))
-    }
-    result.push(parseISO(data[data.length - 1].time))
-    return result
-}
-
-function parseTickValues(data: Price[], intervalSize: number) {
-    const result = data.map(getTime).filter((_, i) => i % intervalSize === 0)
-    result.push(parseISO(data[data.length - 1].time))
-    return result
-}
-
 function xAxisFormat(date: Date, intervalSize: number) {
     return `${getHours(date)} - ${getHours(add(date, { hours: intervalSize }))}`
+}
+
+function validateData(data: Price[], today: Date) {
+    if (data.length === 0) {
+        console.error('DailyPrices component must have data.')
+        return false
+    } else if (
+        !data.every((entry) =>
+            isWithinInterval(parseISO(entry.time), {
+                start: startOfDay(today),
+                end: endOfDay(today),
+            })
+        )
+    ) {
+        console.error(
+            'DailyPrices component must have valid data. All entries must be within the current day'
+        )
+        return false
+    }
+    return true
 }

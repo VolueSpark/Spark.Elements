@@ -1,4 +1,4 @@
-import { addHours, addDays, getHours, formatISO } from 'date-fns'
+import { addHours, addDays, getHours, formatISO, startOfDay } from 'date-fns'
 import {
     Price,
     ChargingPrescription,
@@ -27,7 +27,10 @@ function isDayTime(date: Date) {
     return hours > 6 && hours < 22
 }
 
-function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
+function generateRandomPriceEntries(
+    numberOfPriceEntries: number,
+    start?: Date
+): Price[] {
     const priceEntries: Price[] = []
 
     const MAX_TARGET_PRICE_DELTA = 5
@@ -66,7 +69,7 @@ function generateRandomPriceEntries(numberOfPriceEntries: number): Price[] {
         return current + delta + wiggle
     }
 
-    const startingDate = new Date()
+    const startingDate = start ?? new Date()
     let wasDayTime = isDayTime(startingDate)
 
     let currentPrice = randomNumber(MIN_STARTING_PRICE, MAX_STARTING_PRICE)
@@ -162,4 +165,8 @@ export function createMockChargingPlan(
         priceEntries,
         advice,
     }
+}
+
+export function createMockPriceDataForCurrentDay(): Price[] {
+    return generateRandomPriceEntries(24, startOfDay(new Date()))
 }

@@ -1,0 +1,39 @@
+.tooltip {
+    background-color: var(--spark-elements_tooltip-background, #000) !important;
+    color: var(--spark-elements_tooltip-color, #fff) !important;
+}
+
+.tooltip_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 1rem;
+}
+
+.triangle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 1rem;
+    background: #000000;
+    border-radius: 2px;
+    transform: rotate(45deg) ;
+    -webkit-transform: rotate(45deg);
+   -moz-transform: rotate(45deg);
+   -o-transform: rotate(45deg); 
+   z-index: -1;
+}
+
+.axis__text {
+    user-select: none;
+    -webkit-user-select: none;
+    font-style: inherit;
+    font-weight: 700;
+}
+
+.axis__bottom {
+    user-select: none;
+    -webkit-user-select: none;
+    font-size: var(--axis-bottom-font-size, 0.8rem);
+}

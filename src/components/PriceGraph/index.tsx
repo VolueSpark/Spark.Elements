@@ -147,7 +147,10 @@ export default function PriceGraph({
                                 tickValues={yScale
                                     .ticks()
                                     .filter((_t, i) => i > 0 && i % 2 === 0)}
-                                axisClassName={style.axis__left}
+                                tickLabelProps={() => {
+                                    return {}
+                                }}
+                                axisClassName={style.axis}
                                 tickClassName={style.axis__text}
                             />
                             <Text
@@ -175,7 +178,7 @@ export default function PriceGraph({
                                 return {}
                             }}
                             tickTransform={'translate(-9,8)'}
-                            axisClassName={style.axis__bottom}
+                            axisClassName={style.axis}
                             tickClassName={style.axis__text}
                         />
                     )}

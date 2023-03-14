@@ -27,18 +27,13 @@
     stroke: var(--axis-seperator, #d4e7e0);
 }
 
-.axis__left {
-    user-select: none;
-    -webkit-user-select: none;
-}
-
 .axis__text {
     user-select: none;
     -webkit-user-select: none;
     font-style: inherit;
 }
 
-.axis__bottom {
+.axis {
     user-select: none;
     -webkit-user-select: none;
     font-size: var(--axis-bottom-font-size, 0.8rem);

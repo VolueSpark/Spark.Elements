@@ -6,13 +6,13 @@ import style from './price-coin.module.css'
 
 function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
     switch (advice) {
-        case 'now':
+        case 'Now':
             return style.now
-        case 'best':
+        case 'Best':
             return style.optimal
-        case 'worst':
+        case 'Worst':
             return style.avoid
-        case 'avoid':
+        case 'Avoid':
             return style.avoid
         default:
             return style.now

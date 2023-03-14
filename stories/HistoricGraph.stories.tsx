@@ -5,6 +5,7 @@ import PriceGraph, { PriceGraphProps } from '../src/components/PriceGraph'
 import {
     addDays,
     format,
+    formatISO,
     parse,
     parseISO,
     setHours,
@@ -129,14 +130,28 @@ async function fetchSpotPricesAdvice(
     chargingLength: number
 ) {
     // TODO: Move this URL into a .env file
-    const azureUrl = 'https://sandbox-spark-smartcharging.azurewebsites.net'
+    const azureUrl = 'https://api.sandbox.voluespark.com'
     const response = await fetch(
-        `${azureUrl}/api/spot-prices/${priceArea}/advice/historic?PreferredCurrency=${preferredCurrency}&energyPriceUnit=kWh&vatrate=1.25&chargingRate=${chargingRate}&chargingLength=${chargingLength}&startFrom=${format(
-            time,
-            'yyyy-MM-dd HH:mm'
-        )}`,
+        `${azureUrl}/api/spot-prices/${priceArea}/advice/historic`,
         {
-            method: 'GET',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                priceUnitParameters: {
+                    currency: preferredCurrency,
+                    energyUnit: 'kWh',
+                    vatRate: 1.25,
+                },
+                chargingSessionParameters: {
+                    powerInKiloWatts: chargingRate,
+                    duration: `${chargingLength
+                        .toString()
+                        .padStart(2, '0')}:00:00`,
+                },
+                startFrom: formatISO(time),
+            }),
         }
     )
 

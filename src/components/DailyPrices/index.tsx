@@ -59,7 +59,7 @@ export default function DailyPrices({
     const toolTipData = useMemo(() => prepareTooltipData(data), [data])
 
     return (
-        <div>
+        <div className={style.container}>
             <svg width={width} height={height}>
                 <Group width={xMax} height={yMax}>
                     <GridRows
@@ -140,9 +140,9 @@ export default function DailyPrices({
                     <TooltipWithBounds
                         key={`spark-elements-graph-tooltip-${idx}`}
                         top={yScale(getPrice(entry.priceUsedToPosition))}
-                        offsetTop={-40}
+                        offsetTop={-60}
                         left={xScale(getTime(entry.priceUsedToPosition))}
-                        offsetLeft={-10}
+                        offsetLeft={-26}
                         className={style.tooltip}
                     >
                         <div className={style.tooltip_container}>

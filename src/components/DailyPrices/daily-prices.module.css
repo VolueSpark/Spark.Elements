@@ -1,3 +1,8 @@
+.container {
+    position: relative;
+    margin-top: 6rem;
+}
+
 .tooltip {
     background-color: var(--spark-elements_tooltip-background, #000) !important;
     color: var(--spark-elements_tooltip-color, #fff) !important;

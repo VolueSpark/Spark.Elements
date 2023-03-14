@@ -120,7 +120,7 @@ function generateAdvice(
             from: priceEntries[0].time,
             to: priceEntries[chargingWindowSize - 1].time,
             cost: 0,
-            type: 'Now',
+            type: 'now',
         },
         {
             from: priceEntries[Math.max(maxPriceIndex - chargingWindowSize, 0)]
@@ -132,7 +132,7 @@ function generateAdvice(
                 )
             ].time,
             cost: 0,
-            type: 'Avoid',
+            type: 'avoid',
         },
     ]
 }

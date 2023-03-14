@@ -18,7 +18,7 @@ const PrimaryArgs: PriceCoinProps = {
     advice: {
         from: formatISO(new Date()),
         to: formatISO(add(new Date(), { hours: 4 })),
-        type: 'Now',
+        type: 'now',
         cost: 24,
     },
     details: 'inkl. MVA',

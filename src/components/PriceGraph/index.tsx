@@ -214,14 +214,14 @@ export default function PriceGraph({
 }
 
 function getBarStyle(adviceType?: PriceTimeRangeAdviceType) {
-    switch (adviceType?.toLowerCase()) {
-        case 'now':
+    switch (adviceType) {
+        case 'Now':
             return style.bar__now
-        case 'best':
+        case 'Best':
             return style.bar__optimal
-        case 'avoid':
+        case 'Avoid':
             return style.bar__avoid
-        case 'worst':
+        case 'Worst':
             return style.bar__worst
         default:
             return style.bar

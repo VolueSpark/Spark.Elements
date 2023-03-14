@@ -11,7 +11,7 @@ export type Price = {
     price: number
 }
 
-export type PriceTimeRangeAdviceType = 'now' | 'best' | 'worst' | 'avoid'
+export type PriceTimeRangeAdviceType = 'Now' | 'Best' | 'Worst' | 'Avoid'
 
 export type PriceTimeRangeAdvice = {
     from: string

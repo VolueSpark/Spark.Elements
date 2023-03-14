@@ -1,10 +1,35 @@
 @font-face {
-	font-family: 'Nunito';
+	font-family: 'Nunito-Sans';
 	font-style: normal;
-	font-weight: bold;
-	src: url('./fonts/Nunito-VariableFont_wght.ttf');
+	font-weight: 400;
+	src: url('./fonts/nunitoSans/NunitoSans-Regular.ttf');
+}
+
+@font-face {
+	font-family: 'Nunito-Sans';
+	font-style: italic;
+	font-weight: 400;
+	src: url('./fonts/nunitoSans/NunitoSans-Italic.ttf');
+}
+
+@font-face {
+	font-family: 'Nunito-Sans';
+	font-style: bold;
+	font-weight: 700;
+	src: url('./fonts/nunitoSans/NunitoSans-Bold.ttf');
+}
+
+@font-face {
+	font-family: 'Krub';
+	font-style: normal;
+	font-weight: 400;
+	src: url('./fonts/krub/Krub-Regular.ttf');
 }
 
 body {
-	font-family: 'Nunito';
+	font-family: "Nunito-Sans", sans-serif;
+}
+
+h3 {
+	font-family: "Krub", sans-serif;
 }

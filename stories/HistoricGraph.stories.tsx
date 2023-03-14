@@ -117,6 +117,10 @@ const args: Partial<PriceGraphProps & HistoricDataArgs> = {
         Worst: 'Verste ladeøkt',
         Avoid: 'Bør unngås',
     },
+    daysLabelText: {
+        today: 'I dag',
+        tomorrow: 'I morgen',
+    },
 }
 
 export const Primary = Template.bind({})

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Bar } from '@visx/shape'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
@@ -14,9 +14,16 @@ import {
     PriceTimeRangeAdvice,
     PriceTimeRangeAdviceType,
 } from '../types'
-import { format, isWithinInterval, parseISO } from 'date-fns'
+import {
+    format,
+    isEqual,
+    isWithinInterval,
+    parseISO,
+    startOfDay,
+} from 'date-fns'
 
-const verticalMargin = 60
+const marginTop = 90
+const marginBottom = 16
 const horizontalMargin = 60
 const PADDING = 16
 
@@ -31,6 +38,11 @@ export type PriceGraphProps = {
     timeFormat?: string
     legend?: LegendTranslation
     legendGlyphSize?: number
+    daysLabel?: boolean
+    daysLabelText?: {
+        today: string
+        tomorrow: string
+    }
 }
 
 export default function PriceGraph({
@@ -44,14 +56,20 @@ export default function PriceGraph({
     timeFormat = 'HH',
     legend,
     legendGlyphSize = 12,
+    daysLabel = true,
+    daysLabelText,
 }: PriceGraphProps) {
     const containerRef = useRef(null)
     const [width, height] = useSize(containerRef, {
         initialWidth,
         initialHeight,
     })
+    const [isMultipleDays, setMultipleDays] = useState(false)
+    const [shouldRenderBothDaysLabels, setRenderBothDaysLabels] =
+        useState(false)
+    const [indexOfTomorrow, setIndexOfTomorrow] = useState(0)
     const xMax = width - horizontalMargin
-    const yMax = height - verticalMargin - PADDING
+    const yMax = height - marginBottom - marginTop - PADDING
 
     const xScale = useMemo(
         () =>
@@ -59,7 +77,8 @@ export default function PriceGraph({
                 range: [0, xMax],
                 round: true,
                 domain: data.map((x) => x.time),
-                paddingInner: 0.4,
+                paddingOuter: 0.3,
+                paddingInner: 0.3,
             }),
         [xMax, data]
     )
@@ -107,11 +126,29 @@ export default function PriceGraph({
         }))
     }, [data, advice])
 
+    useEffect(() => {
+        if (data.length > 1) {
+            const days = data.map((d) => parseISO(d.time))
+            const firstDay = days[0]
+            const nextDay = days
+                .slice(1, -1)
+                .find((d) => !isEqual(startOfDay(d), startOfDay(firstDay)))
+            if (nextDay) {
+                setMultipleDays(true)
+                // TODO: tweak this, number is there to avoid rendered text overlapping
+                setRenderBothDaysLabels(days.indexOf(nextDay) >= 5)
+                setIndexOfTomorrow(days.indexOf(nextDay))
+            } else {
+                setMultipleDays(false)
+            }
+        } else setMultipleDays(false)
+    }, [data])
+
     return (
         <div ref={containerRef} className={style.container}>
             <svg width="100%" height="100%">
                 <rect opacity={0} />
-                <Group left={horizontalMargin} top={verticalMargin / 2}>
+                <Group left={horizontalMargin} top={marginTop}>
                     {priceData.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
                         const barHeight = yMax - (yScale(d.price) ?? 0)
@@ -132,10 +169,7 @@ export default function PriceGraph({
                         )
                     })}
                 </Group>
-                <Group
-                    left={horizontalMargin / 2 + PADDING}
-                    top={verticalMargin / 2}
-                >
+                <Group left={horizontalMargin / 2 + PADDING} top={marginTop}>
                     {labels && (
                         <>
                             <AxisLeft
@@ -154,7 +188,7 @@ export default function PriceGraph({
                                 tickClassName={style.axis__text}
                             />
                             <Text
-                                dy={-PADDING}
+                                dy={-marginTop + PADDING}
                                 dx={-PADDING}
                                 fontSize={10}
                                 className={style.axis__text}
@@ -164,10 +198,7 @@ export default function PriceGraph({
                         </>
                     )}
                 </Group>
-                <Group
-                    left={horizontalMargin}
-                    top={yMax + verticalMargin / 2 + PADDING}
-                >
+                <Group left={horizontalMargin} top={yMax + marginTop}>
                     {labels && (
                         <AxisBottom
                             hideAxisLine
@@ -177,12 +208,36 @@ export default function PriceGraph({
                             tickLabelProps={() => {
                                 return {}
                             }}
-                            tickTransform={'translate(-9,8)'}
+                            tickTransform={'translate(-9, 8)'}
                             axisClassName={style.axis}
                             tickClassName={style.axis__text}
                         />
                     )}
                 </Group>
+                {daysLabel && isMultipleDays && (
+                    <>
+                        {shouldRenderBothDaysLabels && (
+                            <Group
+                                left={
+                                    (xScale(data[0].time) ?? 0) +
+                                    horizontalMargin
+                                }
+                                top={marginTop}
+                            >
+                                <Text>{daysLabelText?.today}</Text>
+                            </Group>
+                        )}
+                        <Group
+                            left={
+                                (xScale(data[indexOfTomorrow].time) ?? 0) +
+                                horizontalMargin
+                            }
+                            top={marginTop}
+                        >
+                            <Text>{daysLabelText?.tomorrow}</Text>
+                        </Group>
+                    </>
+                )}
             </svg>
             <div
                 style={{
@@ -193,7 +248,7 @@ export default function PriceGraph({
                 }}
             >
                 {adviceSet.map((le, i) => (
-                    <LegendItem key={`legend-quantile-${i}`} margin="0 5px">
+                    <LegendItem key={`legend-quantile-${i}`} margin="0 24px">
                         <svg
                             width={legendGlyphSize}
                             height={legendGlyphSize}

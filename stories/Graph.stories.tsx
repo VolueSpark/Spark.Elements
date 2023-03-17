@@ -5,7 +5,7 @@ import PriceGraph, { PriceGraphProps } from '../src/components/PriceGraph'
 import { createMockChargingPlan } from './graph-mockdata'
 
 export default {
-    title: 'Examples/PriceGraph',
+    title: 'Spot Price/Price Graph',
     component: PriceGraph,
 } as Meta<typeof PriceGraph>
 

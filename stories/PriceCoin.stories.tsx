@@ -4,7 +4,7 @@ import PriceCoin, { PriceCoinProps } from '../src/components/PriceCoin'
 import { add, formatISO } from 'date-fns'
 
 export default {
-    title: 'Examples/PriceCoin',
+    title: 'Current Price/Now',
     component: PriceCoin,
 } as Meta<typeof PriceCoin>
 

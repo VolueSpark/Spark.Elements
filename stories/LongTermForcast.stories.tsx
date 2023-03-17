@@ -4,7 +4,7 @@ import Forecast, {
     ForecastEntry,
     ForecastProps,
 } from '../src/components/Forecast'
-import { add, startOfDay } from 'date-fns'
+// import { add, startOfDay } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 
 export default {
@@ -12,7 +12,7 @@ export default {
     component: Forecast,
 } as Meta<typeof Forecast>
 
-const Template: StoryFn<ForecastProps> = (_args) => {
+const Template: StoryFn<ForecastProps> = () => {
     const [data, setData] = useState<ForecastEntry[] | null>(null)
     useEffect(() => {
         async function run() {

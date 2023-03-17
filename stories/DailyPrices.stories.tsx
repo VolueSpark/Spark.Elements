@@ -4,7 +4,7 @@ import DailyPrices, { DailyPricesProps } from '../src/components/DailyPrices'
 import { createMockPriceDataForCurrentDay } from './graph-mockdata'
 
 export default {
-    title: 'Long Term Forecast/DailyPrices',
+    title: 'Spot Price/Todays Prices',
     component: DailyPrices,
 } as Meta<typeof DailyPrices>
 

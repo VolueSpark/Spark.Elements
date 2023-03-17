@@ -1,4 +1,6 @@
-export { default as PriceGraph } from './components/PriceGraph'
+export { default as DailyPrices } from './components/DailyPrices'
+export { default as DeprecatedForecast } from './components/DeprecatedForecast'
+export { default as Forecast } from './components/Forecast'
 export { default as InteractPriceGraph } from './components/InteractPriceGraph'
 export { default as PriceCoin } from './components/PriceCoin'
-export { default as Forecast } from './components/Forecast'
+export { default as PriceGraph } from './components/PriceGraph'

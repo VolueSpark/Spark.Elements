@@ -1,17 +1,20 @@
 import React from 'react'
 import { parseISO } from 'date-fns'
-import { Label, Row, RowHeader, Seperator } from './components'
+import { Label, Legend, Row, RowHeader } from './components'
 
 import style from './long-term-forecast.module.css'
-import { prepareDataForTable, prepareLabels } from './util'
+import { prepareDataForTable } from './util'
 
 export type ForecastEntry = {
     from: string
     to: string
     averagePrice: number
+    loss: number
+    type: 'Normal' | 'Avoid' | 'Good'
+    bestPrice?: boolean
 }
 
-export type LongTermForecastProps = {
+export type ForecastProps = {
     data: ForecastEntry[]
     days?: string[]
     width?: number
@@ -26,21 +29,15 @@ export type LongTermForecastProps = {
  * @param hideDays optional parameter to hide the days in the row header
  * @returns
  */
-export default function LongTermForecast({
-    data,
-    days,
-    hideLabel,
-    hideDays,
-}: LongTermForecastProps) {
+export default function Forecast({ data, hideLabel, hideDays }: ForecastProps) {
     const preparedData = prepareDataForTable(data)
-    const rowHeaders = hideDays
-        ? []
-        : prepareLabels(parseISO(data[0].from), days)
 
     return (
         <>
             <div className={style.container}>
-                {!hideLabel && <Label />}
+                <div className={style.label_wrapper}>
+                    {!hideLabel && <Label />}
+                </div>
                 <div className={style.table}>
                     {data && preparedData ? (
                         <>
@@ -51,12 +48,10 @@ export default function LongTermForecast({
                                 >
                                     {!hideDays && (
                                         <RowHeader
-                                            day={rowHeaders.at(index) ?? ''}
                                             date={parseISO(row[0].from)}
                                         />
                                     )}
                                     <Row data={row} />
-                                    <Seperator />
                                 </div>
                             ))}
                         </>
@@ -69,6 +64,7 @@ export default function LongTermForecast({
                         </div>
                     )}
                 </div>
+                <Legend />
             </div>
         </>
     )

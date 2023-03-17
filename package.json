@@ -27,7 +27,8 @@
     "@visx/axis": "2.14.0",
     "@visx/text": "2.12.2",
     "@visx/visx": "^2.18.0",
-    "date-fns": "^2.29.3"
+    "date-fns": "^2.29.3",
+    "date-fns-tz": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

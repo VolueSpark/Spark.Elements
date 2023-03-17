@@ -9,7 +9,6 @@ export default {
 } as Meta<typeof DailyPrices>
 
 const data = createMockPriceDataForCurrentDay()
-console.log(data)
 
 const Template: StoryFn<DailyPricesProps> = (args) => {
     return (

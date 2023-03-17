@@ -4,8 +4,9 @@ import Moon from './Moon'
 import Sunrise from './Sunrise'
 import Sun from './Sun'
 import Sunset from './Sunset'
+import Star from './Star'
 
-type IconNames = 'moon' | 'sunrise' | 'sun' | 'sunset'
+type IconNames = 'moon' | 'sunrise' | 'sun' | 'sunset' | 'star'
 
 function iconProvider(name: IconNames) {
     switch (name) {
@@ -17,6 +18,8 @@ function iconProvider(name: IconNames) {
             return <Sun />
         case 'sunset':
             return <Sunset />
+        case 'star':
+            return <Star />
         default:
             return <></>
     }
@@ -28,7 +31,7 @@ export type IconProps = {
     height?: number
 }
 
-export default function Icon({ name, width = 24, height = 24 }: IconProps) {
+export default function Icon({ name, width = 20, height = 20 }: IconProps) {
     return (
         <svg
             width={width}

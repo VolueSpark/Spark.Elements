@@ -19,8 +19,8 @@ const Template: StoryFn<ForecastProps> = (args) => {
     )
 }
 
-export const Primary = Template.bind({})
-Primary.args = {
+export const Default = Template.bind({})
+Default.args = {
     data: createMockForecastEntries(),
 }
 

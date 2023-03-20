@@ -4,7 +4,7 @@ import { ForecastEntry } from '.'
 import Icon from '../../icons'
 import Locale from 'date-fns/locale/nb'
 
-import style from './long-term-forecast.module.css'
+import style from './forecast-table.module.css'
 
 export function Label() {
     return (

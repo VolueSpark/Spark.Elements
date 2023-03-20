@@ -1,9 +1,9 @@
 import React from 'react'
 import { parseISO } from 'date-fns'
 import { Label, Legend, Row, RowHeader } from './components'
-
-import style from './long-term-forecast.module.css'
 import { prepareDataForTable } from './util'
+
+import style from './forecast-table.module.css'
 
 export type ForecastEntry = {
     from: string
@@ -14,7 +14,7 @@ export type ForecastEntry = {
     bestPrice?: boolean
 }
 
-export type ForecastProps = {
+export type ForecastTableProps = {
     data: ForecastEntry[]
     days?: string[]
     width?: number
@@ -29,7 +29,11 @@ export type ForecastProps = {
  * @param hideDays optional parameter to hide the days in the row header
  * @returns
  */
-export default function Forecast({ data, hideLabel, hideDays }: ForecastProps) {
+export default function ForecastTable({
+    data,
+    hideLabel,
+    hideDays,
+}: ForecastTableProps) {
     const preparedData = prepareDataForTable(data)
 
     return (

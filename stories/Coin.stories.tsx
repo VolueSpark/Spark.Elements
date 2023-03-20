@@ -1,18 +1,18 @@
 import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
-import PriceCoin, { PriceCoinProps } from '../src/components/PriceCoin'
+import Coin, { CoinProps } from '../src/components/Coin'
 import { add, formatISO } from 'date-fns'
 
 export default {
-    title: 'Current Price/Now',
-    component: PriceCoin,
-} as Meta<typeof PriceCoin>
+    title: 'Misc/Coin',
+    component: Coin,
+} as Meta<typeof Coin>
 
-const Template: StoryFn<PriceCoinProps> = (args) => {
-    return <PriceCoin {...args} />
+const Template: StoryFn<CoinProps> = (args) => {
+    return <Coin {...args} />
 }
 
-const PrimaryArgs: PriceCoinProps = {
+const PrimaryArgs: CoinProps = {
     price: 24,
     priceUnit: 'kr',
     advice: {
@@ -23,5 +23,5 @@ const PrimaryArgs: PriceCoinProps = {
     },
     details: 'inkl. MVA',
 }
-export const Primary = Template.bind({})
-Primary.args = PrimaryArgs
+export const Now = Template.bind({})
+Now.args = PrimaryArgs

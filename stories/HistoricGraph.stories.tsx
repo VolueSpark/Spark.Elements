@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import PriceGraph, { PriceGraphProps } from '../src/components/PriceGraph'
+import AdviceGraph, { AdviceGraphProps } from '../src/components/AdviceGraph'
 import {
     addDays,
     format,
@@ -14,9 +14,9 @@ import {
 import { Price, PriceTimeRangeAdvice } from '../src/components/types'
 
 export default {
-    title: 'Examples/HistoricPriceGraph',
-    component: PriceGraph,
-} as Meta<typeof PriceGraph>
+    title: 'Misc/HistoricPriceGraph',
+    component: AdviceGraph,
+} as Meta<typeof AdviceGraph>
 
 type HistoricDataArgs = {
     priceArea: string
@@ -25,7 +25,7 @@ type HistoricDataArgs = {
     chargingLength: number
 }
 
-const Template: StoryFn<PriceGraphProps & HistoricDataArgs> = (args) => {
+const Template: StoryFn<AdviceGraphProps & HistoricDataArgs> = (args) => {
     const [date, setDate] = useState<Date>(parseISO('2023-01-05'))
     const [time, setTime] = useState<string>('11:00')
     const hours = parseInt(time.split(':')[0])
@@ -93,7 +93,7 @@ const Template: StoryFn<PriceGraphProps & HistoricDataArgs> = (args) => {
                 value={time}
                 onChange={(ev) => setTime(ev.target.value)}
             />
-            <PriceGraph
+            <AdviceGraph
                 {...{
                     ...args,
                 }}
@@ -104,7 +104,7 @@ const Template: StoryFn<PriceGraphProps & HistoricDataArgs> = (args) => {
     )
 }
 
-const args: Partial<PriceGraphProps & HistoricDataArgs> = {
+const args: Partial<AdviceGraphProps & HistoricDataArgs> = {
     priceUnit: 'øre',
     energyUnit: 'kWh',
     priceArea: 'NO1',

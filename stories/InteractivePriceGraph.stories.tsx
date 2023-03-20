@@ -1,19 +1,21 @@
 import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import PriceGraph, { PriceGraphProps } from '../src/components/PriceGraph'
+import InteractivePriceGraph, {
+    InteractivePriceGraphProps,
+} from '../src/components/InteractivePriceGraph'
 import { createMockChargingPlan } from './graph-mockdata'
 
 export default {
-    title: 'Spot Price/Price Graph',
-    component: PriceGraph,
-} as Meta<typeof PriceGraph>
+    title: 'Spot Price/InteractPriceGraph',
+    component: InteractivePriceGraph,
+} as Meta<typeof InteractivePriceGraph>
 
 const data = createMockChargingPlan()
 
-const Template: StoryFn<PriceGraphProps> = (args) => {
+const Template: StoryFn<InteractivePriceGraphProps> = (args) => {
     const [chargeWindowStartIndex, setChargeWindowStartIndex] = useState(0)
-    const chargeWindow = 4
+    const chargeWindow = 8
 
     const isInChargeWindow = (value: number) =>
         value >= chargeWindowStartIndex &&
@@ -23,7 +25,7 @@ const Template: StoryFn<PriceGraphProps> = (args) => {
 
     return (
         <div style={{ flex: 1, height: 400 }}>
-            <PriceGraph
+            <InteractivePriceGraph
                 {...{
                     ...args,
                     setChargeWindowStartIndex,
@@ -35,22 +37,12 @@ const Template: StoryFn<PriceGraphProps> = (args) => {
     )
 }
 
-const args: Partial<PriceGraphProps> = {
+const args: Partial<InteractivePriceGraphProps> = {
+    data: data.priceEntries.slice(0, 24),
+    windowSize: 8,
     priceUnit: 'øre',
     energyUnit: 'kWh',
-    advice: data.advice,
-    data: data.priceEntries,
-    legend: {
-        Now: 'Nå',
-        Best: 'Beste tidspunkt',
-        Worst: 'Verste tidspunkt',
-        Avoid: 'Bør unngås',
-    },
-    daysLabelText: {
-        today: 'I dag',
-        tomorrow: 'I morgen',
-    },
 }
 
-export const Primary = Template.bind({})
-Primary.args = args
+export const Default = Template.bind({})
+Default.args = args

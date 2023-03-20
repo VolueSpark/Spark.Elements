@@ -6,16 +6,16 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
 import { localPoint } from '@visx/event'
 import { Line } from '@visx/shape'
-
-import style from './price-graph.module.css'
 import useSize from '@react-hook/size'
 import { Price } from '../types'
+
+import style from './interactive-price-graph.module.css'
 
 const verticalMargin = 60
 const horizontalMargin = 60
 const PADDING = 16
 
-export type PriceGraphProps = {
+export type InteractivePriceGraphProps = {
     initialWidth?: number
     initialHeight?: number
     data: Price[]
@@ -29,7 +29,7 @@ export type PriceGraphProps = {
     labels?: boolean
 }
 
-export default function InteractPriceGraph({
+export default function InteractivePriceGraph({
     initialWidth = 500,
     initialHeight = 400,
     data,
@@ -41,7 +41,7 @@ export default function InteractPriceGraph({
     windowSize,
     seperators = true,
     labels = true,
-}: PriceGraphProps) {
+}: InteractivePriceGraphProps) {
     const containerRef = useRef(null)
     const [width, height] = useSize(containerRef, {
         initialWidth,

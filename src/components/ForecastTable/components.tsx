@@ -50,11 +50,7 @@ export function Row({ data }: { data: ForecastEntry[] }) {
                 <div
                     key={entry.from}
                     className={`${
-                        entry.type === 'Normal'
-                            ? style.normal
-                            : entry.type === 'Avoid'
-                            ? style.avoid
-                            : style.good
+                        entry.type === 'Avoid' ? style.avoid : style.good
                     }`}
                 >
                     <p className={`${style.cell}`}>

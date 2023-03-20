@@ -6,7 +6,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Text } from '@visx/text'
 import { LegendItem, LegendLabel } from '@visx/legend'
 
-import style from './price-graph.module.css'
+import style from './advice-graph.module.css'
 import useSize from '@react-hook/size'
 import {
     LegendTranslation,
@@ -27,7 +27,7 @@ const marginBottom = 16
 const horizontalMargin = 60
 const PADDING = 16
 
-export type PriceGraphProps = {
+export type AdviceGraphProps = {
     initialWidth?: number
     initialHeight?: number
     data: Price[]
@@ -45,7 +45,7 @@ export type PriceGraphProps = {
     }
 }
 
-export default function PriceGraph({
+export default function AdviceGraph({
     initialWidth = 500,
     initialHeight = 400,
     data,
@@ -58,7 +58,7 @@ export default function PriceGraph({
     legendGlyphSize = 12,
     daysLabel = true,
     daysLabelText,
-}: PriceGraphProps) {
+}: AdviceGraphProps) {
     const containerRef = useRef(null)
     const [width, height] = useSize(containerRef, {
         initialWidth,

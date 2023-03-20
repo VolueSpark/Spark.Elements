@@ -10,7 +10,7 @@ import { TooltipWithBounds } from '@visx/tooltip'
 import { Threshold } from '@visx/threshold'
 import { AxisBottom } from '@visx/axis'
 
-import style from './daily-prices.module.css'
+import style from './daily-overview.module.css'
 import { isWithinInterval } from 'date-fns/esm'
 
 const getTime = (d: Price) => parseISO(d.time)
@@ -18,7 +18,7 @@ const getPrice = (d: Price) => d.price
 
 const margin = 20
 
-export type DailyPricesProps = {
+export type DailyOverviewProps = {
     data: Price[]
     width: number
     height: number
@@ -26,12 +26,12 @@ export type DailyPricesProps = {
     hideLabel: string
 }
 
-export default function DailyPrices({
+export default function DailyOverview({
     data,
     width,
     height,
     hideLabel,
-}: DailyPricesProps) {
+}: DailyOverviewProps) {
     const today = new Date()
     if (width < 10) return null
     if (!validateData(data, today)) return null

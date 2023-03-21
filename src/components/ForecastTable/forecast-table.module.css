@@ -55,6 +55,10 @@
     transform: scale(1.5) translateY(1px);
 }
 
+.default {
+    background-color: inherit;
+}
+
 .avoid {
     background-color: #F6E4FF;
     background-image: url("./pattern.svg");

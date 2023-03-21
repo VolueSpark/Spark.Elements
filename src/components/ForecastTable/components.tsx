@@ -3,8 +3,25 @@ import React from 'react'
 import { ForecastEntry } from '.'
 import Icon from '../../icons'
 import Locale from 'date-fns/locale/nb'
+import { PriceTimeRangeAdviceType } from '../types'
 
 import style from './forecast-table.module.css'
+
+// TODO: same as in Coin, move to util
+function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
+    switch (advice) {
+        case 'Best':
+            return style.good
+        case 'Good':
+            return style.good
+        case 'Worst':
+            return style.avoid
+        case 'Avoid':
+            return style.avoid
+        default:
+            return style.default
+    }
+}
 
 export function Label() {
     return (
@@ -49,9 +66,7 @@ export function Row({ data }: { data: ForecastEntry[] }) {
             {data.map((entry) => (
                 <div
                     key={entry.from}
-                    className={`${
-                        entry.type === 'Avoid' ? style.avoid : style.good
-                    }`}
+                    className={`${getColorFromAdvice(entry.type)}`}
                 >
                     <p className={`${style.cell}`}>
                         {entry.averagePrice.toFixed(0).toString()}

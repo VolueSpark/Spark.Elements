@@ -6,6 +6,7 @@ import postcss from 'rollup-plugin-postcss-modules'
 import copy from 'rollup-plugin-copy'
 import { createRequire } from 'module'
 import autoprefixer from 'autoprefixer'
+import postcssUrl from 'postcss-url'
 
 const require = createRequire(import.meta.url)
 const packageJson = require('./package.json')
@@ -34,7 +35,7 @@ export default [
             typescript({ useTsconfigDeclarationDir: true }),
             postcss({
                 extract: true,
-                plugins: [autoprefixer()],
+                plugins: [autoprefixer(), postcssUrl({ url: 'inline' })],
                 writeDefinitions: true,
                 modules: true,
             }),

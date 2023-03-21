@@ -18,6 +18,7 @@ export type PriceTimeRangeAdviceType =
     | 'Avoid'
     | 'Worst'
     | 'Unknown'
+    | 'Normal'
 
 export type PriceTimeRangeAdvice = {
     from: string

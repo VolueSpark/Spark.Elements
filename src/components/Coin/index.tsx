@@ -10,6 +10,8 @@ function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
             return style.now
         case 'Best':
             return style.optimal
+        case 'Good':
+            return style.optimal
         case 'Worst':
             return style.avoid
         case 'Avoid':

@@ -24,14 +24,14 @@ export type DailyOverviewProps = {
     initialWidth?: number
     initialHeight?: number
     // Reflects the resolution to be rendered in a 24h period, i.e. 4 means 4 x 6 hour intervals
-    hideLabel: string
+    hideLabel?: boolean
 }
 
 export default function DailyOverview({
     data,
     initialWidth = 500,
     initialHeight = 500,
-    hideLabel,
+    hideLabel = false,
 }: DailyOverviewProps) {
     const today = new Date()
     if (initialWidth < 10) return null

@@ -1,6 +1,6 @@
 import React from 'react'
 import { parseISO } from 'date-fns'
-import { Label, Legend, Row, RowHeader } from './components'
+import { Label, Legend, LegendProps, Row, RowHeader } from './components'
 import { prepareDataForTable } from './util'
 import { PriceTimeRangeAdviceType } from '../types'
 
@@ -22,6 +22,7 @@ export type ForecastTableProps = {
     height?: number
     hideLabel?: boolean
     hideDays?: boolean
+    legend?: LegendProps
 }
 
 /**
@@ -34,6 +35,7 @@ export default function ForecastTable({
     data,
     hideLabel,
     hideDays,
+    legend,
 }: ForecastTableProps) {
     const preparedData = prepareDataForTable(data)
 
@@ -69,7 +71,7 @@ export default function ForecastTable({
                         </div>
                     )}
                 </div>
-                <Legend />
+                {legend && <Legend good={legend.good} avoid={legend.avoid} />}
             </div>
         </>
     )

@@ -81,16 +81,21 @@ export function Row({ data }: { data: ForecastEntry[] }) {
     )
 }
 
-export function Legend() {
+export type LegendProps = {
+    good: string
+    avoid: string
+}
+
+export function Legend({ good, avoid }: LegendProps) {
     return (
         <div className={style.legend_container}>
             <span className={style.legend_item}>
                 <div className={`${style.legend_circle} ${style.good}`}></div>
-                Beste tidspunkt
+                {good}
             </span>
             <span className={style.legend_item}>
                 <div className={`${style.legend_circle} ${style.avoid}`}></div>
-                Bør unngås
+                {avoid}
             </span>
         </div>
     )

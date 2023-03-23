@@ -7,6 +7,7 @@ import copy from 'rollup-plugin-copy'
 import { createRequire } from 'module'
 import autoprefixer from 'autoprefixer'
 import postcssUrl from 'postcss-url'
+import dts from 'rollup-plugin-dts'
 
 const require = createRequire(import.meta.url)
 const packageJson = require('./package.json')
@@ -49,5 +50,11 @@ export default [
                 ],
             }),
         ],
+    },
+    // TODO: more files than just index.d.ts are generated
+    {
+        input: './build/index.d.ts',
+        output: [{ file: 'build/index.d.ts', format: 'es' }],
+        plugins: [dts()],
     },
 ]

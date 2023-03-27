@@ -1,15 +1,14 @@
 import { format } from 'date-fns'
 import React from 'react'
-import { ForecastEntry } from '.'
 import Icon from '../../icons'
 import Locale from 'date-fns/locale/nb'
-import { PriceTimeRangeAdviceType } from '../types'
+import { AdviceSegmentType, ForecastEntry } from '../types'
 
 import style from './forecast-table.module.css'
 
 // TODO: same as in Coin, move to util
-function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
-    switch (advice) {
+function getColorFromAdvice(adviceSegmentType?: AdviceSegmentType) {
+    switch (adviceSegmentType) {
         case 'Best':
             return style.good
         case 'Good':
@@ -71,7 +70,7 @@ export function Row({ data }: { data: ForecastEntry[] }) {
                     <p className={`${style.cell}`}>
                         {entry.averagePrice.toFixed(0).toString()}
                         <div className={style.icon_container}>
-                            {entry.bestPrice && (
+                            {entry.type === "Best" && (
                                 <Icon name="star" width={16} height={16} />
                             )}
                         </div>

@@ -1,11 +1,11 @@
 import { format, parseISO } from 'date-fns'
 import React from 'react'
-import { PriceTimeRangeAdvice, PriceTimeRangeAdviceType } from '../types'
+import { PriceTimeRangeAdvice, AdviceSegmentType } from '../types'
 
 import style from './coin.module.css'
 
-function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
-    switch (advice) {
+function getColorFromAdvice(adviceSegmentType?: AdviceSegmentType) {
+    switch (adviceSegmentType) {
         case 'Now':
             return style.now
         case 'Best':

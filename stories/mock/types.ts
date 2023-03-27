@@ -1,21 +1,13 @@
-export type AdviceSegmentType =
-    | 'Now'
-    | 'Best'
-    | 'Good'
-    | 'Avoid'
-    | 'Worst'
-    | 'Unknown'
-    
-export type ForecastBlockType = "Normal" | "Good" | "Avoid"
-
-export type LegendTranslation = { [key in AdviceSegmentType]?: string }
-
-// SpotPrice
-export type Price = {
-    time: string
-    price: number
+type VAT = {
+    rate: number
+    hasVAT: boolean
 }
 
+export type PriceUnits = {
+    currency: string
+    vat: VAT
+    energyUnit: string
+}
 
 export type Segment = {
     from: string

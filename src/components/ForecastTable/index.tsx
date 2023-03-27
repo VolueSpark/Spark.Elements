@@ -2,18 +2,11 @@ import React from 'react'
 import { parseISO } from 'date-fns'
 import { Label, Legend, Row, RowHeader } from './components'
 import { prepareDataForTable } from './util'
-import { PriceTimeRangeAdviceType } from '../types'
+import { ForecastEntry } from '../types'
 
 import style from './forecast-table.module.css'
 
-export type ForecastEntry = {
-    from: string
-    to: string
-    averagePrice: number
-    loss: number
-    type: PriceTimeRangeAdviceType
-    bestPrice?: boolean
-}
+
 
 export type ForecastTableProps = {
     data: ForecastEntry[]

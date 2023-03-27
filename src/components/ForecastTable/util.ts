@@ -1,5 +1,5 @@
 import { isEqual, parseISO, startOfDay } from 'date-fns'
-import { ForecastEntry } from '.'
+import { ForecastEntry } from '../types'
 
 export function prepareDataForTable(data: ForecastEntry[]) {
     const result: ForecastEntry[][] = []

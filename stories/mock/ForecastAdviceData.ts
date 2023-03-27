@@ -1,28 +1,13 @@
+import { ForecastAdvice, PriceUnits } from "./types"
+
 export type ForecastAdviceDTO = {
-    priceArea: {
-        code: string
-    }
-    priceUnits: {
-        currency: string
-        vat: {
-            rate: number
-            hasVAT: boolean
-        }
-        energyUnit: string
-    }
-    forecastAdvice: {
-        from: string
-        to: string
-        averagePrice: number
-        loss: number
-        type: string
-    }[]
+    priceArea: string
+    priceUnits: PriceUnits
+    forecastAdvice: Array<ForecastAdvice>
 }
 
 export const forecastAdviceData: ForecastAdviceDTO = {
-    priceArea: {
-        code: 'NO1',
-    },
+    priceArea:'NO1', 
     priceUnits: {
         currency: 'NOK',
         vat: {

@@ -11,8 +11,7 @@ import useSize from '@react-hook/size'
 import {
     LegendTranslation,
     Price,
-    PriceTimeRangeAdvice,
-    PriceTimeRangeAdviceType,
+    AdviceSegmentType,
 } from '../types'
 import {
     format,
@@ -31,7 +30,7 @@ export type AdviceGraphProps = {
     initialWidth?: number
     initialHeight?: number
     data: Price[]
-    advice: PriceTimeRangeAdvice[]
+    advice: AdviceSegmentType[]
     priceUnit: string
     energyUnit: string
     labels?: boolean
@@ -271,8 +270,8 @@ export default function AdviceGraph({
     )
 }
 
-function getBarStyle(adviceType?: PriceTimeRangeAdviceType) {
-    switch (adviceType) {
+function getBarStyle(adviceSegmentType?: AdviceSegmentType) {
+    switch (adviceSegmentType) {
         case 'Now':
             return style.bar__now
         case 'Best':

@@ -2,7 +2,7 @@ import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
 import AdviceGraph, { AdviceGraphProps } from '../src/components/AdviceGraph'
-import { spotPriceAdviceDTO } from "./mock/spotPriceAdviceData"
+import { spotPriceAdviceDTO } from './mock/spotPriceAdviceData'
 
 export default {
     title: 'Spot Price/Advice Graph',
@@ -19,7 +19,7 @@ const Template: StoryFn<AdviceGraphProps> = (args) => {
         value >= chargeWindowStartIndex &&
         value < chargeWindowStartIndex + chargeWindow
     const isInDataRange = (value: number) =>
-        value + chargeWindow < args.data.length
+        value + chargeWindow < args.data.spotPrices.length
 
     return (
         <div style={{ flex: 1, height: 400 }}>
@@ -36,14 +36,12 @@ const Template: StoryFn<AdviceGraphProps> = (args) => {
 }
 
 const args: Partial<AdviceGraphProps> = {
-    priceUnit: 'øre',
-    energyUnit: 'kWh',
-    advice: data.advice,
-    data: data.spotPrices,
+    data: data,
+    axisLeftText: 'øre/kWh',
     legend: {
         Now: 'Nå',
         Best: 'Beste tidspunkt',
-        Good: "Godt tidspunkt",
+        Good: 'Godt tidspunkt',
         Worst: 'Verste tidspunkt',
         Avoid: 'Bør unngås',
     },

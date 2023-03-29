@@ -20,12 +20,6 @@ export type ForecastProps = {
     hideDays?: boolean
 }
 
-/**
- * @param  days list of days to include in each row, sunday to saturday, fallback is norwegian language
- * @param hideLabel optional parameter to hide the label rendered above the table
- * @param hideDays optional parameter to hide the days in the row header
- * @returns
- */
 export default function Forecast({
     data,
     days,

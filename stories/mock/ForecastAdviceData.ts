@@ -1,4 +1,4 @@
-import { ForecastAdvice, PriceUnits } from "./types"
+import { ForecastAdvice, PriceUnits } from '../../src/components/types'
 
 export type ForecastAdviceDTO = {
     priceArea: string
@@ -7,7 +7,7 @@ export type ForecastAdviceDTO = {
 }
 
 export const forecastAdviceData: ForecastAdviceDTO = {
-    priceArea:'NO1', 
+    priceArea: 'NO1',
     priceUnits: {
         currency: 'NOK',
         vat: {

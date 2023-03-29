@@ -11,7 +11,20 @@ import {
     setHours,
     setMinutes,
 } from 'date-fns'
-import { Price, PriceTimeRangeAdvice } from '../src/components/types'
+import { SpotPriceAdvice } from '../src/components/types'
+
+export type Price = {
+    time: string
+    price: number
+}
+
+export type PriceTimeRangeAdviceType =
+    | 'Now'
+    | 'Best'
+    | 'Good'
+    | 'Avoid'
+    | 'Worst'
+    | 'Unknown'
 
 export default {
     title: 'Misc/HistoricPriceGraph',
@@ -32,7 +45,7 @@ const Template: StoryFn<AdviceGraphProps & HistoricDataArgs> = (args) => {
     const minutes = parseInt(time.split(':')[1])
 
     const [[data, advice], setDataAndAdvice] = useState<
-        [Price[]?, PriceTimeRangeAdvice[]?]
+        [Price[]?, SpotPriceAdvice[]?]
     >([undefined, undefined])
     useEffect(() => {
         async function run() {
@@ -93,20 +106,36 @@ const Template: StoryFn<AdviceGraphProps & HistoricDataArgs> = (args) => {
                 value={time}
                 onChange={(ev) => setTime(ev.target.value)}
             />
-            <AdviceGraph
-                {...{
-                    ...args,
-                }}
-                data={data ?? []}
-                advice={advice ?? []}
-            />
+            {data && advice && (
+                <AdviceGraph
+                    {...{
+                        ...args,
+                    }}
+                    data={
+                        {
+                            spotPrices: data,
+                            advice: advice,
+                            priceArea: {
+                                code: 'NO1',
+                            },
+                            priceUnits: {
+                                currency: 'NOK',
+                                vat: {
+                                    rate: 1.25,
+                                    hasVAT: true,
+                                },
+                                energyUnit: 'kWh',
+                            },
+                        } ?? []
+                    }
+                />
+            )}
         </div>
     )
 }
 
 const args: Partial<AdviceGraphProps & HistoricDataArgs> = {
-    priceUnit: 'øre',
-    energyUnit: 'kWh',
+    axisLeftText: 'øre/kWh',
     priceArea: 'NO1',
     preferredCurrency: 'NOK',
     chargingRate: 3.6,

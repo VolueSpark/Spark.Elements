@@ -1,32 +1,31 @@
 import React from 'react'
-import { parseISO } from 'date-fns'
+import { Locale, parseISO } from 'date-fns'
 import { Label, Legend, Row, RowHeader } from './components'
 import { prepareDataForTable } from './util'
-import { ForecastEntry } from '../types'
+import { ForecastAdviceData, LegendTranslation } from '../types'
 
 import style from './forecast-table.module.css'
 
-
-
 export type ForecastTableProps = {
-    data: ForecastEntry[]
-    days?: string[]
+    data: ForecastAdviceData
     width?: number
     height?: number
     hideLabel?: boolean
     hideDays?: boolean
+    locale: Locale
+    legend?: LegendTranslation
+    hideStar?: boolean
 }
 
-/**
- * @param  days list of days to include in each row, sunday to saturday, fallback is norwegian language
- * @param hideLabel optional parameter to hide the label rendered above the table
- * @param hideDays optional parameter to hide the days in the row header
- * @returns
- */
 export default function ForecastTable({
     data,
+    // width,
+    // height,
     hideLabel,
     hideDays,
+    locale,
+    legend,
+    hideStar = false,
 }: ForecastTableProps) {
     const preparedData = prepareDataForTable(data)
 
@@ -47,9 +46,10 @@ export default function ForecastTable({
                                     {!hideDays && (
                                         <RowHeader
                                             date={parseISO(row[0].from)}
+                                            locale={locale}
                                         />
                                     )}
-                                    <Row data={row} />
+                                    <Row data={row} hideStar={hideStar} />
                                 </div>
                             ))}
                         </>
@@ -62,7 +62,7 @@ export default function ForecastTable({
                         </div>
                     )}
                 </div>
-                <Legend />
+                {legend && <Legend legend={legend} />}
             </div>
         </>
     )

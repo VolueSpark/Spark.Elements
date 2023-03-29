@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import React from 'react'
 import Icon from '../../icons'
 import Locale from 'date-fns/locale/nb'
-import { AdviceSegmentType, ForecastEntry } from '../types'
+import { AdviceSegmentType, ForecastAdvice, LegendTranslation } from '../types'
 
 import style from './forecast-table.module.css'
 
@@ -46,20 +46,25 @@ export function Label() {
 }
 
 // TODO: this does not scale, can not be based on local in this way
-export function RowHeader({ date }: { date: Date }) {
+export function RowHeader({ date, locale }: { date: Date; locale: Locale }) {
     return (
         <p className={style.row_header}>
             {toUpperCaseFirstLetter(
                 `${format(date, 'E', {
-                    locale: Locale,
+                    locale,
                 })}`
             )}
         </p>
     )
 }
 
-export function Row({ data }: { data: ForecastEntry[] }) {
-    console.log(data)
+export function Row({
+    data,
+    hideStar,
+}: {
+    data: Array<ForecastAdvice>
+    hideStar: boolean
+}) {
     return (
         <div className={style.row}>
             {data.map((entry) => (
@@ -70,7 +75,7 @@ export function Row({ data }: { data: ForecastEntry[] }) {
                     <p className={`${style.cell}`}>
                         {entry.averagePrice.toFixed(0).toString()}
                         <div className={style.icon_container}>
-                            {entry.type === "Best" && (
+                            {entry.type === 'Best' && !hideStar && (
                                 <Icon name="star" width={16} height={16} />
                             )}
                         </div>
@@ -81,17 +86,25 @@ export function Row({ data }: { data: ForecastEntry[] }) {
     )
 }
 
-export function Legend() {
+export function Legend({ legend }: { legend: LegendTranslation }) {
     return (
         <div className={style.legend_container}>
-            <span className={style.legend_item}>
-                <div className={`${style.legend_circle} ${style.good}`}></div>
-                Beste tidspunkt
-            </span>
-            <span className={style.legend_item}>
-                <div className={`${style.legend_circle} ${style.avoid}`}></div>
-                Bør unngås
-            </span>
+            {legend.Good && (
+                <span className={style.legend_item}>
+                    <div
+                        className={`${style.legend_circle} ${style.good}`}
+                    ></div>
+                    {legend.Good}
+                </span>
+            )}
+            {legend.Avoid && (
+                <span className={style.legend_item}>
+                    <div
+                        className={`${style.legend_circle} ${style.avoid}`}
+                    ></div>
+                    {legend.Avoid}
+                </span>
+            )}
         </div>
     )
 }

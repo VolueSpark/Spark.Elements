@@ -13,14 +13,15 @@ const Template: StoryFn<CoinProps> = (args) => {
 }
 
 const PrimaryArgs: CoinProps = {
-    price: 24,
-    priceUnit: 'kr',
+    totalPrice: 24,
     advice: {
         from: formatISO(new Date()),
         to: formatISO(add(new Date(), { hours: 4 })),
         type: 'Now',
         cost: 24,
+        averagePrice: 6,
     },
+    currency: 'kr',
     details: 'inkl. MVA',
 }
 export const Now = Template.bind({})

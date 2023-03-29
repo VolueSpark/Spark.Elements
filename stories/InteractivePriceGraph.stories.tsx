@@ -4,14 +4,12 @@ import { useState } from 'react'
 import InteractivePriceGraph, {
     InteractivePriceGraphProps,
 } from '../src/components/InteractivePriceGraph'
-import { createMockChargingPlan } from './graph-mockdata'
+import { spotPriceData } from './mock/spotPriceData'
 
 export default {
     title: 'Spot Price/InteractPriceGraph',
     component: InteractivePriceGraph,
 } as Meta<typeof InteractivePriceGraph>
-
-const data = createMockChargingPlan()
 
 const Template: StoryFn<InteractivePriceGraphProps> = (args) => {
     const [chargeWindowStartIndex, setChargeWindowStartIndex] = useState(0)
@@ -21,7 +19,7 @@ const Template: StoryFn<InteractivePriceGraphProps> = (args) => {
         value >= chargeWindowStartIndex &&
         value < chargeWindowStartIndex + chargeWindow
     const isInDataRange = (value: number) =>
-        value + chargeWindow < args.data.length
+        value + chargeWindow < args.data.prices.length
 
     return (
         <div style={{ flex: 1, height: 400 }}>
@@ -38,10 +36,12 @@ const Template: StoryFn<InteractivePriceGraphProps> = (args) => {
 }
 
 const args: Partial<InteractivePriceGraphProps> = {
-    data: data.priceEntries.slice(0, 24),
+    data: {
+        ...spotPriceData,
+        priceArea: spotPriceData.priceArea.code,
+    },
     windowSize: 8,
-    priceUnit: 'øre',
-    energyUnit: 'kWh',
+    axisLeftText: 'øre/kWh',
 }
 
 export const Default = Template.bind({})

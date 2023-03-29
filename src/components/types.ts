@@ -5,17 +5,19 @@ export type AdviceSegmentType =
     | 'Avoid'
     | 'Worst'
     | 'Unknown'
-    
-export type ForecastBlockType = "Normal" | "Good" | "Avoid"
 
-export type LegendTranslation = { [key in AdviceSegmentType]?: string }
+export type ForecastBlockType = 'Normal' | 'Good' | 'Avoid'
 
-// SpotPrice
-export type Price = {
-    time: string
-    price: number
+export type VAT = {
+    rate: number
+    hasVAT: boolean
 }
 
+export type PriceUnits = {
+    currency: string
+    vat: VAT
+    energyUnit: string
+}
 
 export type Segment = {
     from: string
@@ -23,21 +25,45 @@ export type Segment = {
     averagePrice: number
 }
 
-type BaseAdvice = Segment & {
-    type: string
-}
-
-export type ForecastAdvice = BaseAdvice & {
+export type ForecastAdvice = Segment & {
+    type: ForecastBlockType
     loss: number
 }
 
-export type SpotPriceAdvice = BaseAdvice & {
+export type SpotPriceAdvice = Segment & {
+    type: AdviceSegmentType
     cost: number
 }
 
 export type SpotPrice = {
-    time: string,
+    time: string
     price: number
 }
 
 export type PriceRecord = Record<string, number>
+
+export type SpotPriceData = {
+    priceArea: string
+    priceUnits: PriceUnits
+    prices: PriceRecord
+}
+
+export type SpotPriceAdviceData = {
+    advice: Array<SpotPriceAdvice>
+    spotPrices: Array<SpotPrice>
+    priceArea: {
+        code: string
+    }
+    priceUnits: PriceUnits
+}
+
+export type ForecastAdviceData = {
+    priceArea: string
+    priceUnits: PriceUnits
+    segmentOptions: {
+        segmentSize: number
+    }
+    forecastAdvice: Array<ForecastAdvice>
+}
+
+export type LegendTranslation = { [key in AdviceSegmentType]?: string }

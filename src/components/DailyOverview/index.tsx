@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { Price } from '../types'
+import React, { useMemo, useRef } from 'react'
+import { PriceRecord, SpotPrice, SpotPriceData } from '../types'
 import { scaleTime, scaleLinear } from '@visx/scale'
 import { add, endOfDay, getHours, parseISO, startOfDay } from 'date-fns'
 import { Area } from '@visx/shape'
@@ -12,32 +12,55 @@ import { AxisBottom } from '@visx/axis'
 
 import style from './daily-overview.module.css'
 import { isWithinInterval } from 'date-fns/esm'
+import useSize from '@react-hook/size'
 
-const getTime = (d: Price) => parseISO(d.time)
-const getPrice = (d: Price) => d.price
+// Helpers
+const transformPriceRecordToSpotPriceArray = (
+    priceRecord: PriceRecord
+): Array<SpotPrice> => {
+    return Object.keys(priceRecord).map((time) => ({
+        time: time,
+        price: priceRecord[time],
+    }))
+}
+
+const getTime = (d: SpotPrice) => parseISO(d.time)
+const getPrice = (d: SpotPrice) => d.price
 
 const margin = 20
 
 export type DailyOverviewProps = {
-    data: Price[]
-    width: number
-    height: number
+    data: SpotPriceData
+    initialWidth: number
+    initialHeight: number
     // Reflects the resolution to be rendered in a 24h period, i.e. 4 means 4 x 6 hour intervals
-    hideLabel: string
+    hideLabel?: boolean
 }
 
 export default function DailyOverview({
     data,
-    width,
-    height,
-    hideLabel,
+    initialWidth,
+    initialHeight,
+    hideLabel = false,
 }: DailyOverviewProps) {
+    const spotPrices = useMemo(() => {
+        return transformPriceRecordToSpotPriceArray(data.prices)
+    }, [data]).slice(0, 23)
+
     const today = new Date()
-    if (width < 10) return null
-    if (!validateData(data, today)) return null
+    if (initialWidth < 10) return null
+    if (!validateData(spotPrices, today)) return null
+
+    const containerRef = useRef(null)
+    const [width, height] = useSize(containerRef, {
+        initialWidth,
+        initialHeight,
+    })
 
     const xMax = width
-    const yMax = height - margin
+    // TODO: fix this, I had to multiple margin by 2 instead of just single margin to make it
+    // work together with useSize hook, had issues with this not being responsive
+    const yMax = height - margin * 2
 
     const xScale = useMemo(() => {
         return scaleTime({
@@ -51,90 +74,93 @@ export default function DailyOverview({
             scaleLinear<number>({
                 range: [yMax, 0],
                 // Adding 1 to the max value to stop the graph from being cut off at the top
-                domain: [0, Math.max(...data.map(getPrice)) + 1],
+                domain: [0, Math.max(...spotPrices.map(getPrice)) + 1],
             }),
         [yMax]
     )
 
-    const toolTipData = useMemo(() => prepareTooltipData(data), [data])
+    const toolTipData = useMemo(() => prepareTooltipData(spotPrices), [data])
 
     return (
-        <div className={style.container}>
-            <svg width={width} height={height}>
-                <Group width={xMax} height={yMax}>
-                    <GridRows
-                        scale={yScale}
-                        width={xMax}
-                        strokeDasharray="1,3"
-                        stroke={'#000'}
-                        strokeOpacity={0}
-                        pointerEvents="none"
-                    />
-                    <GridColumns
-                        scale={xScale}
-                        height={yMax}
-                        strokeDasharray="1,3"
-                        stroke={'#000'}
-                        strokeOpacity={0.2}
-                        pointerEvents="none"
-                        numTicks={4}
-                        left={xMax / 4 / 2}
-                    />
-                    <Threshold<Price>
-                        id="spark-elements-threshold"
-                        data={data}
-                        x={(d) => xScale(getTime(d)) ?? 0}
-                        y0={yMax}
-                        y1={(d) => yScale(getPrice(d)) ?? 0}
-                        clipAboveTo={0}
-                        clipBelowTo={yMax}
-                        curve={curveMonotoneX}
-                        belowAreaProps={{
-                            fill: '#D4E7E0',
-                            fillOpacity: 1,
-                        }}
-                    />
-                    <Area<Price>
-                        data={data}
-                        x={(d) => xScale(getTime(d)) ?? 0}
-                        y={(d) => yScale(getPrice(d)) ?? 0}
-                        strokeWidth={2}
-                        stroke="#62A39E"
-                        curve={curveMonotoneX}
-                    />
-                </Group>
-                <Group width={xMax} height={yMax}>
-                    {toolTipData.map((entry, idx) => (
-                        <circle
-                            key={`spark-elements-graph-circle-${idx}`}
-                            cx={xScale(getTime(entry.priceUsedToPosition))}
-                            cy={yScale(getPrice(entry.priceUsedToPosition))}
-                            r={8}
-                            fill="#62A39E"
-                            stroke="#fff"
-                            strokeWidth={2}
+        <div className={style.container} style={{ display: 'flex', flex: 1 }}>
+            <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
+                <svg width="100%" height="100%">
+                    <Group width={xMax} height={yMax}>
+                        <GridRows
+                            scale={yScale}
+                            width={xMax}
+                            strokeDasharray="1,3"
+                            stroke={'#000'}
+                            strokeOpacity={0}
                             pointerEvents="none"
                         />
-                    ))}
-                </Group>
-                {!hideLabel && (
-                    <>
-                        <AxisBottom
-                            hideAxisLine
-                            hideTicks
+                        <GridColumns
                             scale={xScale}
-                            tickFormat={(d) => xAxisFormat(d as Date, 6)}
-                            top={yMax}
-                            // width divided by number of intervals (4) divided by the intervals center (6 / 2)
-                            left={xMax / 4 / (6 / 2)}
+                            height={yMax}
+                            strokeDasharray="1,3"
+                            stroke={'#000'}
+                            strokeOpacity={0.2}
+                            pointerEvents="none"
                             numTicks={4}
-                            axisClassName={style.axis__bottom}
-                            tickClassName={style.axis__text}
-                            tickLabelProps={() => ({})}
+                            left={xMax / 4 / 2}
                         />
-                    </>
-                )}
-            </svg>
+                        <Threshold<SpotPrice>
+                            id="spark-elements-threshold"
+                            data={spotPrices}
+                            x={(d) => xScale(getTime(d)) ?? 0}
+                            y0={yMax}
+                            y1={(d) => yScale(getPrice(d)) ?? 0}
+                            clipAboveTo={0}
+                            clipBelowTo={yMax}
+                            curve={curveMonotoneX}
+                            belowAreaProps={{
+                                fill: '#D4E7E0',
+                                fillOpacity: 1,
+                            }}
+                        />
+                        <Area<SpotPrice>
+                            data={spotPrices}
+                            x={(d) => xScale(getTime(d)) ?? 0}
+                            y={(d) => yScale(getPrice(d)) ?? 0}
+                            strokeWidth={2}
+                            stroke="#62A39E"
+                            curve={curveMonotoneX}
+                        />
+                    </Group>
+                    <Group width={xMax} height={yMax}>
+                        {toolTipData.map((entry, idx) => (
+                            <circle
+                                key={`spark-elements-graph-circle-${idx}`}
+                                cx={xScale(getTime(entry.priceUsedToPosition))}
+                                cy={yScale(getPrice(entry.priceUsedToPosition))}
+                                r={8}
+                                fill="#62A39E"
+                                stroke="#fff"
+                                strokeWidth={2}
+                                pointerEvents="none"
+                            />
+                        ))}
+                    </Group>
+                    {!hideLabel && (
+                        <>
+                            <AxisBottom
+                                hideAxisLine
+                                hideTicks
+                                scale={xScale}
+                                tickFormat={(d) => xAxisFormat(d as Date, 6)}
+                                top={yMax}
+                                // width divided by number of intervals (4) divided by the intervals center (6 / 2)
+                                // TODO: not responsive
+                                left={xMax / 4 / (6 / 2)}
+                                numTicks={4}
+                                axisClassName={style.axis__bottom}
+                                tickClassName={style.axis__text}
+                                tickLabelProps={() => ({})}
+                            />
+                        </>
+                    )}
+                </svg>
+            </div>
             <div>
                 {toolTipData.map((entry, idx) => (
                     <TooltipWithBounds
@@ -160,11 +186,11 @@ export default function DailyOverview({
 
 type ToolTipData = {
     // Price is purely used for properly positioning the tooltip based on the data shown in graph
-    priceUsedToPosition: Price
+    priceUsedToPosition: SpotPrice
     averageOfInterval: number
 }
 
-const prepareTooltipData = (data: Price[]) => {
+const prepareTooltipData = (data: SpotPrice[]) => {
     const numberOfIntervals = 4
     const intervalSize = 6
 
@@ -193,7 +219,8 @@ function xAxisFormat(date: Date, intervalSize: number) {
     return `${getHours(date)} - ${getHours(add(date, { hours: intervalSize }))}`
 }
 
-function validateData(data: Price[], today: Date) {
+// TODO: does not currently work, throws error due to timezone format on API
+function validateData(data: SpotPrice[], today: Date) {
     if (data.length === 0) {
         console.error('DailyPrices component must have data.')
         return false

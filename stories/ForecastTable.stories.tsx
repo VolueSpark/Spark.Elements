@@ -4,7 +4,8 @@ import ForecastTable, {
     ForecastTableProps,
 } from '../src/components/ForecastTable'
 import { utcToZonedTime } from 'date-fns-tz'
-import { forecastAdviceData } from './mock/forecastAdviceData'
+import { forecastAdviceData } from './mock/ForecastAdviceData'
+import Locale from 'date-fns/locale/nb'
 
 export default {
     title: 'Forecast/Forcast Table',
@@ -38,4 +39,5 @@ Default.args = {
                 ),
         })),
     },
+    locale: Locale,
 }

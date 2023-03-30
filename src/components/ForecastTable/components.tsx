@@ -1,20 +1,17 @@
 import { format } from 'date-fns'
 import React from 'react'
 import Icon from '../../icons'
-import Locale from 'date-fns/locale/nb'
-import { AdviceSegmentType, ForecastAdvice, LegendTranslation } from '../types'
+import { ForecastAdvice, ForecastBlockType, LegendTranslation } from '../types'
 
 import style from './forecast-table.module.css'
 
 // TODO: same as in Coin, move to util
-function getColorFromAdvice(adviceSegmentType?: AdviceSegmentType) {
+function getColorFromAdvice(adviceSegmentType?: ForecastBlockType) {
     switch (adviceSegmentType) {
-        case 'Best':
-            return style.good
+        case 'Normal':
+            return style.default
         case 'Good':
             return style.good
-        case 'Worst':
-            return style.avoid
         case 'Avoid':
             return style.avoid
         default:
@@ -60,8 +57,8 @@ export function RowHeader({ date, locale }: { date: Date; locale: Locale }) {
 
 export function Row({
     data,
-    hideStar,
-}: {
+}: // hideStar,
+{
     data: Array<ForecastAdvice>
     hideStar: boolean
 }) {
@@ -75,9 +72,9 @@ export function Row({
                     <p className={`${style.cell}`}>
                         {entry.averagePrice.toFixed(0).toString()}
                         <div className={style.icon_container}>
-                            {entry.type === 'Best' && !hideStar && (
+                            {/* {entry.type === 'Best' && !hideStar && (
                                 <Icon name="star" width={16} height={16} />
-                            )}
+                            )} */}
                         </div>
                     </p>
                 </div>

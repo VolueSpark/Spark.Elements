@@ -3,14 +3,14 @@ import { Meta, StoryFn } from '@storybook/react'
 import DailyOverview, {
     DailyOverviewProps,
 } from '../src/components/DailyOverview'
-import { createMockPriceDataForCurrentDay } from './graph-mockdata'
+import { createMockSpotPrices } from './graph-mockdata'
 
 export default {
     title: 'Spot Price/Daily Overview',
     component: DailyOverview,
 } as Meta<typeof DailyOverview>
 
-const data = createMockPriceDataForCurrentDay()
+const data = createMockSpotPrices()
 
 const Template: StoryFn<DailyOverviewProps> = (args) => {
     return (
@@ -20,10 +20,11 @@ const Template: StoryFn<DailyOverviewProps> = (args) => {
     )
 }
 
-export const Default = Template.bind({})
-Default.args = {
+const args: Partial<DailyOverviewProps> = {
     data: data,
-    width: 500,
-    height: 500,
-    numberOfIntervals: 4,
+    initialWidth: 500,
+    initialHeight: 500,
 }
+
+export const Default = Template.bind({})
+Default.args = args

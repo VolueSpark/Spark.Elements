@@ -58,6 +58,11 @@ export type PriceUnits = {
     energyUnit: string
 }
 
+export type ChargingSesion = {
+    powerInKiloWatts: number
+    duration: string
+}
+
 export type Segment = {
     from: string
     to: string
@@ -90,10 +95,9 @@ export type SpotPriceData = {
 export type SpotPriceAdviceData = {
     advice: Array<SpotPriceAdvice>
     spotPrices: Array<SpotPrice>
-    priceArea: {
-        code: string
-    }
+    priceArea: string
     priceUnits: PriceUnits
+    chargingSession: ChargingSesion
 }
 
 export type ForecastAdviceData = {

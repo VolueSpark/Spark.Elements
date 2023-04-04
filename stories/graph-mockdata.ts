@@ -257,43 +257,52 @@ function generateActualPricesAdvice(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _chargingRate: number
 ): SpotPriceAdvice[] {
-    const minPrice = Math.min(...priceEntries.map((p) => p.price))
-    const minPriceIndex = priceEntries.findIndex((p) => p.price === minPrice)
+    // Max variables
     const maxPrice = Math.max(...priceEntries.map((p) => p.price))
     const maxPriceIndex = priceEntries.findIndex((p) => p.price === maxPrice)
+    const maxFromIndex = Math.max(maxPriceIndex - chargingWindowSize, 0)
+    const maxToIndex = Math.min(
+        maxFromIndex + chargingWindowSize,
+        priceEntries.length - 1
+    )
+    // Min variables
+    const minPrice = Math.min(...priceEntries.map((p) => p.price))
+    const minPriceIndex = priceEntries.findIndex((p) => p.price === minPrice)
+    const minFromIndex = Math.max(minPriceIndex - chargingWindowSize, 0)
+    const minToIndex = Math.min(
+        minFromIndex + chargingWindowSize,
+        priceEntries.length - 1
+    )
 
+    const nowCost = priceEntries
+        .slice(0, chargingWindowSize)
+        .reduce((acc, it) => (acc += it.price), 0)
+    const maxCost = priceEntries
+        .slice(maxFromIndex, maxToIndex)
+        .reduce((acc, it) => (acc += it.price), 0)
+    const minCost = priceEntries
+        .slice(minFromIndex, minToIndex)
+        .reduce((acc, it) => (acc += it.price), 0)
     return [
         {
             from: priceEntries[0].time,
-            to: priceEntries[chargingWindowSize - 1].time,
-            cost: 0,
-            averagePrice: 0,
+            to: priceEntries[chargingWindowSize].time,
+            cost: nowCost,
+            averagePrice: nowCost / chargingWindowSize,
             type: 'Now',
         },
         {
-            from: priceEntries[Math.max(maxPriceIndex - chargingWindowSize, 0)]
-                .time,
-            to: priceEntries[
-                Math.min(
-                    maxPriceIndex + chargingWindowSize,
-                    priceEntries.length - 1
-                )
-            ].time,
-            cost: 0,
-            averagePrice: 0,
+            from: priceEntries[maxFromIndex].time,
+            to: priceEntries[maxToIndex].time,
+            cost: maxCost,
+            averagePrice: maxCost / chargingWindowSize,
             type: 'Avoid',
         },
         {
-            from: priceEntries[Math.max(minPriceIndex - chargingWindowSize, 0)]
-                .time,
-            to: priceEntries[
-                Math.min(
-                    minPriceIndex + chargingWindowSize,
-                    priceEntries.length - 1
-                )
-            ].time,
-            cost: 0,
-            averagePrice: 0,
+            from: priceEntries[minFromIndex].time,
+            to: priceEntries[minToIndex].time,
+            cost: minCost,
+            averagePrice: minCost / chargingWindowSize,
             type: 'Good',
         },
     ]

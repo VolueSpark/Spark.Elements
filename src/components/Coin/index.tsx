@@ -1,11 +1,12 @@
-import { format, parseISO } from 'date-fns'
 import React from 'react'
-import { PriceTimeRangeAdvice, PriceTimeRangeAdviceType } from '../types'
+import { format, parseISO } from 'date-fns'
+import { AdviceSegmentType, SpotPriceAdvice } from '../types'
 
 import style from './coin.module.css'
 
-function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
-    switch (advice) {
+// Helpers
+function getColorFromAdvice(adviceSegmentType?: AdviceSegmentType) {
+    switch (adviceSegmentType) {
         case 'Now':
             return style.now
         case 'Best':
@@ -22,18 +23,27 @@ function getColorFromAdvice(advice?: PriceTimeRangeAdviceType) {
 }
 
 export type CoinProps = {
-    price: number
-    priceUnit: string
-    advice: PriceTimeRangeAdvice
+    totalPrice: number
+    advice: SpotPriceAdvice
+    currency: string
     details: string
 }
 
-export default function Coin({ price, priceUnit, advice, details }: CoinProps) {
+export default function Coin({
+    totalPrice,
+    advice,
+    currency,
+    details,
+}: CoinProps) {
+    if (!totalPrice && !advice && !currency && !details) {
+        console.error('Coin component is missing props')
+        return <></>
+    }
     return (
         <div className={`${style.wrapper} ${getColorFromAdvice(advice.type)}`}>
             <div className={style.container}>
                 <h3 className={style.price}>
-                    {price.toString()} {priceUnit}
+                    {totalPrice.toString()} {currency}
                 </h3>
                 <p className={style.time}>
                     {format(parseISO(advice.from), 'HH:mm')} -{' '}

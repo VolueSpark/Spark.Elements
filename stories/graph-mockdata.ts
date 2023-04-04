@@ -7,6 +7,8 @@ import {
     SpotPrice,
     SpotPriceAdviceData,
     SpotPriceAdvice,
+    SpotPriceData,
+    PriceRecord,
 } from '../src/components/types'
 
 // OLD
@@ -337,6 +339,30 @@ export function createMockActualPricesAdvice(
         chargingSession: {
             powerInKiloWatts,
             duration: `${duration > 9 ? duration : '0' + duration}:00:00`,
+        },
+    }
+}
+
+export function createMockSpotPrices(numberOfPriceEntries = 24): SpotPriceData {
+    const spotPrices = generateRandomPriceEntries(
+        numberOfPriceEntries,
+        new Date(startOfDay(Date.now()))
+    )
+    const spotPriceRecord: PriceRecord = spotPrices.reduce((acc, it) => {
+        acc[it.time] = it.price
+        return acc
+    }, {})
+
+    return {
+        prices: spotPriceRecord,
+        priceArea: 'NO1',
+        priceUnits: {
+            currency: 'NOK',
+            vat: {
+                rate: 1.25,
+                hasVAT: true,
+            },
+            energyUnit: 'kWh',
         },
     }
 }

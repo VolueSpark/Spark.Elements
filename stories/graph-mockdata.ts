@@ -19,13 +19,8 @@ import {
     PriceRecord,
     ForecastAdvice,
     ForecastAdviceData,
-<<<<<<< HEAD
-=======
-    AdviceSegmentType,
->>>>>>> 2628d8a (add new methods for generating forecast)
     ForecastBlockType,
 } from '../src/components/types'
-import { forecastAdviceData } from './mock/ForecastAdviceData'
 
 // OLD
 function randomNumber(min: number, max: number) {

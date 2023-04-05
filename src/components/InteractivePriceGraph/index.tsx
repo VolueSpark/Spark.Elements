@@ -7,9 +7,19 @@ import { Text } from '@visx/text'
 import { localPoint } from '@visx/event'
 import { Line } from '@visx/shape'
 import useSize from '@react-hook/size'
-import { Price } from '../types'
 
 import style from './interactive-price-graph.module.css'
+import { PriceRecord, SpotPrice, SpotPriceData } from '../types'
+
+// Helpers
+const transformPriceRecordToSpotPriceArray = (
+    priceRecord: PriceRecord
+): Array<SpotPrice> => {
+    return Object.keys(priceRecord).map((time) => ({
+        time: time,
+        price: priceRecord[time],
+    }))
+}
 
 const verticalMargin = 60
 const horizontalMargin = 60
@@ -18,46 +28,49 @@ const PADDING = 16
 export type InteractivePriceGraphProps = {
     initialWidth?: number
     initialHeight?: number
-    data: Price[]
-    priceUnit: string
-    energyUnit: string
+    data: SpotPriceData
+    axisLeftText?: string
+    hideAxisLabels?: boolean
     setChargeWindowStartIndex: (arg0: number) => void
     isInChargeWindow: (arg0: number) => boolean
     isInDataRange: (arg0: number) => boolean
     windowSize: number
-    seperators?: boolean
-    labels?: boolean
+    hideSeperators?: boolean
 }
 
 export default function InteractivePriceGraph({
     initialWidth = 500,
     initialHeight = 400,
     data,
-    priceUnit,
-    energyUnit,
+    axisLeftText,
+    hideAxisLabels = false,
     setChargeWindowStartIndex,
     isInChargeWindow,
     isInDataRange,
     windowSize,
-    seperators = true,
-    labels = true,
+    hideSeperators = false,
 }: InteractivePriceGraphProps) {
+    const spotPrices = useMemo(() => {
+        return transformPriceRecordToSpotPriceArray(data.prices)
+    }, [data])
+
     const containerRef = useRef(null)
     const [width, height] = useSize(containerRef, {
         initialWidth,
         initialHeight,
     })
+
     const xMax = width - horizontalMargin
     const yMax = height - verticalMargin - PADDING
     // Rougly the area given to each bar in the graph (including padding)
-    const barWidth = xMax / data.length
+    const barWidth = xMax / spotPrices.length
 
     const xScale = useMemo(
         () =>
             scaleBand<string>({
                 range: [0, xMax],
                 round: true,
-                domain: data.map((x) => x.time),
+                domain: spotPrices.map((x) => x.time),
                 paddingInner: 0.4,
             }),
         [xMax]
@@ -67,7 +80,7 @@ export default function InteractivePriceGraph({
             scaleLinear<number>({
                 range: [yMax, 0],
                 round: true,
-                domain: [0, Math.max(...data.map((x) => x.price)) + 0.5],
+                domain: [0, Math.max(...spotPrices.map((x) => x.price)) + 0.5],
             }),
         [yMax]
     )
@@ -84,7 +97,7 @@ export default function InteractivePriceGraph({
         const point = localPoint(event)
         if (point) {
             const index = Math.floor((point?.x - horizontalMargin) / barWidth)
-            if (index < 0 || index > data.length - 1) {
+            if (index < 0 || index > spotPrices.length - 1) {
                 setChargeWindowStartIndex(0)
                 return
             }
@@ -92,7 +105,7 @@ export default function InteractivePriceGraph({
             if (isInDataRange(index)) {
                 setChargeWindowStartIndex(index)
             } else {
-                setChargeWindowStartIndex(data.length - windowSize)
+                setChargeWindowStartIndex(spotPrices.length - windowSize)
             }
         }
     }
@@ -106,7 +119,7 @@ export default function InteractivePriceGraph({
             >
                 <rect opacity={0} />
                 <Group left={horizontalMargin} top={verticalMargin / 2}>
-                    {data.map((d, idx) => {
+                    {spotPrices.map((d, idx) => {
                         const barWidth = xScale.bandwidth()
                         const barHeight = yMax - (yScale(d.price) ?? 0)
                         const barX = xScale(d.time)
@@ -129,7 +142,7 @@ export default function InteractivePriceGraph({
                                         setChargeWindowStartIndex(idx)
                                     else
                                         setChargeWindowStartIndex(
-                                            data.length - windowSize
+                                            spotPrices.length - windowSize
                                         )
                                 }}
                             />
@@ -140,7 +153,7 @@ export default function InteractivePriceGraph({
                     left={horizontalMargin / 2 + PADDING}
                     top={verticalMargin / 2}
                 >
-                    {labels && (
+                    {!hideAxisLabels && (
                         <>
                             <AxisLeft
                                 hideAxisLine
@@ -158,11 +171,11 @@ export default function InteractivePriceGraph({
                                 fontSize={10}
                                 className={style.axis__text}
                             >
-                                {`${priceUnit}/${energyUnit}`}
+                                {axisLeftText}
                             </Text>
                         </>
                     )}
-                    {seperators && (
+                    {!hideSeperators && (
                         <Line
                             from={{ x: 0, y: PADDING }}
                             to={{ x: 0, y: yMax }}
@@ -174,7 +187,7 @@ export default function InteractivePriceGraph({
                     left={horizontalMargin}
                     top={yMax + verticalMargin / 2 + PADDING}
                 >
-                    {labels && (
+                    {!hideAxisLabels && (
                         <AxisBottom
                             hideAxisLine
                             hideTicks
@@ -188,7 +201,7 @@ export default function InteractivePriceGraph({
                             tickClassName={style.axis__text}
                         />
                     )}
-                    {seperators && (
+                    {!hideSeperators && (
                         <Line
                             from={{ x: 0, y: 0 }}
                             to={{ x: width, y: 0 }}

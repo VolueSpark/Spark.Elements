@@ -21,6 +21,7 @@ import {
     ForecastAdviceData,
     ForecastBlockType,
 } from '../src/components/types'
+import { forecastAdviceData } from './mock/ForecastAdviceData'
 
 // OLD
 function randomNumber(min: number, max: number) {

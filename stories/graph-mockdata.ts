@@ -1,4 +1,12 @@
-import { addHours, addDays, getHours, formatISO, startOfDay } from 'date-fns'
+import {
+    addHours,
+    addDays,
+    getHours,
+    formatISO,
+    startOfDay,
+    nextDay,
+    getDay,
+} from 'date-fns'
 import {
     Price,
     ChargingPrescription,
@@ -9,7 +17,12 @@ import {
     SpotPriceAdvice,
     SpotPriceData,
     PriceRecord,
+    ForecastAdvice,
+    ForecastAdviceData,
+    AdviceSegmentType,
+    ForecastBlockType,
 } from '../src/components/types'
+import { forecastAdviceData } from './mock/ForecastAdviceData'
 
 // OLD
 function randomNumber(min: number, max: number) {
@@ -174,6 +187,54 @@ export function createMockChargingPlan(
 }
 
 // NEW
+function createNewTargetPrice(
+    basePrice: number,
+    isDayTime: boolean,
+    maxTargerPriceDelta: number,
+    maxNightDivisor: number,
+    minNightDivisor: number
+) {
+    const newPrice = randomNumber(basePrice, basePrice + maxTargerPriceDelta)
+    if (!isDayTime) {
+        return newPrice / randomNumber(minNightDivisor, maxNightDivisor)
+    }
+    return newPrice
+}
+function calculateNewCurrentPrice(
+    current: number,
+    target: number,
+    maxCurrentPriceDelta: number,
+    maxPriceWiggle: number
+) {
+    let difference = target - current
+
+    if (difference > maxCurrentPriceDelta) {
+        difference = maxCurrentPriceDelta
+    } else if (difference < -maxCurrentPriceDelta) {
+        difference = -maxCurrentPriceDelta
+    }
+
+    const delta = randomNumber(0, difference)
+
+    const wiggle = randomNumber(-maxPriceWiggle, maxPriceWiggle)
+
+    return current + delta + wiggle
+}
+
+function getAdviceFromPrice(
+    price: number,
+    max: number,
+    min: number
+): ForecastBlockType {
+    const fraction = (max - min) / 10
+    if (price < min + 3 * fraction) {
+        return 'Good'
+    } else if (price > max - fraction * 3) {
+        return 'Avoid'
+    }
+    return 'Normal'
+}
+
 function generateRandomSpotPrices(
     numberOfPriceEntries: number,
     start?: Date
@@ -189,38 +250,17 @@ function generateRandomSpotPrices(
     const MIN_NIGHT_DIVISOR = 2
     const MAX_NIGHT_DIVISOR = 5
 
-    const createNewTargetPrice = (basePrice: number, isDayTime: boolean) => {
-        const newPrice = randomNumber(
-            basePrice,
-            basePrice + MAX_TARGET_PRICE_DELTA
-        )
-        if (!isDayTime) {
-            return newPrice / randomNumber(MIN_NIGHT_DIVISOR, MAX_NIGHT_DIVISOR)
-        }
-        return newPrice
-    }
-
-    const calculateNewCurrentPrice = (current: number, target: number) => {
-        let difference = target - current
-
-        if (difference > MAX_CURRENT_PRICE_DELTA) {
-            difference = MAX_CURRENT_PRICE_DELTA
-        } else if (difference < -MAX_CURRENT_PRICE_DELTA) {
-            difference = -MAX_CURRENT_PRICE_DELTA
-        }
-
-        const delta = randomNumber(0, difference)
-
-        const wiggle = randomNumber(-MAX_PRICE_WIGGLE, MAX_PRICE_WIGGLE)
-
-        return current + delta + wiggle
-    }
-
     const startingDate = start ?? new Date()
     let wasDayTime = isDayTime(startingDate)
 
     let currentPrice = randomNumber(MIN_STARTING_PRICE, MAX_STARTING_PRICE)
-    let targetPrice = createNewTargetPrice(currentPrice, wasDayTime)
+    let targetPrice = createNewTargetPrice(
+        currentPrice,
+        wasDayTime,
+        MAX_TARGET_PRICE_DELTA,
+        MAX_NIGHT_DIVISOR,
+        MIN_NIGHT_DIVISOR
+    )
 
     let periodTime = 4
 
@@ -230,19 +270,36 @@ function generateRandomSpotPrices(
         const isCurrentDayTime = isDayTime(currentTime)
 
         if (wasDayTime != isCurrentDayTime) {
-            targetPrice = createNewTargetPrice(currentPrice, isCurrentDayTime)
+            targetPrice = createNewTargetPrice(
+                currentPrice,
+                isCurrentDayTime,
+                MAX_TARGET_PRICE_DELTA,
+                MAX_NIGHT_DIVISOR,
+                MIN_NIGHT_DIVISOR
+            )
         }
 
         if (periodTime <= 0 && isCurrentDayTime) {
             periodTime = 4
-            targetPrice = createNewTargetPrice(currentPrice, isCurrentDayTime)
+            targetPrice = createNewTargetPrice(
+                currentPrice,
+                isCurrentDayTime,
+                MAX_TARGET_PRICE_DELTA,
+                MAX_NIGHT_DIVISOR,
+                MIN_NIGHT_DIVISOR
+            )
         } else if (isCurrentDayTime) {
             periodTime -= 1
         }
 
         wasDayTime = isCurrentDayTime
 
-        currentPrice = calculateNewCurrentPrice(currentPrice, targetPrice)
+        currentPrice = calculateNewCurrentPrice(
+            currentPrice,
+            targetPrice,
+            MAX_CURRENT_PRICE_DELTA,
+            MAX_PRICE_WIGGLE
+        )
 
         priceEntries.push({
             time: formatISO(currentTime),
@@ -251,6 +308,97 @@ function generateRandomSpotPrices(
     }
 
     return priceEntries
+}
+
+function generateRandomForecast(
+    numberOfPriceEntries: number,
+    start?: Date
+): ForecastAdvice[] {
+    const forecast: ForecastAdvice[] = []
+
+    const MAX_TARGET_PRICE_DELTA = 5
+    const MAX_CURRENT_PRICE_DELTA = 1
+    const MIN_STARTING_PRICE = 0.2
+    const MAX_STARTING_PRICE = 3
+    const MAX_PRICE_WIGGLE = 0.1
+
+    const MIN_NIGHT_DIVISOR = 2
+    const MAX_NIGHT_DIVISOR = 5
+
+    const date = start ?? new Date()
+    // TODO: test if nextDay method is used correctly
+    const startingDate = nextDay(startOfDay(date), getDay(date))
+    let wasDayTime = isDayTime(startingDate)
+
+    let currentPrice = randomNumber(MIN_STARTING_PRICE, MAX_STARTING_PRICE)
+    let targetPrice = createNewTargetPrice(
+        currentPrice,
+        wasDayTime,
+        MAX_TARGET_PRICE_DELTA,
+        MAX_NIGHT_DIVISOR,
+        MIN_NIGHT_DIVISOR
+    )
+
+    // TODO: find out what this is for
+    let periodTime = 4
+
+    const interval = 6
+
+    let from = startingDate
+    for (let i = 0; i < numberOfPriceEntries; i++) {
+        const to = addHours(from, interval)
+
+        const isCurrentDayTime = isDayTime(from)
+
+        if (wasDayTime != isCurrentDayTime) {
+            targetPrice = createNewTargetPrice(
+                currentPrice,
+                isCurrentDayTime,
+                MAX_TARGET_PRICE_DELTA,
+                MAX_NIGHT_DIVISOR,
+                MIN_NIGHT_DIVISOR
+            )
+        }
+
+        if (periodTime <= 0 && isCurrentDayTime) {
+            periodTime = 4
+            targetPrice = createNewTargetPrice(
+                currentPrice,
+                isCurrentDayTime,
+                MAX_TARGET_PRICE_DELTA,
+                MAX_NIGHT_DIVISOR,
+                MIN_NIGHT_DIVISOR
+            )
+        } else if (isCurrentDayTime) {
+            periodTime -= 1
+        }
+
+        wasDayTime = isCurrentDayTime
+
+        currentPrice = calculateNewCurrentPrice(
+            currentPrice,
+            targetPrice,
+            MAX_CURRENT_PRICE_DELTA,
+            MAX_PRICE_WIGGLE
+        )
+
+        forecast.push({
+            from: from.toISOString(),
+            to: to.toISOString(),
+            averagePrice: currentPrice,
+            // TODO: type has to be set based on how far away from min/max price, make it 0-30, 30-80, 80-100
+            type: getAdviceFromPrice(
+                currentPrice,
+                MAX_STARTING_PRICE,
+                MIN_STARTING_PRICE
+            ),
+            loss: 0,
+        })
+
+        from = to
+    }
+
+    return forecast
 }
 
 function generateActualPricesAdvice(
@@ -316,7 +464,7 @@ export function createMockActualPricesAdvice(
     const powerInKiloWatts = 3.6
     const duration = 4
 
-    const spotPrices = generateRandomPriceEntries(numberOfPriceEntries)
+    const spotPrices = generateRandomSpotPrices(numberOfPriceEntries)
 
     const advice = generateActualPricesAdvice(
         spotPrices,
@@ -344,7 +492,7 @@ export function createMockActualPricesAdvice(
 }
 
 export function createMockSpotPrices(numberOfPriceEntries = 24): SpotPriceData {
-    const spotPrices = generateRandomPriceEntries(
+    const spotPrices = generateRandomSpotPrices(
         numberOfPriceEntries,
         new Date(startOfDay(Date.now()))
     )
@@ -364,6 +512,26 @@ export function createMockSpotPrices(numberOfPriceEntries = 24): SpotPriceData {
             },
             energyUnit: 'kWh',
         },
+    }
+}
+
+export function createMockForecastAdvice(): ForecastAdviceData {
+    // 24 is 6 days
+    const forecastAdvice = generateRandomForecast(24)
+    return {
+        priceArea: 'NO1',
+        priceUnits: {
+            currency: 'NOK',
+            vat: {
+                rate: 1.25,
+                hasVAT: true,
+            },
+            energyUnit: 'kWh',
+        },
+        segmentOptions: {
+            segmentSize: 6,
+        },
+        forecastAdvice,
     }
 }
 

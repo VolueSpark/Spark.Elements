@@ -1,6 +1,6 @@
 {
   "name": "@voluespark/spark.elements",
-  "version": "0.0.18",
+  "version": "0.0.24",
   "main": "build/index.js",
   "module": "build/index.esm.js",
   "files": [

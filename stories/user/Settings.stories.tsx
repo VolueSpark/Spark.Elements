@@ -1,11 +1,17 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import Settings from '../src/components/Settings'
+import Settings from '../../src/components/Settings'
 
 const meta: Meta<typeof Settings> = {
-    title: 'User/Settings',
     component: Settings,
+    decorators: [
+        (Story) => (
+            <div style={{ maxWidth: '664px' }}>
+                <Story />
+            </div>
+        ),
+    ],
 }
 
 export default meta

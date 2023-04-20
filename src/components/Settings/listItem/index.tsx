@@ -20,7 +20,7 @@ export default function ListItem({
         <div className={style.container} onClick={onClick}>
             <div className={style.list_item__header}>
                 <p>{title}</p>
-                {isEditable && <EditIcon />}
+                <div className={style.icon}>{isEditable && <EditIcon />}</div>
             </div>
             <p>{value}</p>
         </div>

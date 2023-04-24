@@ -1,0 +1,85 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 0.625rem;
+    border: 1px solid #62A39E;
+    border-radius: 8px;
+    padding: 1rem 0.625rem;
+}
+
+.container:hover {
+    background-color: #D4E7E0;
+    transition: all 0.1s ease-in;
+}
+
+.checked {
+    background-color: #D4E7E0;
+}
+
+.radio_label {
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+    width: 24px;
+    height: 24px;
+  
+}
+
+/* Hide default radio */
+.radio_input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* TODO: might not need */
+.radio_checkmark_bounding {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background-color: inherit;
+  border-radius: 50%;
+}
+
+/* Custom checkmark */
+.radio_checkmark_border {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 2px solid #62A39E;
+  
+}
+
+/* On mouse-over, add a grey background color */
+/* .radio_label:hover .radio_checkmark {
+  background-color: red;
+  opacity: 50%;
+} */
+
+/* Creates dot */
+.radio_checkmark {
+    opacity: 0;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #62A39E;
+  transition: all 0.1s ease-in;
+}
+
+/* Show dot when checked */
+.radio_input:checked ~ .radio_checkmark {
+    opacity: 1;
+}

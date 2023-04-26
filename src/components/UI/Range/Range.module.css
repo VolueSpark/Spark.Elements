@@ -1,0 +1,186 @@
+/* TODO: make variables for this */
+
+.container {
+    display: inline-block;
+    height: 20px;
+    width: 342px;
+}
+
+.input__container {
+    display: flex;
+    width: 342px;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.input__number__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.input__number__wrapper {
+    background-color: #fff;
+    border: 1px solid #C3C3C3;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.input__number {
+    background-color: inherit;
+    border: none;
+    padding: 0;
+    min-width: 1.8rem;
+}
+
+.input__number::-webkit-outer-spin-button,
+.input__number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input__number[type=number] {
+  -moz-appearance: textfield;
+}
+
+.input__number__label {
+
+}
+
+.slider {
+    pointer-events: none;
+    position: absolute;
+    height: 0;
+    /* Base range of slider */
+    width: 342px;
+}
+
+.slider, .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+.slider::-webkit-slider-thumb {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    margin-top: 4px;
+    background-color: #62A39E;
+    border: solid 2px #FDFEFC;
+    border-radius: 50%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    pointer-events: all;
+}
+  
+.slider::-moz-range-thumb {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    margin-top: 4px;
+    background-color: #62A39E;
+    border: solid 2px #FDFEFC;
+    border-radius: 50%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    pointer-events: all;
+}
+
+
+.slider_left {
+    z-index: 3;
+}
+
+.slider_right {
+    z-index: 4;
+}
+
+.custom_slider {
+    position: relative;
+    /* Tweaked value based on base range of slider, move 9 from width to padding for centering on the left side,
+    move 9 extra from each side for centering of range (center of icon is chosen value, not start of circle) */
+    width: 313px;
+    padding-left: 9px;
+    margin-left: 3px;
+}
+
+.custom_slider__bar, .custom_slider__range {
+    position: absolute;
+    /* TODO: tweak these */
+    border-radius: 3px;
+    height: 8px;
+}
+
+.custom_slider__bar {
+    background-color: #C3C3C3;
+    /* Tweaked value based on base range of slider, move 9 from width to padding for centering on the left side,
+    move 9 extra from each side for centering of range (center of icon is chosen value, not start of circle) */
+    width: 313px;
+    padding-left: 9px;
+    z-index: 1;
+}
+
+.custom_slider__range {
+    /* TODO: tweak this */
+    background-color: #62A39E;
+    z-index: 2;
+}
+
+.divider__container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    /* based on base range slider, cut around 20 px for centering */ 
+    width: 322px;
+    /* add padding to align with custom slidebar */
+    padding-left: 12px;
+    height: 8px;
+} 
+
+.divider {
+    border-left: 1px solid #C3C3C3;
+}
+
+.divider__container .divider:last-child {
+    border-right: 1px solid #C3C3C3;
+}
+
+.divider_default {
+    border-color: #C3C3C3;
+}
+
+.divider_active {
+    border-color: #62A39E;
+}
+
+.divider_active_last {
+    border-right: 1px solid #62A39E !important;
+}
+
+
+.label_container {
+    /* based on base range slider, cut around 20 px for centering */ 
+    width: 332px;
+    /* add padding to align with custom slidebar */
+    padding-left: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.label {
+    font-size: 0.625rem;
+    margin: 0.5rem 0;
+}
+
+.labelFirst {
+    justify-self: start;
+}
+
+.labelCenter {
+    justify-self: center;
+}
+
+.labelRight {
+    justify-self: end;
+}

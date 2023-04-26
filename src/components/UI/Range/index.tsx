@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 import style from './Range.module.css'
 
@@ -26,6 +26,8 @@ export default function Range({
     labels,
 }: RangeProps) {
     const rangeRef = useRef<HTMLDivElement>(null)
+    const startRef = useRef<HTMLInputElement>(null)
+    const endRef = useRef<HTMLInputElement>(null)
 
     // Need this to get a number between 0 and 100 to represent the interval
     // that needs a different color.
@@ -35,17 +37,39 @@ export default function Range({
         [minValue, maxValue]
     )
 
-    const onStartChange = (event: React.FormEvent<HTMLInputElement>) =>
-        onChange([
-            Math.min(parseInt(event.currentTarget.value), value[1] - 1),
-            value[1],
-        ])
+    const onStartChange = (event: React.FormEvent<HTMLInputElement>) => {
+        let validatedValue = value[0]
+        if (event.currentTarget.value !== '') {
+            validatedValue = parseInt(event.currentTarget.value)
+        }
+        if (validatedValue < 0) {
+            validatedValue = 0
+        }
+        if (startRef && startRef.current)
+            startRef.current.value = Math.min(
+                validatedValue,
+                value[1] - 1
+            ).toString()
 
-    const onEndChange = (event: React.FormEvent<HTMLInputElement>) =>
-        onChange([
-            value[0],
-            Math.max(parseInt(event.currentTarget.value), value[0] + 1),
-        ])
+        onChange([Math.min(validatedValue, value[1] - 1), value[1]])
+    }
+
+    const onEndChange = (event: React.FormEvent<HTMLInputElement>) => {
+        let validatedValue = value[1]
+        if (event.currentTarget.value !== '') {
+            validatedValue = parseInt(event.currentTarget.value)
+        }
+        if (validatedValue > 100) {
+            validatedValue = 100
+        }
+        onChange([value[0], Math.max(validatedValue, value[0] + 1)])
+
+        if (endRef && endRef.current)
+            endRef.current.value = Math.max(
+                validatedValue,
+                value[0] + 1
+            ).toString()
+    }
 
     const getDividers = useCallback(
         (value: Array<number>) => {
@@ -73,30 +97,38 @@ export default function Range({
 
     return (
         <div>
-            <div className={style.input__number__container}>
-                <label htmlFor="start">Start</label>
-                <div>
-                    {/* TODO: create proper validation on these two, maybe drop using input type number
-                    and use a library for validating the input */}
-                    <input
-                        name="start"
-                        type="number"
-                        value={value[0]}
-                        min={minValue}
-                        max={value[1]}
-                        onChange={onStartChange}
-                    />
+            <div className={style.input__container}>
+                <div className={style.input__number__container}>
+                    <label htmlFor="start">Start</label>
+                    <div className={style.input__number__wrapper}>
+                        <input
+                            name="start"
+                            type="number"
+                            defaultValue={value[0]}
+                            min={minValue}
+                            max={value[1]}
+                            onBlur={onStartChange}
+                            className={style.input__number}
+                            ref={startRef}
+                        />
+                        %
+                    </div>
                 </div>
-                <label htmlFor="end">End</label>
-                <div>
-                    <input
-                        name="end"
-                        type="number"
-                        value={value[1]}
-                        min={value[0]}
-                        max={maxValue}
-                        onChange={onEndChange}
-                    />
+                <div className={style.input__number__container}>
+                    <label htmlFor="end">End</label>
+                    <div className={style.input__number__wrapper}>
+                        <input
+                            name="end"
+                            type="number"
+                            defaultValue={value[1]}
+                            min={value[0]}
+                            max={maxValue}
+                            onBlur={onEndChange}
+                            className={style.input__number}
+                            ref={endRef}
+                        />
+                        %
+                    </div>
                 </div>
             </div>
             <div className={style.container}>

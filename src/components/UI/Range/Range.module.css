@@ -6,12 +6,47 @@
     width: 342px;
 }
 
-.input__number__container {
+.input__container {
     display: flex;
     width: 342px;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 1rem;
+}
+
+.input__number__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.input__number__wrapper {
+    background-color: #fff;
+    border: 1px solid #C3C3C3;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.input__number {
+    background-color: inherit;
+    border: none;
+    padding: 0;
+    min-width: 1.8rem;
+}
+
+.input__number::-webkit-outer-spin-button,
+.input__number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input__number[type=number] {
+  -moz-appearance: textfield;
+}
+
+.input__number__label {
+
 }
 
 .slider {

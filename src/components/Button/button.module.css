@@ -1,0 +1,42 @@
+.button {
+    background-color: inherit;
+    color: #000;
+    border: 1px solid #62A39E;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    padding: 0.7rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 400;
+}
+
+.button:hover {
+    box-shadow: 0px 0px 5px #c1c1c1;
+    -webkit-box-shadow: 0px 0px 5px #c1c1c1;
+}
+
+.button:active {
+    box-shadow: inset 1px 1px 3px #c1c1c1;
+    -webkit-box-shadow: inset 1px 1px 3px #c1c1c1;
+}
+
+.default {
+    background-color: #62A39E;
+}
+
+.warning {
+    background-color: #A71E1E;
+    border-color: #A71E1E;
+    color: white;
+}
+
+.outlined {
+    background-color: inherit;
+}

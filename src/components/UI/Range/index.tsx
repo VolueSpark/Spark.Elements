@@ -163,9 +163,7 @@ export default function Range({
             {labels && (
                 <div className={style.label_container}>
                     {labels.left && (
-                        <p className={`${style.label} ${style.labelLeft}`}>
-                            {labels.left}
-                        </p>
+                        <p className={`${style.label}`}>{labels.left}</p>
                     )}
                     {labels.center && (
                         <p className={`${style.label} ${style.labelCenter}`}>

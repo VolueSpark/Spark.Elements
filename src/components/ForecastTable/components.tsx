@@ -60,7 +60,6 @@ export function RowHeader({ date }: { date: Date }) {
 }
 
 export function Row({ data }: { data: ForecastEntry[] }) {
-    console.log(data)
     return (
         <div className={style.row}>
             {data.map((entry) => (

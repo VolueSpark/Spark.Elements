@@ -1,0 +1,14 @@
+.container {
+    border-bottom: solid 1px #C3C3C3;
+}
+
+.list_item__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon {
+    cursor: pointer;
+}

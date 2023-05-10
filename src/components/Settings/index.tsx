@@ -2,7 +2,7 @@ import React from 'react'
 
 import style from './settings.module.css'
 import InfoText from '../InfoText'
-import Button from '../Button'
+import Button from '../UI/Button'
 import ListItem from './listItem'
 import DeleteIcon from './DeleteIcon'
 

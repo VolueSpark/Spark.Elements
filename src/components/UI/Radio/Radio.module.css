@@ -7,6 +7,7 @@
     border: 1px solid #62A39E;
     border-radius: 8px;
     padding: 1rem 0.625rem;
+    cursor: pointer;
 }
 
 .container:hover {
@@ -57,7 +58,7 @@
   width: 16px;
   border-radius: 50%;
   border: 2px solid #62A39E;
-  
+  box-sizing: content-box; 
 }
 
 /* On mouse-over, add a grey background color */

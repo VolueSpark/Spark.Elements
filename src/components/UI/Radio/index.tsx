@@ -16,9 +16,7 @@ export default function Radio({
 }: RadioProps) {
     return (
         <div
-            className={`${style.container} ${
-                checked ? style.checked : style.default
-            }`}
+            className={`${style.container} ${checked ? style.checked : ''}`}
             onClick={onClick}
             onChange={onChange}
         >

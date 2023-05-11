@@ -2,11 +2,10 @@ import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import DailyOverview, {
     DailyOverviewProps,
-} from '../src/components/DailyOverview'
-import { createMockPriceDataForCurrentDay } from './graph-mockdata'
+} from '../../src/components/DailyOverview'
+import { createMockPriceDataForCurrentDay } from '../graph-mockdata'
 
 export default {
-    title: 'Spot Price/Daily Overview',
     component: DailyOverview,
 } as Meta<typeof DailyOverview>
 

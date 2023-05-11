@@ -1,11 +1,10 @@
 import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import AdviceGraph, { AdviceGraphProps } from '../src/components/AdviceGraph'
-import { createMockChargingPlan } from './graph-mockdata'
+import AdviceGraph, { AdviceGraphProps } from '../../src/components/AdviceGraph'
+import { createMockChargingPlan } from '../graph-mockdata'
 
 export default {
-    title: 'Spot Price/Advice Graph',
     component: AdviceGraph,
 } as Meta<typeof AdviceGraph>
 

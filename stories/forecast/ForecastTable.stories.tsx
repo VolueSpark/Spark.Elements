@@ -2,9 +2,9 @@ import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import ForecastTable, {
     ForecastTableProps,
-} from '../src/components/ForecastTable'
+} from '../../src/components/ForecastTable'
 import { utcToZonedTime } from 'date-fns-tz'
-import { forecastAdviceData } from './mock/ForecastAdviceData'
+import { forecastAdviceData } from '../mock/ForecastAdviceData'
 
 export default {
     title: 'Forecast/Forcast Table',

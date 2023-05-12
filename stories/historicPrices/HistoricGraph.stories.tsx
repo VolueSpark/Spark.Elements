@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
-import AdviceGraph, { AdviceGraphProps } from '../src/components/AdviceGraph'
+import AdviceGraph, { AdviceGraphProps } from '../../src/components/AdviceGraph'
 import {
     addDays,
     format,
@@ -11,10 +11,9 @@ import {
     setHours,
     setMinutes,
 } from 'date-fns'
-import { Price, PriceTimeRangeAdvice } from '../src/components/types'
+import { Price, PriceTimeRangeAdvice } from '../../src/components/types'
 
 export default {
-    title: 'Misc/HistoricPriceGraph',
     component: AdviceGraph,
 } as Meta<typeof AdviceGraph>
 

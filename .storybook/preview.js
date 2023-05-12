@@ -22,4 +22,16 @@ export const parameters = {
     docs: {
         container: CustomDocsContainer,
     },
+    options: {
+        storySort: {
+            order: [
+                'Introduction',
+                'atoms',
+                'spotPrice',
+                'historicPrices',
+                'forecast',
+                'settings',
+            ],
+        },
+    },
 }

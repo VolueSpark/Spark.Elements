@@ -1,4 +1,15 @@
+import { DocsContainer } from '@storybook/blocks'
+
 import './index.css'
+
+// TODO: use this to add ToC and Github links
+const CustomDocsContainer = ({ children, ...props }) => {
+    return (
+        <DocsContainer {...props}>
+            <div>{children}</div>
+        </DocsContainer>
+    )
+}
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -7,5 +18,8 @@ export const parameters = {
             color: /(background|color)$/i,
             date: /Date$/,
         },
+    },
+    docs: {
+        container: CustomDocsContainer,
     },
 }

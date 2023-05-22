@@ -1,19 +1,54 @@
-import { Meta } from '@storybook/blocks'
+import { Meta, Title } from '@storybook/blocks'
 
 <Meta title="Introduction" />
 
 <style>
     {`
-    .subheading {
-      --mediumdark: '#999999';
-      font-weight: 900;
-      font-size: 13px;
-      color: #999;
-      letter-spacing: 6px;
-      line-height: 24px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      margin-top: 40px;
+    p {
+      font-size: 1.25rem !important;
+    }
+
+    .title {
+      font-family: 'Krub', sans-serif;
+      font-weight: 400;
+      font-size: 40px;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #363C6E;
+    }
+
+    .top-text > p {
+      font-size: 20px;
+      line-height: 34px;
+      max-width: 808px;
+    }
+
+    .bottom-text > p {
+      font-size: 20px;
+      line-height: 34px;
+      max-width: 705px;
+      margin-bottom: 4rem;
+    }
+
+    .illustration {
+      position: absolute;
+      top: 150px;
+      left: calc(50% + 180px);
+      max-width: 378px;
+      max-height: 434px;
+      user-select: none;
+    }
+
+    .subheader {
+      font-weight: 600;
+      font-size: 1.56rem;
+      margin-bottom: 1rem;
+    }
+
+    .getting-started {
+      margin-bottom: 4rem;
     }
 
     .link-list {
@@ -31,6 +66,12 @@ import { Meta } from '@storybook/blocks'
       }
     }
 
+    @media (max-width: 1000px) {
+      .illustration {
+        display: none;
+      }
+    }
+
     @media all and (-ms-high-contrast:none) {
     .link-list {
         display: -ms-grid;
@@ -41,13 +82,15 @@ import { Meta } from '@storybook/blocks'
 
     .link-item {
       display: block;
-      padding: 20px 30px 20px 15px;
+      padding: 1rem 1.5rem;
       border: 1px solid #00000010;
       border-radius: 5px;
       transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
       color: #333333;
       display: flex;
+      flex-direction: column;
       align-items: flex-start;
+      font-size: 1rem;
     }
 
     .link-item:hover {
@@ -67,145 +110,102 @@ import { Meta } from '@storybook/blocks'
       margin-bottom: 2px;
     }
 
-    .link-item-img-wrapper {
+    .link-item img {
       height: 40px;
       width: 40px;
       margin-right: 15px;
       flex: none;
     }
 
-    .link-item span {
-      font-size: 14px;
-      line-height: 20px;
+    .text > p {
+      font-size: 16px !important;
     }
 
-    .tip {
-      display: inline-block;
-      border-radius: 1em;
-      font-size: 11px;
-      line-height: 12px;
-      font-weight: 700;
-      background: #E7FDD8;
-      color: #66BF3C;
-      padding: 4px 12px;
-      margin-right: 10px;
-      vertical-align: top;
+    .link-text {  
+      text-decoration: underline;
     }
 
-    .tip-wrapper {
-      font-size: 13px;
-      line-height: 20px;
-      margin-top: 40px;
-      margin-bottom: 40px;
-    }
-
-    .tip-wrapper code {
-      font-size: 12px;
-      display: inline-block;
+    .link-title {
+      font-size: 20px;
     }
   `}
 </style>
 
-# Welcome to Storybook
+<h1 className="title">Spark Design Library</h1>
 
-Storybook helps you build UI components in isolation from your app's business logic, data, and context.
-That makes it easy to develop hard-to-reach states. Save these UI states as **stories** to revisit during development, testing, or QA.
+<p className="top-text">
+    Our design library is packed with everything you need to implement Spark
+    components into your solutions seamlessly, or if you just need some
+    inspiration to how to build your own.
+</p>
 
-Browse example stories now by navigating to them in the sidebar.
-View their code in the `stories` directory to learn how they work.
-We recommend building UIs with a [**component-driven**](https://componentdriven.org) process starting with atomic components and ending with pages.
+<p className="bottom-text">
+    Whether you’re a seasoned developer or just starting out, our layout,
+    components and documentation make it easy to create awesome and functional
+    interfaces.
+</p>
 
-<div className="subheading">Configure</div>
+<img
+    src="/illustration.svg"
+    alt="Illustration of an EV charged with solar power."
+    draggable="false"
+    className="illustration"
+/>
 
-<div className="link-list">
-    <a
-        className="link-item"
-        href="https://storybook.js.org/docs/react/addons/addon-types"
-        target="_blank"
-    >
-        <span>
-            <strong>Presets for popular tools</strong>
-            Easy setup for TypeScript, SCSS and more.
-        </span>
-    </a>
-    <a
-        className="link-item"
-        href="https://storybook.js.org/docs/react/configure/webpack"
-        target="_blank"
-    >
-        <span>
-            <strong>Build configuration</strong>
-            How to customize webpack and Babel
-        </span>
-    </a>
-    <a
-        className="link-item"
-        href="https://storybook.js.org/docs/react/configure/styling-and-css"
-        target="_blank"
-    >
-        <span>
-            <strong>Styling</strong>
-            How to load and configure CSS libraries
-        </span>
-    </a>
-    <a
-        className="link-item"
-        href="https://storybook.js.org/docs/react/get-started/setup#configure-storybook-for-your-stack"
-        target="_blank"
-    >
-        <span>
-            <strong>Data</strong>
-            Providers and mocking for data libraries
-        </span>
-    </a>
-</div>
+{/* TODO: style the h4 tag */}
 
-<div className="subheading">Learn</div>
+<h4 className="subheader">How to get started?</h4>
+
+<p className="top-text">
+    The library is currently hosted on Github, this means that you will need a
+    `.npmrc` configuration file with a Github token to install the library. You
+    will also need to point the package towards the Github registry.
+</p>
+
+To install the library, run the following command:
+
+`npm install @voluespark/spark-elements`
+
+&nbsp;
+
+<h4 className="subheader">Resources</h4>
 
 <div className="link-list">
-    <a
-        className="link-item"
-        href="https://storybook.js.org/docs"
-        target="_blank"
-    >
-        <span>
-            <strong>Storybook documentation</strong>
-            Configure, customize, and extend
+    <a className="link-item" href="https://docs.voluespark.com" target="_blank">
+        <span className="text">
+            <strong className="link-title">API documentation</strong>A
+            step-by-step guide to getting started together with API
+            specification
         </span>
+        <span className="link-text">Documentation</span>
     </a>
     <a
         className="link-item"
-        href="https://storybook.js.org/tutorials/"
+        href="https://github.com/VolueSpark/Spark.Elements"
         target="_blank"
     >
-        <span>
-            <strong>In-depth guides</strong>
-            Best practices from leading teams
+        <span className="text">
+            <strong className="link-title">Github repository</strong>
+            Get access to Spark's repositories
         </span>
+        <span className="link-text">Documentation</span>
     </a>
     <a
         className="link-item"
-        href="https://github.com/storybookjs/storybook"
+        href="https://www.ladeassistent.no"
         target="_blank"
     >
-        <span>
-            <strong>GitHub project</strong>
-            View the source and add issues
+        <span className="text">
+            <strong className="link-title">Demo app</strong>
+            Test out our demo app Ladeassistent
         </span>
+        <span className="link-text">Ladeassistent</span>
     </a>
-    <a
-        className="link-item"
-        href="https://discord.gg/storybook"
-        target="_blank"
-    >
-        <span>
-            <strong>Discord chat</strong>
-            Chat with maintainers and the community
+    <a className="link-item" href="https://www.volue.com/spark" target="_blank">
+        <span className="text">
+            <strong className="link-title">About Spark by Volue</strong>
+            Get to know what Spark is all about
         </span>
+        <span className="link-text">Spark information</span>
     </a>
-</div>
-
-<div className="tip-wrapper">
-    <span className="tip">Tip</span>Edit the Markdown in{' '}
-    <code>stories/Introduction.stories.mdx</code>
 </div>

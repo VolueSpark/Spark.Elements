@@ -1,10 +1,9 @@
 import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
-import Coin, { CoinProps } from '../src/components/Coin'
+import Coin, { CoinProps } from '../../src/components/Coin'
 import { add, formatISO } from 'date-fns'
 
 export default {
-    title: 'Misc/Coin',
     component: Coin,
 } as Meta<typeof Coin>
 

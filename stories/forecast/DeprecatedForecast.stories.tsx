@@ -3,7 +3,7 @@ import { Meta, StoryFn } from '@storybook/react'
 import Forecast, {
     ForecastEntry,
     ForecastProps,
-} from '../src/components/DeprecatedForecast'
+} from '../../src/components/DeprecatedForecast'
 import { add, startOfDay } from 'date-fns'
 
 export default {

@@ -3,11 +3,10 @@ import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
 import InteractivePriceGraph, {
     InteractivePriceGraphProps,
-} from '../src/components/InteractivePriceGraph'
-import { createMockChargingPlan } from './graph-mockdata'
+} from '../../src/components/InteractivePriceGraph'
+import { createMockChargingPlan } from '../graph-mockdata'
 
 export default {
-    title: 'Spot Price/InteractPriceGraph',
     component: InteractivePriceGraph,
 } as Meta<typeof InteractivePriceGraph>
 

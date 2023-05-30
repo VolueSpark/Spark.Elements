@@ -1,9 +1,31 @@
 import { Canvas, Meta, Title } from '@storybook/blocks'
 import * as AdviceGraphStories from './AdviceGraph.stories'
+import * as DailyOverviewStories from './DailyOverview.stories'
 
 <Meta name="Spot Price Documentation" />
 
-<Title>Spot Price Docs</Title>
+<Title>Spot Price</Title>
+
+[Usage](#usage)  
+[How to use](#how-to-use)  
+[Advice graph](#advice-graph)  
+[Daily overview](#daily-overview)  
+[Credentials](#credentials)  
+[Examples of use](#examples-of-use)
+
+## Usage
+
+The spot price components are used to visualize real-time information on optimal charging times for EV owners based on spot prices from Nord Pool for a chosen area. They may be used to create applications that provide EV owners with accurate and up-to-date information to decide when to charge their vehicles within the hours Nord Pool has set the spot prices.
+
+## How to use
+
+-   Use the graphs to provide information about when it’s the best time to charge within the known hours of spot prices from Nord Pool
+-   The graphs should always appear with information about what the different marked areas indicate
+    -   Optimal hours
+    -   Try to avoid
+-   Use an accessible color palette. If it’s hard to differ the bars from each other, adding patterns to them is a possibility
+
+## Advice Graph
 
 This component can be used to render the Spot Price graphs with data from the API.
 
@@ -11,4 +33,14 @@ The default view is as follows:
 
 <Canvas of={AdviceGraphStories.Default} />
 
-## Use Case
+## Daily overview
+
+This component can be used to render the Spot Price graphs with data from the API.
+
+The default view is as follows:
+
+<Canvas of={DailyOverviewStories.Default} />
+
+## Credentials
+
+## Examples of use

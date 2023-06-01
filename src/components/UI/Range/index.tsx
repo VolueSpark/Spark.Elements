@@ -14,6 +14,7 @@ interface RangeProps {
         center?: string
         right?: string
     }
+    step?: number
 }
 
 export default function Range({
@@ -24,6 +25,7 @@ export default function Range({
     onChange,
     hideDividers,
     labels,
+    step = 5,
 }: RangeProps) {
     const rangeRef = useRef<HTMLDivElement>(null)
     const startRef = useRef<HTMLInputElement>(null)
@@ -40,7 +42,8 @@ export default function Range({
     const onStartChange = (event: React.FormEvent<HTMLInputElement>) => {
         let validatedValue = value[0]
         if (event.currentTarget.value !== '') {
-            validatedValue = parseInt(event.currentTarget.value)
+            validatedValue =
+                Math.round(parseInt(event.currentTarget.value) / step) * step
         }
         if (validatedValue < 0) {
             validatedValue = 0
@@ -48,26 +51,27 @@ export default function Range({
         if (startRef && startRef.current)
             startRef.current.value = Math.min(
                 validatedValue,
-                value[1] - 1
+                value[1] - step
             ).toString()
 
-        onChange([Math.min(validatedValue, value[1] - 1), value[1]])
+        onChange([Math.min(validatedValue, value[1] - step), value[1]])
     }
 
     const onEndChange = (event: React.FormEvent<HTMLInputElement>) => {
         let validatedValue = value[1]
         if (event.currentTarget.value !== '') {
-            validatedValue = parseInt(event.currentTarget.value)
+            validatedValue =
+                Math.round(parseInt(event.currentTarget.value) / step) * step
         }
         if (validatedValue > 100) {
             validatedValue = 100
         }
-        onChange([value[0], Math.max(validatedValue, value[0] + 1)])
+        onChange([value[0], Math.max(validatedValue, value[0] + step)])
 
         if (endRef && endRef.current)
             endRef.current.value = Math.max(
                 validatedValue,
-                value[0] + 1
+                value[0] + step
             ).toString()
     }
 
@@ -110,6 +114,7 @@ export default function Range({
                             onBlur={onStartChange}
                             className={style.input__number}
                             ref={startRef}
+                            step={step}
                         />
                         %
                     </div>
@@ -126,6 +131,7 @@ export default function Range({
                             onBlur={onEndChange}
                             className={style.input__number}
                             ref={endRef}
+                            step={step}
                         />
                         %
                     </div>

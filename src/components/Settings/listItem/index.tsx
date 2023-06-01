@@ -19,10 +19,10 @@ export default function ListItem({
     return (
         <div className={style.container} onClick={onClick}>
             <div className={style.list_item__header}>
-                <p>{title}</p>
+                <p className={style.label}>{title}</p>
                 <div className={style.icon}>{isEditable && <EditIcon />}</div>
             </div>
-            <p>{value}</p>
+            <p className={style.value}>{value}</p>
         </div>
     )
 }

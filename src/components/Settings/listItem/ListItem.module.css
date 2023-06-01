@@ -12,3 +12,12 @@
 .icon {
     cursor: pointer;
 }
+
+.label {
+    font-weight: 700;
+    margin: 0.25rem 0;
+}
+
+.value {
+    margin: 0.25rem 0;
+}
